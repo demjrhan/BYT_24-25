@@ -1,8 +1,7 @@
-﻿namespace Project;
+﻿using Project;
 
-public class EmployeeRole 
+public class EmployeeRole
 {
-    
     private static int _lastEmployeeId = 0;
     public int EmployeeId { get; private set; }
     public string Position { get; private set; }

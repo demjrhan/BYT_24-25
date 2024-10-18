@@ -1,8 +1,7 @@
-﻿namespace Project;
+﻿using Project;
 
-public class CustomerRole 
+public class CustomerRole
 {
-    
     private static int _lastCustomerId = 0;
     public int CustomerId { get; private set; }
     public DateTime RegisterDate { get; private set; }
@@ -22,5 +21,4 @@ public class CustomerRole
     {
         return new Review(CustomerId, rating, comment);
     }
-    
 }
