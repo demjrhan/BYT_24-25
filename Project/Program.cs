@@ -1,34 +1,22 @@
 ﻿using Project;
 
-var person = new Young("Alice", "Johnson", "alice.johnson@example.com", 
-    "123-456-7890", "123 Main St", 15, false);
+Book book1 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2000);
+Book book2 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2001);
+Book book3 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2002);
+Book book4 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2001);
+Book book5 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2003);
+Book book6 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2001);
+List<Product> products = new List<Product>();
+Accessory ac1 = new Accessory("lance", 120, 10, "brand", "metal");
 
-person.DisplayRoles(); 
-person.AddCustomerRole();
+products.Add(book1);
+products.Add(book2);
+products.Add(book3);
+products.Add(ac1);
 
-
-var payment = person.CreatePayment("Credit Card", 100.50);
-Console.WriteLine($"Payment created: {payment.PaymentMethod} - ${payment.Amount}"); 
-
-var review = person.CreateReview(5, "Great service!");
-Console.WriteLine($"Review created: {review.Rating} stars - {review.Comment}"); 
-
-person.AddEmployeeRole("Sales Manager", DateTime.Now, 60000);
-
-try
+foreach (Product product in products)
 {
-    var report = person.CreateReport("Monthly Sales", "Sales report content here.");
-    Console.WriteLine($"Report created: {report.ReportType} - {report.Content}"); 
-}
-catch (InvalidOperationException ex)
-{
-    Console.WriteLine(ex.Message);
+    Console.WriteLine(product.ToString());
 }
 
-var allPersons = Person.GetAllPersons();
-Console.WriteLine("All Persons:");
-foreach (var p in allPersons)
-{
-    p.DisplayRoles();
-    Console.WriteLine(p.GetDiscountPercentage());
-}
+Console.WriteLine(book4.ToString());

@@ -1,35 +1,67 @@
-﻿namespace Project;
-
-public class Cart
+﻿namespace Project
 {
-    public double TotalSum { get; private set; }
-    private List<Product> Products { get; set; } = new List<Product>();
-
-    public void AddProduct(Product product)
+    public class Cart
     {
-        Products.Add(product);
-    }
+        public int CustomerId { get; set; }
+        private List<Tuple<Product, Promotion>> Products { get; set; } = new List<Tuple<Product, Promotion>>();
 
-    public void RemoveProduct(Product product)
-    {
-        Products.Remove(product);
-    }
-
-    public double CalculateTotalSum(Person person)
-    {
-        double discount = person.GetDiscountPercentage(); 
-        TotalSum = 0;
-        foreach (var product in Products)
+        public Cart(int customerId)
         {
-            TotalSum += product.GetFinalPrice();;
+            CustomerId = customerId;
         }
 
-        if (discount > 0)
+        public void AddProduct(Product product, Promotion? promotion = null)
         {
-            TotalSum -= TotalSum * (discount / 100);
+            Products.Add(new Tuple<Product, Promotion>(product, promotion));
         }
 
-        return TotalSum; 
+        public void RemoveProduct(Product product, Promotion? promotion = null)
+        {
+            Tuple<Product, Promotion>? productToRemove = null;
+            foreach (var pair in Products)
+            {
+                if (pair.Item1 == product && pair.Item2 == promotion)
+                {
+                    productToRemove = pair;
+                    break;
+                }
+            }
+            if (productToRemove != null) Products.Remove(productToRemove);
+        }
+
+        public double CalculateTotalSum()
+        {
+            Customer customer = Customer.Customers[CustomerId];
+            double discount = customer.GetDiscountPercentage();
+            double totalSum = 0;
+            foreach (var pair in Products)
+            {
+                if (pair.Item2 != null && pair.Item1 != null) totalSum += pair.Item1.ApplyPromotion(pair.Item2);
+                else if (pair.Item1 != null) totalSum += pair.Item1.Price;
+            }
+
+            if (discount > 0)
+            {
+                totalSum -= totalSum * (discount / 100);
+            }
+
+            return totalSum;
+        }
+
+        public Order ConvertToOrder()
+        {
+            double amount = CalculateTotalSum();
+            List<Product> products = new List<Product>();
+            foreach (var pair in Products)
+            {
+                products.Add(pair.Item1);
+            }
+            Products = new List<Tuple<Product, Promotion>>();
+
+            return new Order(CustomerId, DateTime.Now, "proccessing", amount, products);
+        }
+
     }
-    
+
 }
+

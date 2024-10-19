@@ -1,17 +1,9 @@
-﻿namespace Project;
-
-public class Young : Person
+﻿namespace Project
 {
-    public bool IsStudying { get; set; }
-
-    public Young(string name, string surname, string email, string phone, string address, int age, bool isStudying)
-        : base(name, surname, email, phone, address, age)
+    public interface IYoung
     {
-        IsStudying = isStudying;
+        public bool IsStudying { get; set; }
     }
 
-    public override double GetDiscountPercentage()
-    {
-        return IsStudying ? 15.0 : 5; 
-    }
 }
+

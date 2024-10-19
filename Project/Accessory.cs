@@ -1,14 +1,27 @@
-﻿namespace Project;
-
-public class Accessory : Product 
+﻿namespace Project
 {
-    public string Type { get; set; } 
-    public string Material { get; set; } 
-
-    public Accessory(string productId, string title, double price, int stockQuantity, string type, string material)
-        : base(productId, title, price, stockQuantity)
+    public class Accessory : Product
     {
-        Type = type; 
-        Material = material; 
+        public string Type { get; set; }
+        public string Material { get; set; }
+
+        public Accessory(
+            string title,
+            double price, int stockQuantity,
+            string type, string material
+            ) : base(
+                title,
+                price, stockQuantity
+                )
+        {
+            Type = type;
+            Material = material;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + " Type: " + Type + " material: " + Material;
+        }
     }
+
 }
+

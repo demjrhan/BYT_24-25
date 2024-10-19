@@ -1,15 +1,20 @@
-﻿namespace Project;
-
-public class Report
+﻿namespace Project
 {
-    public string ReportType { get; set; }
-    public string Content { get; set; }
-    public DateTime Date { get; set; }
-
-    public Report(string reportType, string content, DateTime date)
+    public class Report
     {
-        ReportType = reportType;
-        Content = content;
-        Date = date;
+        public int EmployeeId { get; set; }
+        public string ReportType { get; set; }
+        public string Content { get; set; }
+        public DateTime Date { get; set; }
+
+        public Report(int employeeId, string reportType, string content, DateTime date)
+        {
+            EmployeeId = employeeId;
+            ReportType = reportType;
+            Content = content;
+            Date = date;
+        }
     }
+
 }
+

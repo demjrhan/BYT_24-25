@@ -1,17 +1,12 @@
-﻿namespace Project;
-
-public class Inventory
+﻿namespace Project
 {
-    public int TotalBooksQuantity { get; set; }
-    public int TotalAccessoriesQuantity { get; set; }
-    public bool LowStock { get; set; }
-    public string SupplierInfo { get; set; }
-
-    public Inventory(int totalBooksQuantity, int totalAccessoriesQuantity, bool lowStock, string supplierInfo)
+    public static class Inventory
     {
-        TotalBooksQuantity = totalBooksQuantity;
-        TotalAccessoriesQuantity = totalAccessoriesQuantity;
-        LowStock = lowStock;
-        SupplierInfo = supplierInfo;
+        public static int TotalBooksQuantity { get; set; }
+        public static int TotalAccessoriesQuantity { get; set; }
+        public static bool LowStock { get; set; }
+        public static string? SupplierInfo { get; set; }
     }
+
 }
+

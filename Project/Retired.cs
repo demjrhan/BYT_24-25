@@ -1,34 +1,17 @@
-﻿namespace Project;
-
-public enum RetirementType
+﻿namespace Project
 {
-    Military,
-    HealthIssues,
-    Other
-}
-
-public class Retired : Person
-{
-    public RetirementType RetirementType { get; set; }
-
-    public Retired(string name, string surname, string email, string phone, string address, int age, RetirementType typeOfRetirement)
-        : base(name, surname, email, phone, address, age)
+    public enum Retirement
     {
-        RetirementType = typeOfRetirement;
+        Military,
+        HealthIssues,
+        Other
     }
 
-    
-    public override double GetDiscountPercentage()
+    public interface IRetired
     {
-        if (RetirementType == RetirementType.Military)
-        {
-            return 15.0;
-        }
-        else if (RetirementType == RetirementType.HealthIssues)
-        {
-            return 15.0;
-        }
-        else return 5.0;
-
+        public bool IsRetired { get; set; }
+        public Retirement? RetirementType { get; set; }
     }
+
 }
+

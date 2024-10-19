@@ -1,6 +1,6 @@
-﻿using Project;
-
-public abstract class Person
+﻿namespace Project
+{
+    public abstract class Person : IYoung, IAdult, IRetired
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -8,14 +8,17 @@ public abstract class Person
         public string Phone { get; set; }
         public string Address { get; set; }
         public int Age { get; set; }
+        public bool IsStudying { get; set; }
+        public bool IsWorking { get; set; }
+        public bool IsRetired { get; set; }
+        public Retirement? RetirementType { get; set; }
 
-        protected static List<Person> personExtent = new List<Person>();
-
-        
-        private CustomerRole? _customerRole;
-        private EmployeeRole? _employeeRole;
-
-        protected Person(string name, string surname, string email, string phone, string address, int age)
+        protected Person(
+            string name, string surname,
+            string email, string phone,
+            string address, int age,
+            bool isStudying, bool isWorking,
+            bool isRetired, Retirement retirementType)
         {
             Name = name;
             Surname = surname;
@@ -23,64 +26,21 @@ public abstract class Person
             Phone = phone;
             Address = address;
             Age = age;
-
-            personExtent.Add(this);
+            IsStudying = isStudying;
+            IsWorking = isWorking;
+            IsRetired = isRetired;
+            RetirementType = retirementType;
         }
 
-        public static IReadOnlyList<Person> GetAllPersons() => personExtent.AsReadOnly();
-        public bool IsCustomer() => _customerRole != null;
-        public bool IsEmployee() => _employeeRole != null;
-        public void AddCustomerRole()
+        public double GetDiscountPercentage()
         {
-            if (_customerRole == null)
-                _customerRole = new CustomerRole();
-        }
-        public void AddEmployeeRole(string position, DateTime hireDate, double? salary = null)
-        {
-            if (_employeeRole == null)
-                _employeeRole = new EmployeeRole(position, hireDate, salary);
+            if (IsStudying) return 15.0;
+            else if (IsWorking) return 5.0;
+            else if (IsRetired) return RetirementType == Retirement.Other ? 5.0 : 15.0;
+
+            return 0;
         }
 
-        public Payment CreatePayment(string paymentMethod, double amount)
-        {
-            if (_customerRole != null)
-            {
-                return _customerRole.CreatePayment(paymentMethod, amount);
-            }
-            else
-            {
-                throw new InvalidOperationException("This person is not a customer.");
-            }
-        }
-
-        public Review CreateReview(int rating, string comment)
-        {
-            if (_customerRole != null)
-            {
-                return _customerRole.CreateReview(rating, comment);
-            }
-            else
-            {
-                throw new InvalidOperationException("This person is not a customer.");
-            }
-        }
-
-        public Report CreateReport(string reportType, string content)
-        {
-            if (_employeeRole != null)
-            {
-                return _employeeRole.CreateReport(reportType, content);
-            }
-            else
-            {
-                throw new InvalidOperationException("This person is not an employee.");
-            }
-        }
-
-        public abstract double GetDiscountPercentage();
-
-        public void DisplayRoles()
-        {
-            Console.WriteLine($"{Name} {Surname} is {(IsCustomer() ? "a customer" : "")} {(IsEmployee() ? "and an employee" : "")}");
-        }
     }
+
+}

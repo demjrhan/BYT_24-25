@@ -1,15 +1,21 @@
-﻿namespace Project;
-
-public class Member
+﻿namespace Project
 {
-    public int MembershipId { get; set; }
-    public bool Status { get; set; }
-    public double DiscountRate { get; set; }
-
-    public Member(int customerId, bool status, double discountRate) // membershipId indicates the customerId to not lose person contact info.
+    public class Membership
     {
-        MembershipId = customerId;
-        Status = status;
-        DiscountRate = discountRate;
+        private static int _lastMembershipId = 0;
+
+        public int MembershipId { get; private set; }
+        public int CustomerId { get; set; }
+        public bool Status { get; set; }
+        public double DiscountRate { get; set; }
+
+        public Membership(int customerId, bool status, double discountRate)
+        {
+            CustomerId = customerId;
+            Status = status;
+            DiscountRate = discountRate;
+            MembershipId = _lastMembershipId++;
+        }
     }
+
 }
