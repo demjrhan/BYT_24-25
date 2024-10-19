@@ -32,3 +32,11 @@ foreach (var p in allPersons)
     p.DisplayRoles();
     Console.WriteLine(p.GetDiscountPercentage());
 }
+
+/* Serialization example
+List<Young> youngPersons = new List<Young>();
+youngPersons.Add(person);
+SerializeDeserialize.SerializeToFile(youngPersons, "young.json"); */
+
+/* Deserialization example
+List<Young> youngPersons = SerializeDeserialize.DeserializeFromFile<Young>("young.json"); */
