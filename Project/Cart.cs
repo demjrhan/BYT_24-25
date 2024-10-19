@@ -3,30 +3,28 @@
     public class Cart
     {
         public int CustomerId { get; set; }
-        private List<Tuple<Product, Promotion>> Products { get; set; } = new List<Tuple<Product, Promotion>>();
+        private List<Product> Products { get; set; }
 
         public Cart(int customerId)
         {
             CustomerId = customerId;
         }
 
-        public void AddProduct(Product product, Promotion? promotion = null)
+        public void AddProduct(Product product)
         {
-            Products.Add(new Tuple<Product, Promotion>(product, promotion));
+            Products.Add(product);
         }
 
-        public void RemoveProduct(Product product, Promotion? promotion = null)
+        public void RemoveProduct(Product product)
         {
-            Tuple<Product, Promotion>? productToRemove = null;
-            foreach (var pair in Products)
+            foreach (var each in Products)
             {
-                if (pair.Item1 == product && pair.Item2 == promotion)
+                if (each == product)
                 {
-                    productToRemove = pair;
+                    Products.Remove(product);
                     break;
                 }
             }
-            if (productToRemove != null) Products.Remove(productToRemove);
         }
 
         public double CalculateTotalSum()
@@ -34,10 +32,9 @@
             Customer customer = Customer.Customers[CustomerId];
             double discount = customer.GetDiscountPercentage();
             double totalSum = 0;
-            foreach (var pair in Products)
+            foreach (var each in Products)
             {
-                if (pair.Item2 != null && pair.Item1 != null) totalSum += pair.Item1.ApplyPromotion(pair.Item2);
-                else if (pair.Item1 != null) totalSum += pair.Item1.Price;
+                totalSum += each.ApplyPromotion();
             }
 
             if (discount > 0)
@@ -54,9 +51,9 @@
             List<Product> products = new List<Product>();
             foreach (var pair in Products)
             {
-                products.Add(pair.Item1);
+                products.Add(pair);
             }
-            Products = new List<Tuple<Product, Promotion>>();
+            Products = new List<Product>();
 
             return new Order(CustomerId, DateTime.Now, "proccessing", amount, products);
         }

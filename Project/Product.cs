@@ -36,10 +36,13 @@
             }
         }
 
-        public double ApplyPromotion(Promotion promotion)
+        public double ApplyPromotion()
         {
             double finalPrice = Price;
-            if (promotion != null) finalPrice -= finalPrice * (promotion.DiscountPercentage / 100);
+            foreach (var each in Promotions)
+            {
+                finalPrice -= finalPrice * (each.DiscountPercentage / 100);
+            }
             return finalPrice;
         }
 
