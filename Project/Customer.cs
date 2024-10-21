@@ -8,13 +8,14 @@
         public int CustomerId { get; private set; }
         public DateTime RegisterDate { get; private set; }
         public Cart Cart { get; set; }
+        public Membership? Membership { get; set; }
 
         public Customer(
             string name, string surname,
             string email, string phone,
             string address, int age,
             bool isStudying, bool isWorking,
-            bool isRetired, Retirement retirementType
+            bool isRetired, Retirement? retirementType = null
             ) : base(
                 name, surname,
                 email, phone,
@@ -45,9 +46,14 @@
             return new Review(CustomerId, rating, comment);
         }
 
-        public List<Customer> GetAllCustomers()
+        public static List<Customer> GetAllCustomers()
         {
             return Customers;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " - Customer";
         }
     }
 

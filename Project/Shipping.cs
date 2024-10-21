@@ -18,6 +18,11 @@
             Address = address;
             ShippingId = _lastShippingId++;
         }
+
+        public override string ToString()
+        {
+            return "Shipping number: " + ShippingId + " address: " + Address + " Cost: " + Cost;
+        }
     }
 
 }

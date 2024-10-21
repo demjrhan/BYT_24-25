@@ -19,6 +19,8 @@
             Author = author;
             Genre = genre;
             PublicationYear = publicationYear;
+            Inventory.TotalBooksQuantity += StockQuantity;
+            Inventory.UpdateInventory();
         }
 
         public override string ToString()

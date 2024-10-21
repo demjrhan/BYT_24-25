@@ -16,6 +16,8 @@
         {
             Type = type;
             Material = material;
+            Inventory.TotalAccessoriesQuantity += StockQuantity;
+            Inventory.UpdateInventory();
         }
         public override string ToString()
         {

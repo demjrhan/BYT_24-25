@@ -22,9 +22,9 @@
             string email, string phone,
             string address, int age,
             bool isStudying, bool isWorking,
-            bool isRetired, Retirement retirementType,
-            Position empPosition, DateTime hireDate,
-            double salary
+            bool isRetired, Position empPosition, 
+            DateTime hireDate, double salary, 
+            Retirement? retirementType = null
             ) : base(
                 name, surname,
                 email, phone,
@@ -53,9 +53,14 @@
             }
         }
 
-        public List<Employee> GetAllEmployees()
+        public static List<Employee> GetAllEmployees()
         {
             return Employees;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " position: " + EmpPosition;
         }
 
     }

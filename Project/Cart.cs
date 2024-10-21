@@ -3,7 +3,7 @@
     public class Cart
     {
         public int CustomerId { get; set; }
-        private List<Tuple<Product, Promotion>> Products { get; set; } = new List<Tuple<Product, Promotion>>();
+        protected internal List<Tuple<Product, Promotion>> Products { get; set; } = new List<Tuple<Product, Promotion>>();
 
         public Cart(int customerId)
         {
@@ -55,10 +55,25 @@
             foreach (var pair in Products)
             {
                 products.Add(pair.Item1);
+                if (pair.Item1 is Book) Inventory.TotalBooksQuantity -= 1;
+                else if (pair.Item1 is Accessory) Inventory.TotalAccessoriesQuantity -= 1;
             }
+            Inventory.UpdateInventory();
             Products = new List<Tuple<Product, Promotion>>();
 
             return new Order(CustomerId, DateTime.Now, "proccessing", amount, products);
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            foreach (var pair in Products)
+            {
+                result += pair.Item1.ToString();
+                result += "\n";
+                if (pair.Item2 != null) result += pair.Item2.ToString();
+            }
+            return result;
         }
 
     }
