@@ -14,6 +14,11 @@
             Content = content;
             Date = date;
         }
+
+        public override string ToString()
+        {
+            return "Employee id: " + EmployeeId + " type: " + ReportType + " Contents: " + Content;
+        }
     }
 
 }

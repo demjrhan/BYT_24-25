@@ -18,7 +18,7 @@
             string email, string phone,
             string address, int age,
             bool isStudying, bool isWorking,
-            bool isRetired, Retirement retirementType)
+            bool isRetired, Retirement? retirementType = null)
         {
             Name = name;
             Surname = surname;
@@ -39,6 +39,11 @@
             else if (IsRetired) return RetirementType == Retirement.Other ? 5.0 : 15.0;
 
             return 0;
+        }
+
+        public override string ToString()
+        {
+            return "Name: " + Name;
         }
 
     }

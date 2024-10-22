@@ -33,6 +33,11 @@
             ShippingId = shipping.ShippingId;
             return shipping;
         }
+
+        public override string ToString()
+        {
+            return "Order Id: " + OrderId + " Customer Id: " + CustomerId + " Amount: " + Amount;
+        }
     }
 
 }

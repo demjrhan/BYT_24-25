@@ -5,7 +5,7 @@
         private static int _lastPaymentId = 0;
 
         public int OrderId { get; set; }
-        public int PaymentID { get; set; }
+        public int PaymentId { get; set; }
         public string PaymentMethod { get; set; }
         public double Amount { get; set; }
 
@@ -14,7 +14,12 @@
             OrderId = orderId;
             PaymentMethod = paymentMethod;
             Amount = amount;
-            PaymentID = _lastPaymentId++;
+            PaymentId = _lastPaymentId++;
+        }
+
+        public override string ToString()
+        {
+            return "Payment id: " + PaymentId + " Order id: " + OrderId + " Amount " + Amount; 
         }
     }
 
