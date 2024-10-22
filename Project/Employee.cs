@@ -23,7 +23,7 @@
             string address, int age,
             bool isStudying, bool isWorking,
             bool isRetired, Position empPosition, 
-            DateTime hireDate, double salary, 
+            DateTime hireDate, double? salary, 
             Retirement? retirementType = null
             ) : base(
                 name, surname,

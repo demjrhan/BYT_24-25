@@ -5,6 +5,7 @@
         public string Author { get; set; }
         public string Genre { get; set; }
         public int PublicationYear { get; set; }
+        public static List<Book> Books = new List<Book>();
 
         public Book(
             string title,
@@ -19,6 +20,7 @@
             Author = author;
             Genre = genre;
             PublicationYear = publicationYear;
+            Books.Add(this);
             Inventory.TotalBooksQuantity += StockQuantity;
             Inventory.UpdateInventory();
         }

@@ -9,7 +9,7 @@
         public string Description { get; set; }
         public double DiscountPercentage { get; set; }
 
-        public Promotion(string name, string description, int discountPercentage)
+        public Promotion(string name, string description, double discountPercentage)
         {
             Name = name;
             Description = description;

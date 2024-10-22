@@ -4,6 +4,7 @@
     {
         public string Type { get; set; }
         public string Material { get; set; }
+        public static List<Accessory> Accessories = new List<Accessory> ();
 
         public Accessory(
             string title,
@@ -16,6 +17,7 @@
         {
             Type = type;
             Material = material;
+            Accessories.Add(this);
             Inventory.TotalAccessoriesQuantity += StockQuantity;
             Inventory.UpdateInventory();
         }

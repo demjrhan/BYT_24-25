@@ -1,5 +1,9 @@
 ﻿using Project;
 
+//Controller.Start();
+
+
+
 Inventory.InventoryInfo();
 Console.WriteLine("\n========== Adding Products ================");
 Book book1 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2000);
@@ -127,6 +131,8 @@ Payment payment1 = c1.CreatePayment(o1.OrderId, "card", o1.Amount);
 Console.WriteLine(payment1.ToString());
 
 Console.WriteLine("\n============== Checking Serialization ============");
+
+Console.WriteLine(Directory.GetCurrentDirectory());
 
 //Serialization example
 SerializeDeserialize.SerializeToFile(Customer.Customers, "customers.json");
