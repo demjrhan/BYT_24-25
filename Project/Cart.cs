@@ -31,8 +31,13 @@
 
         public double CalculateTotalSum()
         {
-            Customer customer = Customer.Customers[CustomerId];
+           
+            if ( Products.Count == 0) return 0; 
+            
+
+            Customer customer = Customer.GetCustomerWithId(CustomerId);
             double discount = customer.GetDiscountPercentage();
+         
             double totalSum = 0;
             foreach (var pair in Products)
             {
@@ -47,6 +52,8 @@
 
             return totalSum;
         }
+
+
 
         public Order ConvertToOrder()
         {

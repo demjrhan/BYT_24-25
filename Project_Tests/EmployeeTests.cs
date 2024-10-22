@@ -6,7 +6,6 @@ namespace Project_Tests
     public class EmployeeTests
     {
         [Test]
-        //Should add employees
         public void EmployeeCreation()
         {
             var empPosition = Position.Manager;

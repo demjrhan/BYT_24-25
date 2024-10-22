@@ -6,7 +6,6 @@ namespace Project_Tests
     public class CustomerTests
     {
         [Test]
-        //Should create order with cart contents
         public void CreateOrder()
         {
             var customer = new Customer("Ruslan", "Teimurov", "Rus@mail.com", "12345", "Address", 30, false, true, false);
@@ -21,7 +20,6 @@ namespace Project_Tests
         }
 
         [Test]
-        //Should create payment successfully
         public void CreatePayment()
         {
             var customer = new Customer("Ruslan", "Teimurov", "Rus@mail.com", "12345", "Address", 30, false, true, false);
@@ -35,8 +33,7 @@ namespace Project_Tests
             Assert.AreEqual("Credit Card", payment.PaymentMethod);
         }
 
-      /*  [Test]
-        //Should return correct customer details
+        [Test]
         public void ToString()
         {
             var customer = new Customer("Ruslan", "Teimurov", "Rus@mail.com", "12345", "Address", 30, false, true, false);
@@ -45,6 +42,6 @@ namespace Project_Tests
 
             Assert.IsTrue(result.Contains("Ruslan"));
             Assert.IsTrue(result.Contains("Teimurov"));
-        }*/
+        }
     }
 }

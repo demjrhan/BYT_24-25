@@ -5,31 +5,27 @@ namespace Project_Tests
 {
     public class CartTests
     {
-       /* [Test]
-        //Should add product to cart
-        public void AddProduct()
-        {
-            var cart = new Cart(1);
-            var product = new Book("Book", 50, 10, "Author", "Genre", 2022);
 
-            cart.AddProduct(product);
+       [Test]
+       public void CalculateTotalSum()
+       {
 
-            Assert.AreEqual(1, cart.Products.Count);
-            Assert.AreEqual(product, cart.Products[0].Item1);
-        }*/
+           var customer = new  Customer(
+               "Ilya", "Stepanov",
+               "mail3", "phone3",
+               "address3", 24,
+               false, false,
+               false);
+           
+           var cart = new Cart(0);
+           var product = new Book("Book", 100, 10, "Author", "Genre", 2022);
+           var promotion = new Promotion("Discount", "10% off", 10);
+           cart.AddProduct(product, promotion);
 
-      /*  [Test]
-        //Should return correct amount with promotions
-        public void CalculateTotalSum()
-        {
-            var cart = new Cart(1);
-            var product = new Book("Book", 100, 10, "Author", "Genre", 2022);
-            var promotion = new Promotion("Discount", "10% off", 10);
-            cart.AddProduct(product, promotion);
+           double totalSum = cart.CalculateTotalSum();
 
-            double totalSum = cart.CalculateTotalSum();
+           Assert.AreEqual(90, totalSum); // 100 - 10% = 90
+       }
 
-            Assert.AreEqual(90, totalSum);
-        }*/
     }
 }

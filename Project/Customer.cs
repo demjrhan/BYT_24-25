@@ -3,7 +3,7 @@
     public class Customer : Person
     {
         private static int _lastCustomerId = 0;
-        internal static List<Customer> Customers = new List<Customer>();
+        public static List<Customer> Customers = new List<Customer>();
 
         public int CustomerId { get; private set; }
         public DateTime RegisterDate { get; private set; }
@@ -54,6 +54,19 @@
         public override string ToString()
         {
             return base.ToString() + " - Customer";
+        }
+
+        public static Customer GetCustomerWithId(int customerId)
+        {
+            foreach (var customer in Customers)
+            {
+                if (customer.CustomerId == customerId)
+                {
+                    return customer;
+                }
+            }
+
+            return null;
         }
     }
 

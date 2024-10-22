@@ -6,7 +6,6 @@ namespace Project_Tests
     public class OrderTests
     {
         [Test]
-        //Should initialize correctly
         public void OrderCreation()
         {
             var product1 = new Book("Book 1", 50, 10, "Author", "Genre", 1995);
@@ -21,7 +20,6 @@ namespace Project_Tests
         }
 
         [Test]
-        //Should add shipping to order
         public void CreateShipping()
         {
             var order = new Order(1, DateTime.Now, "processing", 100, new List<Product>());
@@ -34,12 +32,11 @@ namespace Project_Tests
             Assert.AreEqual("InPost", shipping.Method);
             Assert.AreEqual(15.0, shipping.Cost);
             Assert.AreEqual("Koszykowa 86", shipping.Address);
-            Assert.AreEqual(115.0, order.Amount); // Check 
-            Assert.IsNotNull(order.ShippingId);  // ShippingId 
+            Assert.AreEqual(115.0, order.Amount); 
+            Assert.IsNotNull(order.ShippingId);  
         }
 
         [Test]
-        //Should return correct order details
         public void ToString()
         {
             var product = new Book("Book", 50, 10, "Author", "Genre", 2022);

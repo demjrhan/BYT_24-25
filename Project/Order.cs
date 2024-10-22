@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        public static int LastOrderId = 0;
+        public static int _lastOrderId = 0;
 
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
@@ -10,7 +10,7 @@
         public double Amount { get; set; }
         public string Status { get; set; }
         public int? ShippingId { get; set; }
-        public List<Product> Products;
+        public List<Product> Products = new List<Product>();
 
         public Order(
             int customerId, DateTime orderDate,
@@ -23,7 +23,7 @@
             Amount = amount;
             Status = status;
             Products = products;
-            OrderId = LastOrderId++;
+            OrderId = _lastOrderId++;
         }
 
         public Shipping CreateShipping(string method, double cost, string address)

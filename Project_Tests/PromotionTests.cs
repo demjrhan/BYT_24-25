@@ -6,7 +6,6 @@ namespace Project_Tests
     public class PromotionTests
     {
         [Test]
-        //Should create promotion
         public void PromotionCreation()
         {
             var promotion = new Promotion("Summer Sale", "20% off", 20);
@@ -17,7 +16,6 @@ namespace Project_Tests
         }
 
         [Test]
-        //Should return correct promotion details
         public void ToString()
         {
             var promotion = new Promotion("Summer Sale", "20% off", 20);

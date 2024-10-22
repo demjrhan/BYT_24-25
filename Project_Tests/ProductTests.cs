@@ -5,7 +5,6 @@ namespace Project_Tests
     public class ProductTests
     {
         [Test]
-        //Should return correct discounted price
         public void ApplyPromotion()
         {
             var product = new Book("Book", 100, 5, "Author", "Fantasy", 2020);
@@ -15,7 +14,6 @@ namespace Project_Tests
         }
 
         [Test]
-        //Should add promotion successfully
         public void AddPromotion()
         {
             var product = new Book("Book", 20, 5, "Author", "Fantasy", 2020);
@@ -28,7 +26,6 @@ namespace Project_Tests
         }
 
         [Test]
-        //Should remove promotion successfully
         public void RemovePromotion()
         {
             var product = new Book("Book", 20, 5, "Author", "Fantasy", 2020);
