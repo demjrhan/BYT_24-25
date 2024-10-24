@@ -2,25 +2,32 @@
 {
     public class Book : Product
     {
+        public static readonly string _verbose = "book";
+        public static readonly string _verbosePlural = "books";
+        public string ProductClass { get; set; } = typeof(Book).Name;
         public string Author { get; set; }
         public string Genre { get; set; }
         public int PublicationYear { get; set; }
-        public static List<Book> Books = new List<Book>();
+        public static List<Book> Products = [];
+
+        static Book()
+        {
+            Types.Add(typeof(Book));
+        }
 
         public Book(
-            string title,
-            double price, int stockQuantity,
-            string author, string genre,
-            int publicationYear
+            string title, double price, 
+            int stockQuantity, string author, 
+            string genre, int publicationYear
             ) : base(
-                title,
-                price, stockQuantity
+                title, price, 
+                stockQuantity
                 )
         {
             Author = author;
             Genre = genre;
             PublicationYear = publicationYear;
-            Books.Add(this);
+            Products.Add(this);
             Inventory.TotalBooksQuantity += StockQuantity;
             Inventory.UpdateInventory();
         }

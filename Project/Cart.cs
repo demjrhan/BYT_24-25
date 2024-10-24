@@ -3,7 +3,7 @@
     public class Cart
     {
         public int CustomerId { get; set; }
-        protected internal List<Tuple<Product, Promotion>> Products { get; set; } = new List<Tuple<Product, Promotion>>();
+        protected internal List<Tuple<Product, Promotion?>> Products { get; set; } = new List<Tuple<Product, Promotion?>>();
 
         public Cart(int customerId)
         {
@@ -12,12 +12,12 @@
 
         public void AddProduct(Product product, Promotion? promotion = null)
         {
-            Products.Add(new Tuple<Product, Promotion>(product, promotion));
+            Products.Add(new Tuple<Product, Promotion?>(product, promotion));
         }
 
         public void RemoveProduct(Product product, Promotion? promotion = null)
         {
-            Tuple<Product, Promotion>? productToRemove = null;
+            Tuple<Product, Promotion?>? productToRemove = null;
             foreach (var pair in Products)
             {
                 if (pair.Item1 == product && pair.Item2 == promotion)
@@ -59,7 +59,7 @@
                 else if (pair.Item1 is Accessory) Inventory.TotalAccessoriesQuantity -= 1;
             }
             Inventory.UpdateInventory();
-            Products = new List<Tuple<Product, Promotion>>();
+            Products = new List<Tuple<Product, Promotion?>>();
 
             return new Order(CustomerId, DateTime.Now, "proccessing", amount, products);
         }
