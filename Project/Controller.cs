@@ -10,11 +10,13 @@ namespace Project
     {
         private static bool _clearConsole = false;
         private static int _currentMenuId = 0;
+
         private static readonly string _header =
             "**************************************************\n" +
             "***** Bookshop CLI Controller ********************\n" +
             "***** Choose an option and type it's number. *****\n" +
             "**************************************************";
+
         private static readonly string _mainMenu =
             "***** 1 - Employees ******************************\n" +
             "***** 2 - Customers ******************************\n" +
@@ -22,6 +24,7 @@ namespace Project
             "***** 4 - (De)Serialization **********************\n" +
             "***** 5 - Check inventory ************************\n" +
             "**************************************************";
+
         private static readonly string _employeesMenu =
             "***** 1 - List all employees *********************\n" +
             "***** 2 - Add new employee ***********************\n" +
@@ -29,6 +32,7 @@ namespace Project
             "***** 4 - !Modify information ********************\n" +
             "***** 5 - Go back ********************************\n" +
             "**************************************************";
+
         private static readonly string _customersMenu =
             "***** 1 - List all customers *********************\n" +
             "***** 2 - Add new customer ***********************\n" +
@@ -36,6 +40,7 @@ namespace Project
             "***** 4 - !Modify information ********************\n" +
             "***** 5 - Go back ********************************\n" +
             "**************************************************";
+
         private static readonly string _productsMenu =
             "***** 1 - List all books *************************\n" +
             "***** 2 - List all accessories *******************\n" +
@@ -45,15 +50,18 @@ namespace Project
             "***** 6 - !Remove promotion **********************\n" +
             "***** 7 - Go back ********************************\n" +
             "**************************************************";
+
         private static readonly string _promotionSubMenu =
             "***** 1 - Add promotion to a book ****************\n" +
             "***** 2 - Add promotion to accessory *************\n" +
             "**************************************************";
+
         private static readonly string _persistenceMenu =
             "***** 1 - Serialize data *************************\n" +
             "***** 2 - Deserialize data ***********************\n" +
             "***** 3 - Go back ********************************\n" +
             "**************************************************";
+
         private static readonly string _serializeSubMenu =
             "***** 1 - Employees ******************************\n" +
             "***** 2 - Customers ******************************\n" +
@@ -68,7 +76,7 @@ namespace Project
             Console.Clear();
 
             while (true)
-            { 
+            {
                 Console.WriteLine(_header);
 
                 switch (_currentMenuId)
@@ -90,7 +98,6 @@ namespace Project
                         break;
                 }
             }
-
         }
 
         public static void HandleMainMenu()
@@ -117,13 +124,14 @@ namespace Project
 
             int option = Convert.ToInt32(input);
 
-            switch(option)
+            switch (option)
             {
                 case 1:
                     foreach (var e in Employee.Employees)
                     {
                         Console.WriteLine(e.ToString());
                     }
+
                     break;
                 case 2:
                     Console.WriteLine("Write name");
@@ -149,13 +157,16 @@ namespace Project
                     Console.WriteLine("2 - Assistant");
                     string? inputPos = Console.ReadLine();
                     int pos = Convert.ToInt32(inputPos);
-                    switch(pos)
+                    switch (pos)
                     {
                         case 1:
-                            position = Position.Manager; break;
+                            position = Position.Manager;
+                            break;
                         case 2:
-                            position = Position.Assistant; break;
+                            position = Position.Assistant;
+                            break;
                     }
+
                     DateTime hireDate = DateTime.Now;
                     Console.WriteLine("Write salary");
                     string? inputSalary = Console.ReadLine();
@@ -168,15 +179,16 @@ namespace Project
                         phone != null &&
                         address != null)
                         new Employee(
-                        name, surname, email, phone, 
-                        address, age, isStudying,
-                        isWorking, isRetired,
-                        position, hireDate, salary);
+                            name, surname, email, phone,
+                            address, age, isStudying,
+                            isWorking, isRetired,
+                            position, hireDate, salary);
                     ClearLog();
                     Console.WriteLine("Employee was added.");
                     break;
                 case 5:
-                    _currentMenuId = 0; break;
+                    _currentMenuId = 0;
+                    break;
             }
         }
 
@@ -195,6 +207,7 @@ namespace Project
                     {
                         Console.WriteLine(c.ToString());
                     }
+
                     break;
                 case 2:
                     Console.WriteLine("Write name");
@@ -240,8 +253,8 @@ namespace Project
                     }
 
                     if (
-                        name != null && 
-                        surname != null && 
+                        name != null &&
+                        surname != null &&
                         email != null &&
                         phone != null &&
                         address != null)
@@ -255,7 +268,8 @@ namespace Project
                     break;
                 case 5:
                     ClearLog();
-                    _currentMenuId = 0; return;
+                    _currentMenuId = 0;
+                    return;
             }
         }
 
@@ -274,12 +288,14 @@ namespace Project
                     {
                         Console.WriteLine(b.ToString());
                     }
+
                     break;
                 case 2:
                     foreach (var a in Accessory.Products)
                     {
                         Console.WriteLine(a.ToString());
                     }
+
                     break;
                 case 3:
                     Console.WriteLine("Write title");
@@ -302,8 +318,8 @@ namespace Project
                         author != null &&
                         genre != null)
                         new Book(
-                        title, price, quantity, author,
-                        genre, year);
+                            title, price, quantity, author,
+                            genre, year);
                     ClearLog();
                     Console.WriteLine("Book was added.");
                     break;
@@ -312,8 +328,21 @@ namespace Project
                     string? name = Console.ReadLine();
                     Console.WriteLine("Write type");
                     string? type = Console.ReadLine();
-                    Console.WriteLine("Write material");
-                    string? material = Console.ReadLine();
+                    Console.WriteLine("Write material ~ Metal, Wood, Plastic, Gold, Leather ~");
+                    MaterialType materialType;
+                    while (true)
+                    {
+                        string? material = Console.ReadLine();
+
+                        if (Enum.TryParse(material, true, out materialType) &&
+                            Enum.IsDefined(typeof(MaterialType), materialType))
+                        {
+                            break;
+                        }
+
+                        Console.WriteLine("Material is not on the list. Write once again.");
+                    }
+
                     Console.WriteLine("Write price");
                     string? inputPriceAcc = Console.ReadLine();
                     double priceAcc = Convert.ToDouble(inputPriceAcc);
@@ -322,19 +351,20 @@ namespace Project
                     int quantityAcc = Convert.ToInt32(inputAmountAcc);
 
                     if (name != null &&
-                        type != null &&
-                        material != null)
+                        type != null)
                         new Accessory(
-                        name, priceAcc, quantityAcc, type,
-                        material);
+                            name, priceAcc, quantityAcc, type,
+                            materialType);
                     ClearLog();
                     Console.WriteLine("Accessory was added.");
                     break;
                 case 5:
-                    HandlePromotionSubMenu(); break;
+                    HandlePromotionSubMenu();
+                    break;
                 case 7:
                     ClearLog();
-                    _currentMenuId = 0; break;
+                    _currentMenuId = 0;
+                    break;
             }
         }
 
@@ -342,7 +372,7 @@ namespace Project
         {
             Console.WriteLine(_header);
             Console.WriteLine(_promotionSubMenu);
-            
+
             string? input = Console.ReadLine();
             int option = Convert.ToInt32(input);
 
@@ -370,13 +400,14 @@ namespace Project
 
                     foreach (var b in Book.Products)
                     {
-                        if (b.ProductId == idOption) book = b; break;
+                        if (b.ProductId == idOption) book = b;
+                        break;
                     }
 
                     if (promTitle != null &&
                         promDescr != null)
                         book.AddPromotion(new Promotion(
-                        promTitle, promDescr, disc));
+                            promTitle, promDescr, disc));
                     Console.WriteLine("Promotion was added");
                     break;
                 case 2:
@@ -393,13 +424,14 @@ namespace Project
 
                     foreach (var a in Accessory.Products)
                     {
-                        if (a.ProductId == idOptionAcc) accessory = a; break;
+                        if (a.ProductId == idOptionAcc) accessory = a;
+                        break;
                     }
 
                     if (promTitle != null &&
                         promDescr != null)
                         accessory.AddPromotion(new Promotion(
-                        promTitle, promDescr, disc));
+                            promTitle, promDescr, disc));
                     Console.WriteLine("Promotion was added");
                     break;
             }
@@ -415,12 +447,15 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    HandleSerializeSubMenu(); break;
+                    HandleSerializeSubMenu();
+                    break;
                 case 2:
-                    HandleDeSerializeSubMenu(); break;
+                    HandleDeSerializeSubMenu();
+                    break;
                 case 3:
                     ClearLog();
-                    _currentMenuId = 0; break;
+                    _currentMenuId = 0;
+                    break;
             }
         }
 
@@ -432,7 +467,7 @@ namespace Project
             string? input = Console.ReadLine();
             int option = Convert.ToInt32(input);
 
-            switch(option)
+            switch (option)
             {
                 case 1:
                     SerializeDeserialize.SerializeToFile(
@@ -469,6 +504,7 @@ namespace Project
                         if (serializeMethod != null)
                             serializeMethod.Invoke(null, [products, filePath]);
                     }
+
                     break;
             }
         }
@@ -484,20 +520,22 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    List<Employee> employees = 
+                    List<Employee> employees =
                         SerializeDeserialize.DeserializeFromFile<Employee>("employees.json");
                     foreach (var e in employees)
                     {
                         Console.WriteLine(e.ToString());
                     }
+
                     break;
                 case 2:
-                    List<Customer> customers = 
+                    List<Customer> customers =
                         SerializeDeserialize.DeserializeFromFile<Customer>("customers.json");
                     foreach (var c in customers)
                     {
                         Console.WriteLine(c.ToString());
                     }
+
                     break;
                 case 3:
                     string directoryPath = Path.Combine("db", "products");
@@ -533,6 +571,7 @@ namespace Project
                                 deserializeMethod.Invoke(null, [jsonfile]);
                         }
                     }
+
                     break;
             }
         }
@@ -543,7 +582,7 @@ namespace Project
 
             Type? type = assembly.GetTypes()
                 .FirstOrDefault(t => t.Name
-                .Equals(className, StringComparison.OrdinalIgnoreCase));
+                    .Equals(className, StringComparison.OrdinalIgnoreCase));
 
             return type;
         }
