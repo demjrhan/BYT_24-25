@@ -9,10 +9,10 @@ Book book4 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2001);
 Book book5 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2003);
 Book book6 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2001);
 List<Product> products = new List<Product>();
-Accessory ac1 = new Accessory("lance", 120, 10, "brand", "silver");
-Accessory ac2 = new Accessory("charm", 120, 10, "brand", "wood");
-Accessory ac3 = new Accessory("pen", 120, 10, "brand", "metal");
-Accessory ac4 = new Accessory("book-cover", 120, 10, "brand", "leather");
+Accessory ac1 = new Accessory("lance", 120, 10, "brand", MaterialType.Gold);
+Accessory ac2 = new Accessory("charm", 120, 10, "brand", MaterialType.Wood);
+Accessory ac3 = new Accessory("pen", 120, 10, "brand", MaterialType.Metal);
+Accessory ac4 = new Accessory("book-cover", 120, 10, "brand", MaterialType.Leather);
 
 products.Add(book1);
 products.Add(book2);
