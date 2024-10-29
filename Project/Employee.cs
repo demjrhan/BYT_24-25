@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Project
 {
     public enum Position
     {
@@ -8,13 +10,37 @@
 
     public class Employee : Person
     {
-        private static int _lastEmployeeId = 0;
-        public static List<Employee> Employees = new List<Employee>();
+        private static int _lastId = 0;
+        private static List<Employee> Instances = [];
 
-        public int EmployeeId { get; private set; }
+        //public static readonly string _verbose = "Employee";
+        //public static readonly string _verbosePlural = "Employees";
+
+        private DateTime _hireDate;
+        private double? _salary;
+
+        public int EmployeeId { get; private set; } = _lastId++;
         public Position EmpPosition { get; private set; }
-        public DateTime HireDate { get; private set; }
-        public double? Salary { get; private set; }
+        public DateTime HireDate
+        {
+            get => _hireDate;
+            set
+            {
+                if (value > DateTime.Now)
+                    throw new ArgumentException("Date cannot be set to a future time.", nameof(value));
+                _hireDate = value;
+            }
+        }
+        public double? Salary
+        {
+            get => _salary;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Salary cannot be negative.");
+                _salary = value;
+            }
+        }
         public Employee? Subordinate { get; set; }
 
         public Employee(
@@ -36,12 +62,11 @@
             EmpPosition = empPosition;
             HireDate = hireDate;
             Salary = salary;
-            EmployeeId = _lastEmployeeId++;
 
-            Employees.Add(this);
+            Instances.Add(this);
         }
 
-        public Report CreateReport(string reportType, string content)
+        public Report CreateReport(ReportType reportType, string content)
         {
             if (EmpPosition == Position.Manager)
             {
@@ -53,16 +78,14 @@
             }
         }
 
-        public static List<Employee> GetAllEmployees()
+        protected internal static List<Employee> GetInstances()
         {
-            return Employees;
+            return Instances;
         }
 
         public override string ToString()
         {
             return base.ToString() + " position: " + EmpPosition;
         }
-
     }
-
 }

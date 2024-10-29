@@ -2,12 +2,39 @@
 {
     public class Customer : Person
     {
-        private static int _lastCustomerId = 0;
-        internal static List<Customer> Customers = new List<Customer>();
+        private static int _lastId = 0;
+        private static List<Customer> Instances = [];
+
+        //public static readonly string _verbose = "Customer";
+        //public static readonly string _verbosePlural = "Customers";
+
+        private DateTime _registerDate;
+        private Cart? _cart;
+        private Membership? _membership;
 
         public int CustomerId { get; private set; }
-        public DateTime RegisterDate { get; private set; }
-        public Cart Cart { get; set; }
+        public DateTime RegisterDate
+        {
+            get => _registerDate;
+            set
+            {
+                if (value > DateTime.Now)
+                    throw new ArgumentException("Date cannot be set to a future time.", nameof(value));
+                _registerDate = value;
+            }
+        }
+        public Cart? Cart
+        {
+            get => _cart;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value), "Cart cannot be null.");
+                if (value.CustomerId != CustomerId)
+                    throw new ArgumentException("Cart customer ID must match the Customer's ID.");
+                _cart = value;
+            }
+        }
         public Membership? Membership { get; set; }
 
         public Customer(
@@ -25,18 +52,21 @@
                 )
         {
             RegisterDate = DateTime.Now;
-            CustomerId = _lastCustomerId++;
+            CustomerId = _lastId++;
 
             Cart = new Cart(CustomerId);
-            Customers.Add(this);
+
+            Instances.Add(this);
         }
 
-        public Order CreateOrder()
+        public Order? CreateOrder()
         {
-            return Cart.ConvertToOrder();
+            if (Cart != null)
+                return Cart.ConvertToOrder();
+            return null;
         }
 
-        public Payment CreatePayment(int orderId, string paymentMethod, double amount)
+        public static Payment CreatePayment(int orderId, PaymentMethod paymentMethod, double amount)
         {
             return new Payment(orderId, paymentMethod, amount);
         }
@@ -46,9 +76,9 @@
             return new Review(CustomerId, rating, comment);
         }
 
-        public static List<Customer> GetAllCustomers()
+        protected internal static List<Customer> GetInstances()
         {
-            return Customers;
+            return Instances;
         }
 
         public override string ToString()

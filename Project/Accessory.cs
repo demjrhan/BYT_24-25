@@ -1,24 +1,40 @@
 ﻿namespace Project
 {
+    public enum MaterialType
+    {
+        Metal,
+        Wood,
+        Plastic,
+        Gold,
+        Leather
+    }
+
     public class Accessory : Product
     {
-        public static readonly string _verbose = "accessory";
-        public static readonly string _verbosePlural = "accessories";
-        public string ProductClass { get; set; } = typeof(Accessory).Name;
+        private static List<Accessory> Instances = [];
 
-        public string Type { get; set; }
-        public string Material { get; set; }
-        public static List<Accessory> Products = [];
+        //public static readonly string _verbose = "Accessory";
+        //public static readonly string _verbosePlural = "Accessories";
 
-        static Accessory()
+        //We need to change this name it can be confused with MaterialType or smth
+        private string? _type;
+
+        public string? Type
         {
-            Types.Add(typeof(Accessory));
+            get => _type;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Type cannot be null or empty.");
+                _type = value;
+            }
         }
+        public MaterialType Material { get; set; }
 
         public Accessory(
             string title, double price, 
             int stockQuantity, string type, 
-            string material
+            MaterialType material
             ) : base(
                 title, price,
                 stockQuantity
@@ -26,10 +42,18 @@
         {
             Type = type;
             Material = material;
-            Products.Add(this);
+            
             Inventory.TotalAccessoriesQuantity += StockQuantity;
             Inventory.UpdateInventory();
+
+            Instances.Add(this);
         }
+
+        protected internal static new List<Accessory> GetInstances()
+        {
+            return Instances;
+        }
+
         public override string ToString()
         {
             return base.ToString() + " Type: " + Type + " material: " + Material;

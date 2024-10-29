@@ -1,20 +1,54 @@
 ﻿namespace Project
 {
+    public enum PaymentMethod
+    {
+        Cash,
+        Card
+    }
+
     public class Payment
     {
-        private static int _lastPaymentId = 0;
+        private static int _lastId = 0;
+        private static List<Payment> Instances = [];
 
-        public int OrderId { get; set; }
-        public int PaymentId { get; set; }
-        public string PaymentMethod { get; set; }
-        public double Amount { get; set; }
+        private int _orderId;
+        private double _amount;
 
-        public Payment(int orderId, string paymentMethod, double amount)
+        public int PaymentId { get; private set; } = _lastId++;
+        public int OrderId
+        {
+            get => _orderId;
+            set
+            {
+                if (!Order.GetInstances().Exists(o => o.OrderId == value))
+                    throw new ArgumentException("Order ID does not exist.");
+                _orderId = value;
+            }
+        }
+        public PaymentMethod PaymentMethod { get; set; }
+        public double Amount
+        {
+            get => _amount;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Amount cannot be negative.");
+                _amount = value;
+            }
+        }
+
+        public Payment(int orderId, PaymentMethod paymentMethod, double amount)
         {
             OrderId = orderId;
             PaymentMethod = paymentMethod;
             Amount = amount;
-            PaymentId = _lastPaymentId++;
+
+            Instances.Add(this);
+        }
+
+        protected internal static List<Payment> GetInstances()
+        {
+            return Instances;
         }
 
         public override string ToString()

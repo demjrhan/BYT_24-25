@@ -2,19 +2,45 @@
 {
     public class Book : Product
     {
-        public static readonly string _verbose = "book";
-        public static readonly string _verbosePlural = "books";
-        public string ProductClass { get; set; } = typeof(Book).Name;
-        public string Author { get; set; }
-        public string Genre { get; set; }
-        public int PublicationYear { get; set; }
-        public static List<Book> Products = [];
+        private static List<Book> Instances = [];
 
-        static Book()
-        {
-            Types.Add(typeof(Book));
+        //public static readonly string _verbose = "Book";
+        //public static readonly string _verbosePlural = "Books";
+
+        private string? _author;
+        private string? _genre;
+        private int _publicationYear;
+
+        public string? Author 
+        { 
+            get => _author;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Author cannot be null or empty.");
+                _author = value;
+            }
         }
-
+        public string? Genre
+        {
+            get => _genre;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Genre cannot be null or empty.");
+                _genre = value;
+            }
+        }
+        public int PublicationYear
+        {
+            get => _publicationYear;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Stock quantity cannot be negative.");
+                _publicationYear = value;
+            }
+        }
         public Book(
             string title, double price, 
             int stockQuantity, string author, 
@@ -27,9 +53,16 @@
             Author = author;
             Genre = genre;
             PublicationYear = publicationYear;
-            Products.Add(this);
+
             Inventory.TotalBooksQuantity += StockQuantity;
             Inventory.UpdateInventory();
+
+            Instances.Add(this);
+        }
+
+        protected internal static new List<Book> GetInstances()
+        {
+            return Instances;
         }
 
         public override string ToString()
