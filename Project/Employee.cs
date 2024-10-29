@@ -36,7 +36,7 @@ namespace Project
             get => _salary;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value), "Salary cannot be negative.");
                 _salary = value;
             }
