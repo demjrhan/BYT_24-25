@@ -12,36 +12,36 @@ namespace Project_Tests
             var product2 = new Book("Book 2", 75, 5, "Author", "Genre", 2015);
             var products = new List<Product> { product1, product2 };
 
-            var order = new Order(1, DateTime.Now, "processing", 125, products);
+            var order = new Order(1, DateTime.Now, OrderStatus.Proccessing, 125, products);
 
-            Assert.AreEqual(1, order.CustomerId);
-            Assert.AreEqual(125, order.Amount);
-            Assert.AreEqual(2, order.Products.Count);
+            Assert.That(order.CustomerId, Is.EqualTo(1));
+            Assert.That(order.Amount, Is.EqualTo(125));
+            Assert.That(order.Products.Count, Is.EqualTo(2));
         }
 
         [Test]
         public void CreateShipping()
         {
-            var order = new Order(1, DateTime.Now, "processing", 100, new List<Product>());
-            string method = "InPost";
+            var order = new Order(1, DateTime.Now, OrderStatus.Proccessing, 100, new List<Product>());
+            ShippingMethod method = ShippingMethod.Express;
             double cost = 15.0;
             string address = "Koszykowa 86";
 
             var shipping = order.CreateShipping(method, cost, address);
 
-            Assert.AreEqual("InPost", shipping.Method);
-            Assert.AreEqual(15.0, shipping.Cost);
-            Assert.AreEqual("Koszykowa 86", shipping.Address);
-            Assert.AreEqual(115.0, order.Amount); 
+            Assert.That(shipping.Method, Is.EqualTo(ShippingMethod.Express));
+            Assert.That(shipping.Cost, Is.EqualTo(15.0));
+            Assert.That(shipping.Address, Is.EqualTo("Koszykowa 86"));
+            Assert.That(order.Amount, Is.EqualTo(115.0)); 
             Assert.IsNotNull(order.ShippingId);  
         }
 
         [Test]
-        public void ToString()
+        public void Test_ToString()
         {
             var product = new Book("Book", 50, 10, "Author", "Genre", 2022);
             var products = new List<Product> { product };
-            var order = new Order(1, DateTime.Now, "processing", 50, products);
+            var order = new Order(1, DateTime.Now, OrderStatus.Proccessing, 50, products);
 
             string result = order.ToString();
 

@@ -8,17 +8,17 @@ namespace Project_Tests
         [Test]
         public void PromotionCreation()
         {
-            var promotion = new Promotion("Summer Sale", "20% off", 20);
+            var promotion = new Promotion("Summer Sale", "20% off", 20, 0);
 
-            Assert.AreEqual("Summer Sale", promotion.Name);
-            Assert.AreEqual("20% off", promotion.Description);
-            Assert.AreEqual(20, promotion.DiscountPercentage);
+            Assert.That(promotion.Name, Is.EqualTo("Summer Sale"));
+            Assert.That(promotion.Description, Is.EqualTo("20% off"));
+            Assert.That(promotion.DiscountPercentage, Is.EqualTo(20));
         }
 
         [Test]
-        public void ToString()
+        public void Test_ToString()
         {
-            var promotion = new Promotion("Summer Sale", "20% off", 20);
+            var promotion = new Promotion("Summer Sale", "20% off", 20, 0);
 
             string result = promotion.ToString();
 
