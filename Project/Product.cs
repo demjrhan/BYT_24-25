@@ -2,23 +2,60 @@
 
 namespace Project
 {
-    public abstract class Product(string title, double price, int quantity)
+    public abstract class Product
     {
-        private static int _lastProductId = 0;
-        public static List<Type> Types { get; set; } = [];
+        private static int _lastId = 0;
+        private static List<Product> Instances = [];
 
-        public int ProductId { get; private set; } = _lastProductId++;
-        public string Title { get; set; } = title ?? throw new ArgumentNullException(nameof(title));
-        public double Price { get; set; } = price;
-        public int StockQuantity { get; set; } = quantity;
-        public List<Promotion> Promotions = [];
+        private string? _title;
+        private double _price;
+        private int _stockQuantity;
 
-        public void AddPromotion(Promotion promotion)
-        {
-            if (promotion != null)
+        public int ProductId { get; private set; } = _lastId++;
+        public string? Title 
+        { 
+            get => _title; 
+            set
             {
-                Promotions.Add(promotion);
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Title cannot be null or empty.");
+                _title = value;
             }
+        }
+        public double Price 
+        { 
+            get => _price; 
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Price cannot be negative.");
+                _price = value;
+            }
+        }
+        public int StockQuantity
+        {
+            get => _stockQuantity;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Stock quantity cannot be negative.");
+                _stockQuantity = value;
+            }
+        }
+        public List<Promotion> Promotions { get; set; } = [];
+
+        public Product(string title, double price, int quantity)
+        {
+            Title = title;
+            Price = price;
+            StockQuantity = quantity;
+
+            Instances.Add(this);
+        }
+
+        public void AddPromotion(string name, string description, double discountPercentage)
+        {
+            Promotion promotion = new(name, description, discountPercentage, ProductId);
         }
 
         public void RemovePromotion(Promotion promotion)
@@ -26,6 +63,7 @@ namespace Project
             if (promotion != null)
             {
                 Promotions.Remove(promotion);
+                Promotion.GetInstances().Remove(promotion);
             }
         }
 
@@ -36,17 +74,9 @@ namespace Project
             return finalPrice;
         }
 
-        public static List<T>? GetProductsOfType<T>(Type productType)
+        protected internal static List<Product> GetInstances()
         {
-            var products = productType.GetField("Products", BindingFlags.Static | BindingFlags.Public);
-            Console.WriteLine("here " + products);
-
-            if (products != null)
-            {
-                return products.GetValue(null) as List<T>;
-            }
-
-            return null;
+            return Instances;
         }
 
         public override string ToString()
