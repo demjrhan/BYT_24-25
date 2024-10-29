@@ -10,14 +10,23 @@
 
         public static void UpdateInventory()
         {
-            LowBookStock = TotalBooksQuantity < 100 ? true : false;
-            LowAccessoriesStock = TotalAccessoriesQuantity < 100 ? true : false;
+            LowBookStock = TotalBooksQuantity < 100;
+            LowAccessoriesStock = TotalAccessoriesQuantity < 100;
         }
 
         public static void InventoryInfo()
         {
             Console.WriteLine("Books - " + TotalBooksQuantity);
             Console.WriteLine("Accessories - " + TotalAccessoriesQuantity);
+        }
+
+        public static void ResetInventory()
+        {
+            TotalAccessoriesQuantity = 0;
+            TotalBooksQuantity = 0;
+            LowAccessoriesStock = false;
+            LowBookStock = false;
+            SupplierInfo = null;
         }
     }
 
