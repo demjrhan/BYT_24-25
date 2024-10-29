@@ -57,7 +57,7 @@
             Instances.Add(this);
         }
 
-        protected internal static List<Report> GetInstances()
+        public static List<Report> GetInstances()
         {
             return Instances;
         }

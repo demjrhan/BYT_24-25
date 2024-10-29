@@ -68,7 +68,7 @@
             Instances.Add(this);
         }
 
-        protected internal static List<Promotion> GetInstances()
+        public static List<Promotion> GetInstances()
         {
             return Instances;
         }

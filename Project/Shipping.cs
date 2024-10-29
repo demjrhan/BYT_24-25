@@ -59,7 +59,7 @@
             Instances.Add(this);
         }
 
-        protected internal static List<Shipping> GetInstances()
+        public static List<Shipping> GetInstances()
         {
             return Instances;
         }

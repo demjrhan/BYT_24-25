@@ -14,10 +14,10 @@ namespace Project_Tests
 
             var employee = new Employee("Kirill", "Tumoian", "Kir@mail.com", "12345", "Address", 30, false, true, false, empPosition, hireDate, salary);
 
-            Assert.AreEqual("Kirill", employee.Name);
-            Assert.AreEqual("Tumoian", employee.Surname);
-            Assert.AreEqual(Position.Manager, employee.EmpPosition);
-            Assert.AreEqual(50000, employee.Salary);
+            Assert.That(employee.Name, Is.EqualTo("Kirill"));
+            Assert.That(employee.Surname, Is.EqualTo("Tumoian"));
+            Assert.That(employee.EmpPosition, Is.EqualTo(Position.Manager));
+            Assert.That(employee.Salary, Is.EqualTo(50000));
         }
     }
 }

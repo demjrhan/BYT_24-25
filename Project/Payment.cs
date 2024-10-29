@@ -46,7 +46,7 @@
             Instances.Add(this);
         }
 
-        protected internal static List<Payment> GetInstances()
+        public static List<Payment> GetInstances()
         {
             return Instances;
         }

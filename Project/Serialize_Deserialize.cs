@@ -103,7 +103,7 @@ namespace Project
             }
         }
 
-        public static void SerializeToFile()
+        public static void SerializeToFile(string? testFileName = null)
         {
             var root = new Root();
 
@@ -114,6 +114,8 @@ namespace Project
             try
             {
                 string filePath = Path.Combine(DirectoryPath, FileName);
+                if (testFileName != null)
+                    filePath = testFileName;
                 Directory.CreateDirectory(DirectoryPath);
                 string jsonString = JsonSerializer.Serialize(root, SerializeOptions);
 
@@ -125,11 +127,13 @@ namespace Project
                 Console.WriteLine($"Serialization error: {ex.Message}");
             }
         }
-        public static void DeserializeFromFile()
+        public static void DeserializeFromFile(string? testFileName = null)
         {
             try
             {
                 string filePath = Path.Combine(DirectoryPath, FileName);
+                if (testFileName != null)
+                    filePath = testFileName;
                 string jsonString = File.ReadAllText(filePath);
 
                 Inventory.ResetInventory();

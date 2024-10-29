@@ -78,7 +78,7 @@ namespace Project
             }
         }
 
-        protected internal static List<Employee> GetInstances()
+        public static List<Employee> GetInstances()
         {
             return Instances;
         }

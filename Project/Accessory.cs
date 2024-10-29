@@ -49,7 +49,7 @@
             Instances.Add(this);
         }
 
-        protected internal static new List<Accessory> GetInstances()
+        public static new List<Accessory> GetInstances()
         {
             return Instances;
         }

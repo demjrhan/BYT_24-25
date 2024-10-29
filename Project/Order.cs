@@ -98,7 +98,7 @@ namespace Project
             return shipping;
         }
 
-        protected internal static List<Order> GetInstances()
+        public static List<Order> GetInstances()
         {
             return Instances;
         }

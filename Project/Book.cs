@@ -60,7 +60,7 @@
             Instances.Add(this);
         }
 
-        protected internal static new List<Book> GetInstances()
+        public static new List<Book> GetInstances()
         {
             return Instances;
         }
