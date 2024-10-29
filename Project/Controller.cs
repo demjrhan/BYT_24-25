@@ -1,10 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-
-
-namespace Project
+﻿namespace Project
 {
     public static class Controller
     {
@@ -54,11 +48,11 @@ namespace Project
             "***** 2 - Deserialize data ***********************\n" +
             "***** 3 - Go back ********************************\n" +
             "**************************************************";
-        private static readonly string _serializeSubMenu =
-            "***** 1 - Employees ******************************\n" +
-            "***** 2 - Customers ******************************\n" +
-            "***** 3 - Products *******************************\n" +
-            "**************************************************";
+        //private static readonly string _serializeSubMenu =
+        //    "***** 1 - Employees ******************************\n" +
+        //    "***** 2 - Customers ******************************\n" +
+        //    "***** 3 - Products *******************************\n" +
+        //    "**************************************************";
 
         public static void Start()
         {
@@ -120,7 +114,7 @@ namespace Project
             switch(option)
             {
                 case 1:
-                    foreach (var e in Employee.Employees)
+                    foreach (var e in Employee.GetInstances())
                     {
                         Console.WriteLine(e.ToString());
                     }
@@ -191,7 +185,7 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    foreach (var c in Customer.Customers)
+                    foreach (var c in Customer.GetInstances())
                     {
                         Console.WriteLine(c.ToString());
                     }
@@ -270,13 +264,13 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    foreach (var b in Book.Products)
+                    foreach (var b in Book.GetInstances())
                     {
                         Console.WriteLine(b.ToString());
                     }
                     break;
                 case 2:
-                    foreach (var a in Accessory.Products)
+                    foreach (var a in Accessory.GetInstances())
                     {
                         Console.WriteLine(a.ToString());
                     }
@@ -312,8 +306,33 @@ namespace Project
                     string? name = Console.ReadLine();
                     Console.WriteLine("Write type");
                     string? type = Console.ReadLine();
-                    Console.WriteLine("Write material");
-                    string? material = Console.ReadLine();
+                    Console.WriteLine("Choose material type: ");
+                    Console.WriteLine("1 - Metal");
+                    Console.WriteLine("2 - Plastic");
+                    Console.WriteLine("3 - Wood");
+                    Console.WriteLine("4 - Gold");
+                    Console.WriteLine("5 - Leather");
+                    MaterialType materialType = MaterialType.Metal;
+                    string? inputMaterial = Console.ReadLine();
+                    int material = Convert.ToInt32(inputMaterial);
+                    switch (material)
+                    {
+                        case 1:
+                            materialType = MaterialType.Metal;
+                            break;
+                        case 2:
+                            materialType = MaterialType.Plastic;
+                            break;
+                        case 3:
+                            materialType = MaterialType.Wood;
+                            break;
+                        case 4:
+                            materialType = MaterialType.Gold;
+                            break;
+                        case 5:
+                            materialType = MaterialType.Leather;
+                            break;
+                    }
                     Console.WriteLine("Write price");
                     string? inputPriceAcc = Console.ReadLine();
                     double priceAcc = Convert.ToDouble(inputPriceAcc);
@@ -322,11 +341,10 @@ namespace Project
                     int quantityAcc = Convert.ToInt32(inputAmountAcc);
 
                     if (name != null &&
-                        type != null &&
-                        material != null)
+                        type != null)
                         new Accessory(
                         name, priceAcc, quantityAcc, type,
-                        material);
+                        materialType);
                     ClearLog();
                     Console.WriteLine("Accessory was added.");
                     break;
@@ -357,7 +375,7 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    foreach (var b in Book.Products)
+                    foreach (var b in Book.GetInstances())
                     {
                         Console.WriteLine(b.ToString());
                     }
@@ -366,21 +384,20 @@ namespace Project
                     string? idInput = Console.ReadLine();
                     int idOption = Convert.ToInt32(idInput);
 
-                    Book book = Book.Products[idOption];
+                    Book book = Book.GetInstances()[idOption];
 
-                    foreach (var b in Book.Products)
+                    foreach (var b in Book.GetInstances())
                     {
                         if (b.ProductId == idOption) book = b; break;
                     }
 
                     if (promTitle != null &&
                         promDescr != null)
-                        book.AddPromotion(new Promotion(
-                        promTitle, promDescr, disc));
+                        book.AddPromotion(promTitle, promDescr, disc);
                     Console.WriteLine("Promotion was added");
                     break;
                 case 2:
-                    foreach (var a in Accessory.Products)
+                    foreach (var a in Accessory.GetInstances())
                     {
                         Console.WriteLine(a.ToString());
                     }
@@ -389,17 +406,16 @@ namespace Project
                     string? idInputAcc = Console.ReadLine();
                     int idOptionAcc = Convert.ToInt32(idInputAcc);
 
-                    Accessory accessory = Accessory.Products[idOptionAcc];
+                    Accessory accessory = Accessory.GetInstances()[idOptionAcc];
 
-                    foreach (var a in Accessory.Products)
+                    foreach (var a in Accessory.GetInstances())
                     {
                         if (a.ProductId == idOptionAcc) accessory = a; break;
                     }
 
                     if (promTitle != null &&
                         promDescr != null)
-                        accessory.AddPromotion(new Promotion(
-                        promTitle, promDescr, disc));
+                        accessory.AddPromotion(promTitle, promDescr, disc);
                     Console.WriteLine("Promotion was added");
                     break;
             }
@@ -415,138 +431,70 @@ namespace Project
             switch (option)
             {
                 case 1:
-                    HandleSerializeSubMenu(); break;
+                    SerializeDeserialize.SerializeToFile(); break;
                 case 2:
-                    HandleDeSerializeSubMenu(); break;
+                    SerializeDeserialize.DeserializeFromFile(); break;
                 case 3:
                     ClearLog();
                     _currentMenuId = 0; break;
             }
         }
 
-        public static void HandleSerializeSubMenu()
-        {
-            Console.WriteLine(_header);
-            Console.WriteLine(_serializeSubMenu);
+        //public static void HandleSerializeSubMenu()
+        //{
+        //    Console.WriteLine(_header);
+        //    Console.WriteLine(_serializeSubMenu);
 
-            string? input = Console.ReadLine();
-            int option = Convert.ToInt32(input);
+        //    string? input = Console.ReadLine();
+        //    int option = Convert.ToInt32(input);
 
-            switch(option)
-            {
-                case 1:
-                    SerializeDeserialize.SerializeToFile(
-                        Employee.Employees, "employees.json");
-                    break;
-                case 2:
-                    SerializeDeserialize.SerializeToFile(
-                        Customer.Customers, "customers.json");
-                    break;
-                case 3:
-                    Console.WriteLine("types:");
-                    foreach (var type in Product.Types)
-                    {
-                        var verbosePlural = type.GetField("_verbosePlural", BindingFlags.Static | BindingFlags.Public);
-                        string? fileName = null;
-                        if (verbosePlural != null)
-                            fileName = verbosePlural.GetValue(null) as string;
+        //    switch(option)
+        //    {
+        //        case 1:
+        //            SerializeDeserialize.SerializeToFile(
+        //                Employee.Employees, "employees.json");
+        //            break;
+        //        case 2:
+        //            SerializeDeserialize.SerializeToFile(
+        //                Customer.Customers, "customers.json");
+        //            break;
+        //        case 3:
+        //            SerializeDeserialize.SerializeProducts();
+        //            break;
+        //    }
+        //}
 
-                        string directoryPath = Path.Combine("db", "products");
-                        string filePath = Path.Combine(directoryPath, $"{fileName}.json");
-                        Directory.CreateDirectory(directoryPath);
+        //public static void HandleDeSerializeSubMenu()
+        //{
+        //    Console.WriteLine(_header);
+        //    Console.WriteLine(_serializeSubMenu);
 
-                        MethodInfo? getProducts = typeof(Product)
-                            .GetMethod("GetProductsOfType")
-                            ?.MakeGenericMethod(type);
+        //    string? input = Console.ReadLine();
+        //    int option = Convert.ToInt32(input);
 
-                        Object? products = null;
-                        if (getProducts != null)
-                            products = getProducts.Invoke(null, [type]);
-
-                        MethodInfo? serializeMethod = typeof(SerializeDeserialize)
-                            .GetMethod("SerializeToFile")
-                            ?.MakeGenericMethod(type);
-                        if (serializeMethod != null)
-                            serializeMethod.Invoke(null, [products, filePath]);
-                    }
-                    break;
-            }
-        }
-
-        public static void HandleDeSerializeSubMenu()
-        {
-            Console.WriteLine(_header);
-            Console.WriteLine(_serializeSubMenu);
-
-            string? input = Console.ReadLine();
-            int option = Convert.ToInt32(input);
-
-            switch (option)
-            {
-                case 1:
-                    List<Employee> employees = 
-                        SerializeDeserialize.DeserializeFromFile<Employee>("employees.json");
-                    foreach (var e in employees)
-                    {
-                        Console.WriteLine(e.ToString());
-                    }
-                    break;
-                case 2:
-                    List<Customer> customers = 
-                        SerializeDeserialize.DeserializeFromFile<Customer>("customers.json");
-                    foreach (var c in customers)
-                    {
-                        Console.WriteLine(c.ToString());
-                    }
-                    break;
-                case 3:
-                    string directoryPath = Path.Combine("db", "products");
-                    string[] jsonfiles = Directory.GetFiles(directoryPath, "*.json");
-
-                    foreach (string jsonfile in jsonfiles)
-                    {
-                        string jsonContent = File.ReadAllText(jsonfile);
-                        JsonDocument doc = JsonDocument.Parse(jsonContent);
-                        JsonElement root = doc.RootElement;
-                        string? type = null;
-                        if (root.ValueKind == JsonValueKind.Array)
-                        {
-                            Console.WriteLine("here 2");
-                            JsonElement product = root[0];
-                            if (product.TryGetProperty("ProductClass", out JsonElement productClass))
-                            {
-                                type = productClass.ToString();
-                            }
-                        }
-
-                        Type? productType = null;
-
-                        if (type != null) productType = FindClassByName(type);
-
-                        if (productType != null)
-                        {
-                            MethodInfo? deserializeMethod = typeof(SerializeDeserialize)
-                                .GetMethod("DeserializeFromFile")
-                                ?.MakeGenericMethod(productType);
-
-                            if (deserializeMethod != null)
-                                deserializeMethod.Invoke(null, [jsonfile]);
-                        }
-                    }
-                    break;
-            }
-        }
-
-        public static Type? FindClassByName(string className)
-        {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            Type? type = assembly.GetTypes()
-                .FirstOrDefault(t => t.Name
-                .Equals(className, StringComparison.OrdinalIgnoreCase));
-
-            return type;
-        }
+        //    switch (option)
+        //    {
+        //        case 1:
+        //            List<Employee> employees = 
+        //                SerializeDeserialize.DeserializeFromFile<Employee>("employees.json");
+        //            foreach (var e in employees)
+        //            {
+        //                Console.WriteLine(e.ToString());
+        //            }
+        //            break;
+        //        case 2:
+        //            List<Customer> customers = 
+        //                SerializeDeserialize.DeserializeFromFile<Customer>("customers.json");
+        //            foreach (var c in customers)
+        //            {
+        //                Console.WriteLine(c.ToString());
+        //            }
+        //            break;
+        //        case 3:
+        //            SerializeDeserialize.DeserializeProducts();
+        //            break;
+        //    }
+        //}
 
         public static void ClearLog()
         {
