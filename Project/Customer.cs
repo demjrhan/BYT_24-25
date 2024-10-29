@@ -77,7 +77,7 @@
             return new Review(CustomerId, rating, comment);
         }
 
-        protected internal static List<Customer> GetInstances()
+        public static List<Customer> GetInstances()
         {
             return Instances;
         }

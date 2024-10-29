@@ -40,7 +40,7 @@
             Instances.Add(this);
         }
 
-        protected internal static List<Membership> GetInstances()
+        public static List<Membership> GetInstances()
         {
             return Instances;
         }

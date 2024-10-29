@@ -74,7 +74,7 @@ namespace Project
             return finalPrice;
         }
 
-        protected internal static List<Product> GetInstances()
+        public static List<Product> GetInstances()
         {
             return Instances;
         }
