@@ -10,7 +10,7 @@
         public double Amount { get; set; }
         public string Status { get; set; }
         public int? ShippingId { get; set; }
-        public List<Product> Products = new List<Product>();
+        public List<Product> Products;
 
         public Order(
             int customerId, DateTime orderDate,
