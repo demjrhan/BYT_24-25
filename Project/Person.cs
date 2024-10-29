@@ -107,7 +107,7 @@
 
         public override string ToString()
         {
-            return "Name: " + Name;
+            return "Name: " + Name + "Surname " + Surname;
         }
 
     }
