@@ -2,19 +2,47 @@
 {
     public class Membership
     {
-        private static int _lastMembershipId = 0;
+        private static int _lastId = 0;
+        private static List<Membership> Instances = [];
 
-        public int MembershipId { get; private set; }
-        public int CustomerId { get; set; }
+        private int _customerId;
+        private double _discountRate;
+
+        public int MembershipId { get; private set; } = _lastId++;
+        public int CustomerId
+        {
+            get => _customerId;
+            set
+            {
+                if (!Customer.GetInstances().Exists(c => c.CustomerId == value))
+                    throw new ArgumentException("Customer ID does not exist.");
+                _customerId = value;
+            }
+        }
         public bool Status { get; set; }
-        public double DiscountRate { get; set; }
+        public double DiscountRate
+        {
+            get => _discountRate;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "Discount Rate cannot be negative.");
+                _discountRate = value;
+            }
+        }
 
         public Membership(int customerId, bool status, double discountRate)
         {
             CustomerId = customerId;
             Status = status;
             DiscountRate = discountRate;
-            MembershipId = _lastMembershipId++;
+
+            Instances.Add(this);
+        }
+
+        protected internal static List<Membership> GetInstances()
+        {
+            return Instances;
         }
     }
 

@@ -2,8 +2,39 @@
 {
     public class Cart
     {
-        public int CustomerId { get; set; }
-        protected internal List<Tuple<Product, Promotion?>> Products { get; set; } = new List<Tuple<Product, Promotion?>>();
+        private int _customerId;
+        private List<Tuple<Product, Promotion?>> _products = [];
+
+        public int CustomerId
+        {
+            get => _customerId;
+            set
+            {
+                //if (!Customer.GetInstances().Exists(c => c.CustomerId == value))
+                //    throw new ArgumentException("Customer ID does not exist.");
+                _customerId = value;
+            }
+        }
+        public List<Tuple<Product, Promotion?>> Products
+        {
+            get => _products;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value), "Products list cannot be null.");
+
+                foreach (var pair in value)
+                {
+                    if (pair.Item1 == null)
+                        throw new ArgumentException("Product cannot be null.");
+
+                    if (pair.Item2 != null && !pair.Item1.Promotions.Contains(pair.Item2))
+                        throw new ArgumentException("The specified promotion is not valid for this product.");
+                }
+
+                _products = value;
+            }
+        }
 
         public Cart(int customerId)
         {
@@ -12,37 +43,35 @@
 
         public void AddProduct(Product product, Promotion? promotion = null)
         {
-            Products.Add(new Tuple<Product, Promotion?>(product, promotion));
+            if (product == null)
+                throw new ArgumentNullException(nameof(product), "Product cannot be null.");
+
+            if (promotion != null && !product.Promotions.Contains(promotion))
+                throw new ArgumentException("The specified promotion is not valid for this product.");
+
+            _products.Add(new Tuple<Product, Promotion?>(product, promotion));
         }
 
         public void RemoveProduct(Product product, Promotion? promotion = null)
         {
-            Tuple<Product, Promotion?>? productToRemove = null;
-            foreach (var pair in Products)
-            {
-                if (pair.Item1 == product && pair.Item2 == promotion)
-                {
-                    productToRemove = pair;
-                    break;
-                }
-            }
-            if (productToRemove != null) Products.Remove(productToRemove);
+            if (product == null)
+                throw new ArgumentNullException(nameof(product), "Product cannot be null.");
+
+            var productToRemove = _products
+                .FirstOrDefault(pair => pair.Item1 == product && pair.Item2 == promotion) 
+                ?? throw new ArgumentException("The specified product and promotion combination does not exist in the cart.");
+            _products.Remove(productToRemove);
         }
 
         public double CalculateTotalSum()
         {
-           
-            if ( Products.Count == 0) return 0; 
-            
-
-            Customer customer = Customer.GetCustomerWithId(CustomerId);
+            Customer customer = Customer.GetInstances()[CustomerId];
             double discount = customer.GetDiscountPercentage();
-         
             double totalSum = 0;
+
             foreach (var pair in Products)
             {
-                if (pair.Item2 != null && pair.Item1 != null) totalSum += pair.Item1.ApplyPromotion(pair.Item2);
-                else if (pair.Item1 != null) totalSum += pair.Item1.Price;
+                totalSum += pair.Item2 != null ? pair.Item1.ApplyPromotion(pair.Item2) : pair.Item1.Price;
             }
 
             if (discount > 0)
@@ -53,22 +82,34 @@
             return totalSum;
         }
 
-
-
         public Order ConvertToOrder()
         {
             double amount = CalculateTotalSum();
-            List<Product> products = new List<Product>();
+            List<Product> products = [];
+
             foreach (var pair in Products)
             {
                 products.Add(pair.Item1);
-                if (pair.Item1 is Book) Inventory.TotalBooksQuantity -= 1;
-                else if (pair.Item1 is Accessory) Inventory.TotalAccessoriesQuantity -= 1;
-            }
-            Inventory.UpdateInventory();
-            Products = new List<Tuple<Product, Promotion?>>();
 
-            return new Order(CustomerId, DateTime.Now, "proccessing", amount, products);
+                if (pair.Item1 is Book)
+                {
+                    if (Inventory.TotalBooksQuantity <= 0)
+                        throw new InvalidOperationException("Not enough books in stock.");
+                    Inventory.TotalBooksQuantity -= 1;
+                }
+                else if (pair.Item1 is Accessory)
+                {
+                    if (Inventory.TotalAccessoriesQuantity <= 0)
+                        throw new InvalidOperationException("Not enough accessories in stock.");
+                    Inventory.TotalAccessoriesQuantity -= 1;
+                }
+            }
+
+            Inventory.UpdateInventory();
+
+            _products.Clear();
+
+            return new Order(CustomerId, DateTime.Now, OrderStatus.Proccessing, amount, products);
         }
 
         public override string ToString()
