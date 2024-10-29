@@ -7,7 +7,7 @@ namespace Project_Tests
         [SetUp]
         public void Setup()
         {
-            //Book.GetInstances().Clear();
+            SerializeDeserialize.ResetInstances<Product>(typeof(Product));
             SerializeDeserialize.ResetInstances<Book>(typeof(Book));
         }
 
@@ -42,6 +42,7 @@ namespace Project_Tests
             try
             {
                 SerializeDeserialize.SerializeToFile(fileName);
+                SerializeDeserialize.ResetInstances<Product>(typeof(Product));
                 SerializeDeserialize.ResetInstances<Book>(typeof(Book));
                 SerializeDeserialize.DeserializeFromFile(fileName);
 
