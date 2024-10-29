@@ -17,7 +17,7 @@ namespace Project
         //public static readonly string _verbosePlural = "Employees";
 
         private DateTime _hireDate;
-        private double? _salary;
+        private double _salary;
 
         public int EmployeeId { get; private set; } = _lastId++;
         public Position EmpPosition { get; private set; }
@@ -31,7 +31,7 @@ namespace Project
                 _hireDate = value;
             }
         }
-        public double? Salary
+        public double Salary
         {
             get => _salary;
             set
@@ -49,7 +49,7 @@ namespace Project
             string address, int age,
             bool isStudying, bool isWorking,
             bool isRetired, Position empPosition, 
-            DateTime hireDate, double? salary, 
+            DateTime hireDate, double salary, 
             Retirement? retirementType = null
             ) : base(
                 name, surname,

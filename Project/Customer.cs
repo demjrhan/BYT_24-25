@@ -10,6 +10,7 @@
 
         private DateTime _registerDate;
         private Cart? _cart;
+        //Add connection with Membership class
         private Membership? _membership;
 
         public int CustomerId { get; private set; }
