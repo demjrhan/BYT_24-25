@@ -10,10 +10,13 @@ namespace Project_Tests
         {
             var customer = new Customer("Ruslan", "Teimurov", "Rus@mail.com", "12345", "Address", 30, false, true, false);
             var product = new Book("Book", 50, 10, "Author", "Genre", 2022);
-            customer.Cart.AddProduct(product);
+
+            if (customer.Cart != null)
+                customer.Cart.AddProduct(product);
 
             var order = customer.CreateOrder();
 
+            Assert.That(order, Is.Not.Null);
             Assert.That(order.Products, Has.Count.EqualTo(1));
             Assert.That(order.Products[0], Is.EqualTo(product));
             Assert.That(order.CustomerId, Is.EqualTo(customer.CustomerId));
