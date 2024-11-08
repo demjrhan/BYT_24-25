@@ -9,7 +9,7 @@
         //public static readonly string _verbosePlural = "Customers";
 
         private DateTime _registerDate;
-        private Cart? _cart;
+        private Cart _cart = null!;
         //Add connection with Membership class
         private Membership? _membership;
 
@@ -24,7 +24,7 @@
                 _registerDate = value;
             }
         }
-        public Cart? Cart
+        public Cart Cart
         {
             get => _cart;
             set

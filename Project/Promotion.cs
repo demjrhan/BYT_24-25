@@ -6,7 +6,7 @@
         private static List<Promotion> Instances = [];
 
         private int _productId;
-        private string? _name;
+        private string _name = null!;
         private string? _description;
         private double _discountPercentage;
 
@@ -21,7 +21,7 @@
                 _productId = value;
             }
         }
-        public string? Name
+        public string Name
         {
             get => _name;
             set
