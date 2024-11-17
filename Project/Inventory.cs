@@ -17,7 +17,11 @@
         public static void InventoryInfo()
         {
             Console.WriteLine("Books - " + TotalBooksQuantity);
+            Console.WriteLine(LowBookStock? "Too less books, ordering new ones." : "");
+            TotalBooksQuantity += 100;
             Console.WriteLine("Accessories - " + TotalAccessoriesQuantity);
+            Console.WriteLine(LowBookStock? "Too less accessories, ordering new ones." : "");
+            TotalAccessoriesQuantity += 100;
         }
 
         public static void ResetInventory()
