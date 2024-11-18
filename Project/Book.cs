@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Project
+﻿namespace Project
 {
     public class Book : Product
     {

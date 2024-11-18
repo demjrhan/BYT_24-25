@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using System.Security.Cryptography;
-
-namespace Project
+﻿namespace Project
 {
     public abstract class Product
     {
