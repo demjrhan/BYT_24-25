@@ -14,7 +14,7 @@
 
         private int _orderId;
         private double _cost;
-        private string? _address;
+        private string _address = null!;
 
         public int ShippingId { get; private set; } = _lastId++;
         public int OrderId
@@ -38,7 +38,7 @@
                 _cost = value;
             }
         }
-        public string? Address
+        public string Address
         {
             get => _address;
             set

@@ -6,14 +6,14 @@
         private static readonly double _discountWorking = 5;
         //private static readonly double _dicsountRetired = 0;
 
-        private string? _name;
-        private string? _surname;
+        private string _name = null!;
+        private string _surname = null!;
         private string? _email;
         private string? _phone;
         private string? _address;
         private int _age;
 
-        public string? Name
+        public string Name
         {
             get => _name;
             set
@@ -23,7 +23,7 @@
                 _name = value;
             }
         }
-        public string? Surname
+        public string Surname
         {
             get => _surname;
             set

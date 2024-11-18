@@ -17,9 +17,9 @@
         //public static readonly string _verbosePlural = "Accessories";
 
         //We need to change this name it can be confused with MaterialType or smth
-        private string? _type;
+        private string _type = null!;
 
-        public string? Type
+        public string Type
         {
             get => _type;
             set

@@ -7,12 +7,12 @@ namespace Project
         private static int _lastId = 0;
         private static List<Product> Instances = [];
 
-        private string? _title;
+        private string _title = null!;
         private double _price;
         private int _stockQuantity;
 
         public int ProductId { get; private set; } = _lastId++;
-        public string? Title 
+        public string Title 
         { 
             get => _title; 
             set

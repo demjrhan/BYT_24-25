@@ -12,7 +12,7 @@
         private static List<Report> Instances = [];
 
         private int _employeeId;
-        private string? _content;
+        private string _content = null!;
         private DateTime _date;
 
         public int EmployeeId
@@ -26,7 +26,7 @@
             }
         }
         public ReportType ReportType { get; set; }
-        public string? Content
+        public string Content
         {
             get => _content;
             set

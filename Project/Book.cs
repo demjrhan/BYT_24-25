@@ -7,11 +7,11 @@
         //public static readonly string _verbose = "Book";
         //public static readonly string _verbosePlural = "Books";
 
-        private string? _author;
-        private string? _genre;
+        private string _author = null!;
+        private string _genre = null!;
         private int _publicationYear;
 
-        public string? Author 
+        public string Author 
         { 
             get => _author;
             set
@@ -21,7 +21,7 @@
                 _author = value;
             }
         }
-        public string? Genre
+        public string Genre
         {
             get => _genre;
             set
