@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Project
 {
@@ -58,12 +59,21 @@ namespace Project
             Promotion promotion = new(name, description, discountPercentage, ProductId);
         }
 
+        public static void AddPromotion(int id, Promotion p)
+        {
+            Product? product = Instances.Find(x => (x.ProductId == id));
+            if (product != null)
+            {
+                product.Promotions.Add(p);
+            }
+        }
+
         public void RemovePromotion(Promotion promotion)
         {
             if (promotion != null)
             {
                 Promotions.Remove(promotion);
-                Promotion.GetInstances().Remove(promotion);
+                Promotion.Remove(promotion);
             }
         }
 
@@ -74,9 +84,27 @@ namespace Project
             return finalPrice;
         }
 
-        public static List<Product> GetInstances()
+        public static void PrintInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
+        }
+
+        public static bool Exists(int id)
+        {
+            bool flag = false;
+            try
+            {
+                Product? o = Instances[id];
+                if (o != null) flag = true;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+            return flag;
         }
 
         public override string ToString()

@@ -17,9 +17,9 @@ namespace Project_Tests
             var book1 = new Book("Harry Potter", 25, 300, "J.K.Rowling", "Fantasy", 2000);
             var book2 = new Book("Harry Potter 2", 25, 300, "J.K.Rowling", "Fantasy", 2002);
 
-            Assert.That(Book.GetInstances().Count, Is.EqualTo(2), "Extent should contain 2 instances");
-            Assert.That(book1, Is.EqualTo(Book.GetInstances()[0]), "Extent should contain the correct first instance");
-            Assert.That(book2, Is.EqualTo(Book.GetInstances()[1]), "Extent should contain the correct second instance");
+            Assert.That(Book.Count(), Is.EqualTo(2), "Extent should contain 2 instances");
+            Assert.That(book1, Is.EqualTo(Book.GetInstance(0)), "Extent should contain the correct first instance");
+            Assert.That(book2, Is.EqualTo(Book.GetInstance(1)), "Extent should contain the correct second instance");
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Project_Tests
             book.Author = "Doyle";
 
             Assert.That(book.Author, Is.EqualTo("Doyle"), "Author should be changed directly only within instance scope");
-            Assert.That(Book.GetInstances()[0].Author, Is.EqualTo("Doyle"), "Extent should reflect changes made in the instance");
+            Assert.That(Book.GetInstance(0)!.Author, Is.EqualTo("Doyle"), "Extent should reflect changes made in the instance");
         }
 
         [Test]
@@ -46,9 +46,9 @@ namespace Project_Tests
                 SerializeDeserialize.ResetInstances<Book>(typeof(Book));
                 SerializeDeserialize.DeserializeFromFile(fileName);
 
-                Assert.That(Book.GetInstances().Count, Is.EqualTo(2), "Extent should contain 2 instances after loading.");
-                Assert.That(book1.ToString(), Is.EqualTo(Book.GetInstances()[0].ToString()), "Extent should contain the correct first instance");
-                Assert.That(book2.ToString(), Is.EqualTo(Book.GetInstances()[1].ToString()), "Extent should contain the correct second instance");
+                Assert.That(Book.Count(), Is.EqualTo(2), "Extent should contain 2 instances after loading.");
+                Assert.That(book1.ToString(), Is.EqualTo(Book.GetInstance(0)!.ToString()), "Extent should contain the correct first instance");
+                Assert.That(book2.ToString(), Is.EqualTo(Book.GetInstance(1)!.ToString()), "Extent should contain the correct second instance");
             }
             finally
             {

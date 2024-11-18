@@ -1,14 +1,5 @@
 ﻿namespace Project
 {
-    public enum MaterialType
-    {
-        Metal,
-        Wood,
-        Plastic,
-        Gold,
-        Leather
-    }
-
     public class Accessory : Product
     {
         private static List<Accessory> Instances = [];
@@ -49,9 +40,12 @@
             Instances.Add(this);
         }
 
-        public static new List<Accessory> GetInstances()
+        public static new void PrintInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()

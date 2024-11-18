@@ -114,10 +114,7 @@
             switch(option)
             {
                 case 1:
-                    foreach (var e in Employee.GetInstances())
-                    {
-                        Console.WriteLine(e.ToString());
-                    }
+                    Employee.GetInstances();
                     break;
                 case 2:
                     Console.WriteLine("Write name");
@@ -185,10 +182,7 @@
             switch (option)
             {
                 case 1:
-                    foreach (var c in Customer.GetInstances())
-                    {
-                        Console.WriteLine(c.ToString());
-                    }
+                    Customer.GetInstances();
                     break;
                 case 2:
                     Console.WriteLine("Write name");
@@ -210,7 +204,7 @@
                     bool isWorking = Console.ReadLine() == "y";
                     Console.WriteLine("Is person retired? y - yes; n - no");
                     bool isRetired = Console.ReadLine() == "y";
-                    Retirement? retirement = null;
+                    RetirementType? retirement = null;
                     if (isRetired)
                     {
                         Console.WriteLine("Choose type of retirement: ");
@@ -222,13 +216,13 @@
                         switch (retire)
                         {
                             case 1:
-                                retirement = Retirement.HealthIssues;
+                                retirement = RetirementType.HealthIssues;
                                 break;
                             case 2:
-                                retirement = Retirement.Military;
+                                retirement = RetirementType.Military;
                                 break;
                             case 3:
-                                retirement = Retirement.Other;
+                                retirement = RetirementType.Other;
                                 break;
                         }
                     }
@@ -264,16 +258,10 @@
             switch (option)
             {
                 case 1:
-                    foreach (var b in Book.GetInstances())
-                    {
-                        Console.WriteLine(b.ToString());
-                    }
+                    Book.PrintInstances();
                     break;
                 case 2:
-                    foreach (var a in Accessory.GetInstances())
-                    {
-                        Console.WriteLine(a.ToString());
-                    }
+                    Accessory.PrintInstances();
                     break;
                 case 3:
                     Console.WriteLine("Write title");
@@ -375,47 +363,28 @@
             switch (option)
             {
                 case 1:
-                    foreach (var b in Book.GetInstances())
-                    {
-                        Console.WriteLine(b.ToString());
-                    }
+                    Book.PrintInstances();
 
                     Console.WriteLine("Type book id");
                     string? idInput = Console.ReadLine();
                     int idOption = Convert.ToInt32(idInput);
 
-                    Book book = Book.GetInstances()[idOption];
-
-                    foreach (var b in Book.GetInstances())
-                    {
-                        if (b.ProductId == idOption) book = b; break;
-                    }
-
                     if (promTitle != null &&
                         promDescr != null)
-                        book.AddPromotion(promTitle, promDescr, disc);
+                        new Promotion(promTitle, promDescr, disc, idOption);
                     Console.WriteLine("Promotion was added");
                     break;
                 case 2:
-                    foreach (var a in Accessory.GetInstances())
-                    {
-                        Console.WriteLine(a.ToString());
-                    }
+                    Accessory.PrintInstances();
 
                     Console.WriteLine("Type book id");
                     string? idInputAcc = Console.ReadLine();
                     int idOptionAcc = Convert.ToInt32(idInputAcc);
 
-                    Accessory accessory = Accessory.GetInstances()[idOptionAcc];
-
-                    foreach (var a in Accessory.GetInstances())
-                    {
-                        if (a.ProductId == idOptionAcc) accessory = a; break;
-                    }
 
                     if (promTitle != null &&
                         promDescr != null)
-                        accessory.AddPromotion(promTitle, promDescr, disc);
+                        new Promotion(promTitle, promDescr, disc, idOptionAcc);
                     Console.WriteLine("Promotion was added");
                     break;
             }

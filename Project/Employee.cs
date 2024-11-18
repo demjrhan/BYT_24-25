@@ -1,13 +1,5 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Project
+﻿namespace Project
 {
-    public enum Position
-    {
-        Manager,
-        Assistant
-    }
-
     public class Employee : Person
     {
         private static int _lastId = 0;
@@ -50,7 +42,7 @@ namespace Project
             bool isStudying, bool isWorking,
             bool isRetired, Position empPosition, 
             DateTime hireDate, double salary, 
-            Retirement? retirementType = null
+            RetirementType? retirementType = null
             ) : base(
                 name, surname,
                 email, phone,
@@ -78,9 +70,12 @@ namespace Project
             }
         }
 
-        public static List<Employee> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()

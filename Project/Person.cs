@@ -76,13 +76,13 @@
         public bool IsStudying { get; set; }
         public bool IsWorking { get; set; }
         public bool IsRetired { get; set; }
-        public Retirement? RetirementType { get; set; }
+        public RetirementType? RetirementType { get; set; }
 
         public Person(string name, string surname,
             string email, string phone,
             string address, int age,
             bool isStudying, bool isWorking,
-            bool isRetired, Retirement? retirementType = null)
+            bool isRetired, RetirementType? retirementType = null)
         {
             Name = name;
             Surname = surname;
@@ -100,7 +100,7 @@
         {
             if (IsStudying) return _discountStudying;
             else if (IsWorking) return _discountWorking;
-            else if (IsRetired) return RetirementType == Retirement.Other ? 5.0 : 15.0;
+            else if (IsRetired) return RetirementType == Project.RetirementType.Other ? 5.0 : 15.0;
 
             return 0;
         }

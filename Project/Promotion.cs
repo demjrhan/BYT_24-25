@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using System.Security.Cryptography;
+
+namespace Project
 {
     public class Promotion
     {
@@ -16,7 +18,7 @@
             get => _productId;
             set
             {
-                if (!Product.GetInstances().Exists(p => p.ProductId == value))
+                if (!Product.Exists(value))
                     throw new ArgumentException("Product ID does not exist.");
                 _productId = value;
             }
@@ -59,18 +61,22 @@
             DiscountPercentage = discountPercentage;
             ProductId = productId;
 
-            foreach (var product in Product.GetInstances())
-            {
-                if (productId == product.ProductId)
-                    product.Promotions.Add(this); break;
-            }
-           
+            Product.AddPromotion(productId, this);
+
             Instances.Add(this);
         }
 
-        public static List<Promotion> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
+        }
+
+        public static void Remove(Promotion p)
+        {
+            Instances.Remove(p);
         }
 
         public override string ToString()

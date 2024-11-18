@@ -1,12 +1,5 @@
 ﻿namespace Project
 {
-    public enum ReportType
-    {
-        Daily,
-        Weekly,
-        Monthly
-    }
-
     public class Report
     {
         private static List<Report> Instances = [];
@@ -57,9 +50,12 @@
             Instances.Add(this);
         }
 
-        public static List<Report> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()

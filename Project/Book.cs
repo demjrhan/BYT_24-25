@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using System.Security.Cryptography;
+
+namespace Project
 {
     public class Book : Product
     {
@@ -60,14 +62,28 @@
             Instances.Add(this);
         }
 
-        public static new List<Book> GetInstances()
+        public static new void PrintInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()
         {
             return base.ToString() + " Author: " + Author + " Genre: " + Genre + " Publication Year: " + PublicationYear;
+        }
+
+        //Methods for tests
+        public static int Count()
+        {
+            return Instances.Count;
+        }
+
+        public static Book? GetInstance(int id)
+        {
+            return Instances.Find(x => (x.ProductId == id));
         }
     }
 

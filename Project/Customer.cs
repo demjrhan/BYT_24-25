@@ -43,7 +43,7 @@
             string email, string phone,
             string address, int age,
             bool isStudying, bool isWorking,
-            bool isRetired, Retirement? retirementType = null
+            bool isRetired, RetirementType? retirementType = null
             ) : base(
                 name, surname,
                 email, phone,
@@ -77,9 +77,37 @@
             return new Review(CustomerId, rating, comment);
         }
 
-        public static List<Customer> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
+        }
+
+        public static bool Exists(int id)
+        {
+            bool flag = false;
+            try
+            {
+                Customer? o = Instances[id];
+                if (o != null) flag = true;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+            return flag;
+        }
+
+        public static double GetDiscountPercentage(int customerId)
+        {
+            Customer? customer = Instances.Find(x => (x.CustomerId == customerId));
+            if (customer != null)
+            {
+                return customer.GetDiscountPercentage();
+            }
+            return 0d;
         }
 
         public override string ToString()

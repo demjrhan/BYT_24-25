@@ -14,7 +14,7 @@
             get => _customerId;
             set
             {
-                if (!Customer.GetInstances().Exists(c => c.CustomerId == value))
+                if (!Customer.Exists(value))
                     throw new ArgumentException("Customer ID does not exist.");
                 _customerId = value;
             }
@@ -40,9 +40,12 @@
             Instances.Add(this);
         }
 
-        public static List<Membership> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
     }
 

@@ -1,11 +1,5 @@
 ﻿namespace Project
 {
-    public enum PaymentMethod
-    {
-        Cash,
-        Card
-    }
-
     public class Payment
     {
         private static int _lastId = 0;
@@ -20,7 +14,7 @@
             get => _orderId;
             set
             {
-                if (!Order.GetInstances().Exists(o => o.OrderId == value))
+                if (!Order.Exists(value))
                     throw new ArgumentException("Order ID does not exist.");
                 _orderId = value;
             }
@@ -46,9 +40,12 @@
             Instances.Add(this);
         }
 
-        public static List<Payment> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()

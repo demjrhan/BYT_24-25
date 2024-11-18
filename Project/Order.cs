@@ -1,15 +1,5 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Project
+﻿namespace Project
 {
-    public enum OrderStatus
-    {
-        //To change
-        Proccessing,
-        Departed,
-        Arrived
-    }
-
     public class Order
     {
         private static int _lastId = 0;
@@ -28,7 +18,7 @@ namespace Project
             get => _customerId;
             set
             {
-                if (!Customer.GetInstances().Exists(c => c.CustomerId == value))
+                if (!Customer.Exists(value))
                     throw new ArgumentException("Customer ID does not exist.");
                 _customerId = value;
             }
@@ -38,7 +28,7 @@ namespace Project
             get => _shippingId;
             set
             {
-                if (!Shipping.GetInstances().Exists(s => s.ShippingId == value))
+                if (value != null && !Shipping.Exists((int) value))
                     throw new ArgumentException("Shipping ID does not exist.");
                 _shippingId = value;
             }
@@ -98,9 +88,27 @@ namespace Project
             return shipping;
         }
 
-        public static List<Order> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
+        }
+
+        public static bool Exists(int id)
+        {
+            bool flag = false;
+            try 
+            {
+                Order? o = Instances[id];
+                if (o != null) flag = true;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+            return flag;
         }
 
         public override string ToString()

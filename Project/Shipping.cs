@@ -1,12 +1,5 @@
 ﻿namespace Project
 {
-    public enum ShippingMethod
-    {
-        //Change later
-        Default,
-        Express
-    }
-
     public class Shipping
     {
         private static int _lastId = 0;
@@ -22,7 +15,7 @@
             get => _orderId;
             set
             {
-                if (!Order.GetInstances().Exists(o => o.OrderId == value))
+                if (!Order.Exists(value))
                     throw new ArgumentException("Order ID does not exist.");
                 _orderId = value;
             }
@@ -59,9 +52,27 @@
             Instances.Add(this);
         }
 
-        public static List<Shipping> GetInstances()
+        public static void GetInstances()
         {
-            return Instances;
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
+        }
+
+        public static bool Exists(int id)
+        {
+            bool flag = false;
+            try
+            {
+                Shipping? o = Instances[id];
+                if (o != null) flag = true;
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+            return flag;
         }
 
         public override string ToString()

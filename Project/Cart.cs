@@ -65,8 +65,7 @@
 
         public double CalculateTotalSum()
         {
-            Customer customer = Customer.GetInstances()[CustomerId];
-            double discount = customer.GetDiscountPercentage();
+            double discount = Customer.GetDiscountPercentage(CustomerId);
             double totalSum = 0;
 
             foreach (var pair in Products)
