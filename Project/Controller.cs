@@ -114,7 +114,7 @@
             switch(option)
             {
                 case 1:
-                    Employee.GetInstances();
+                    Employee.PrintInstances();
                     break;
                 case 2:
                     Console.WriteLine("Write name");
@@ -182,7 +182,7 @@
             switch (option)
             {
                 case 1:
-                    Customer.GetInstances();
+                    Customer.PrintInstances();
                     break;
                 case 2:
                     Console.WriteLine("Write name");

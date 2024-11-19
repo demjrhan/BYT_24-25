@@ -40,7 +40,7 @@
             Instances.Add(this);
         }
 
-        public static void GetInstances()
+        public static void PrintInstances()
         {
             foreach (var i in Instances)
             {
