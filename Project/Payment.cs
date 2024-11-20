@@ -40,6 +40,11 @@
             Instances.Add(this);
         }
 
+        public static Payment CreatePayment(int orderId, PaymentMethod paymentMethod, double amount)
+        {
+            return new Payment(orderId, paymentMethod, amount);
+        }
+
         public static void PrintInstances()
         {
             foreach (var i in Instances)
