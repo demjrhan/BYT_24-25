@@ -30,7 +30,7 @@ namespace Project_Tests
             var orderId = 0;
             var amount = 100;
 
-            var payment = Customer.CreatePayment(orderId, PaymentMethod.Card, amount);
+            var payment = Payment.CreatePayment(orderId, PaymentMethod.Card, amount);
 
             Assert.That(payment.OrderId, Is.EqualTo(orderId));
             Assert.That(payment.Amount, Is.EqualTo(amount));
