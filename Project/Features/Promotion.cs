@@ -15,6 +15,9 @@ namespace Project.Features
 
         public Promotion(string name, string description, double discountPercentage, int productId)
         {
+            
+            ValidateProductExists(productId);
+            ValidateDiscountPercentage(discountPercentage);
             Name = name;
             Description = description;
             DiscountPercentage = discountPercentage;
@@ -24,14 +27,25 @@ namespace Project.Features
 
             Instances.Add(this);
         }
+        // Validation methods added seperately to maintain reusability and readability.
+        private static void ValidateProductExists(int productId)
+        {
+            if (!Product.Exists(productId))
+                throw new ArgumentException($"Product with ID {productId} does not exist.");
+        }
+
+        private static void ValidateDiscountPercentage(double discountPercentage)
+        {
+            if (discountPercentage < 0)
+                throw new ArgumentOutOfRangeException(nameof(discountPercentage), "Discount Percentage cannot be negative.");
+        }
 
         public int ProductId
         {
             get => _productId;
             set
             {
-                if (!Product.Exists(value))
-                    throw new ArgumentException("Product ID does not exist.");
+                ValidateProductExists(value);
                 _productId = value;
             }
         }
@@ -60,8 +74,7 @@ namespace Project.Features
             get => _discountPercentage;
             set
             {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Discount Percentage cannot be negative.");
+                ValidateDiscountPercentage(value);
                 _discountPercentage = value;
             }
         }

@@ -4,46 +4,22 @@ namespace Project.Features
 {
     public class Report
     {
-        private static List<Report> Instances = [];
+        private static List<Report> Instances = new List<Report>();
 
         private int _employeeId;
         private string _content = null!;
         private DateTime _date;
-
-        public int EmployeeId
-        {
-            get => _employeeId;
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Employee ID must be a positive integer.");
-                _employeeId = value;
-            }
-        }
         public ReportType ReportType { get; set; }
-        public string Content
-        {
-            get => _content;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Content cannot be null or empty.", nameof(value));
-                _content = value;
-            }
-        }
-        public DateTime Date
-        {
-            get => _date;
-            set
-            {
-                if (value > DateTime.Now)
-                    throw new ArgumentException("Date cannot be set to a future time.", nameof(value));
-                _date = value;
-            }
-        }
+
+        
 
         public Report(int employeeId, ReportType reportType, string content, DateTime date)
         {
+            
+            ValidateEmployeeId(employeeId);
+            ValidateContent(content);
+            ValidateDate(date);
+            
             EmployeeId = employeeId;
             ReportType = reportType;
             Content = content;
@@ -52,17 +28,66 @@ namespace Project.Features
             Instances.Add(this);
         }
 
+        
+        public int EmployeeId
+        {
+            get => _employeeId;
+            set
+            {
+                ValidateEmployeeId(value);
+                _employeeId = value;
+            }
+        }
+        
+        public string Content
+        {
+            get => _content;
+            set
+            {
+                ValidateContent(value);
+                _content = value;
+            }
+        }
+        public DateTime Date
+        {
+            get => _date;
+            set
+            {
+                ValidateDate(value);
+                _date = value;
+            }
+        }
+        
+        // Validation methods added seperately to maintain reusability and readability.
+        private static void ValidateEmployeeId(int employeeId)
+        {
+            if (employeeId <= 0)
+                throw new ArgumentOutOfRangeException(nameof(employeeId), "Employee ID must be a positive integer.");
+        }
+
+        private static void ValidateContent(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                throw new ArgumentException("Content cannot be null or empty.", nameof(content));
+        }
+
+        private static void ValidateDate(DateTime date)
+        {
+            if (date > DateTime.Now)
+                throw new ArgumentException("Date cannot be set to a future time.", nameof(date));
+        }
+        
         public static void PrintInstances()
         {
-            foreach (var i in Instances)
+            foreach (var report in Instances)
             {
-                Console.WriteLine(i.ToString());
+                Console.WriteLine(report.ToString());
             }
         }
 
         public override string ToString()
         {
-            return "Employee id: " + EmployeeId + " type: " + ReportType + " Contents: " + Content;
+            return $"Employee ID: {EmployeeId}, Report Type: {ReportType}, Date: {Date.ToShortDateString()}, Content: {Content}";
         }
     }
 

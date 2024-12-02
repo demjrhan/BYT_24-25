@@ -116,7 +116,7 @@ namespace Project.Entities
             return 0;
         }
 
-        // Email validation to ensure email is valid.
+        // Validation methods added seperately to maintain reusability and readability.
         private static bool IsValidEmail(string email)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(
@@ -126,7 +126,6 @@ namespace Project.Entities
             );
         }
         
-        // Checking the logic in retirementType to apply retirement. -Demirhan
         private static void ValidateRetirement(bool isRetired, RetirementType? retirementType)
         {
             if (!isRetired && retirementType != null)

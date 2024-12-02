@@ -50,6 +50,8 @@ namespace Project.Features
                 Console.WriteLine(membership.ToString());
             }
         }
+        
+        // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateCustomerId(int customerId)
         {
             if (!Customer.Exists(customerId))
