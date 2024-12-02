@@ -41,6 +41,7 @@
             }
         }
         public List<Promotion> Promotions { get; set; } = [];
+        private List<Review> Reviews { get; set; } = [];
 
         public Product(string title, double price, int quantity)
         {
@@ -51,18 +52,24 @@
             Instances.Add(this);
         }
 
-        public void AddPromotion(string name, string description, double discountPercentage)
+        public static void AddReviewToProduct(Product product, Review review)
         {
-            Promotion promotion = new(name, description, discountPercentage, ProductId);
+            product?.Reviews.Add(review);
         }
 
-        public static void AddPromotion(int id, Promotion p)
+        public static void AddPromotionToProduct(Product product, Promotion promotion)
         {
-            Product? product = Instances.Find(x => (x.ProductId == id));
-            if (product != null)
-            {
-                product.Promotions.Add(p);
-            }
+            product?.Promotions.Add(promotion);
+        }
+
+        public Review AddReview(int customerId, int rating, string? comment)
+        {
+            return new Review(customerId, rating, this, comment);
+        }
+
+        public Promotion AddPromotion(string name, string description, double discountPercentage)
+        {
+            return new Promotion(name, description, discountPercentage, this);
         }
 
         public void RemovePromotion(Promotion promotion)
@@ -70,7 +77,7 @@
             if (promotion != null)
             {
                 Promotions.Remove(promotion);
-                Promotion.Remove(promotion);
+                Promotion.RemovePromotion(promotion);
             }
         }
 
@@ -94,7 +101,7 @@
             bool flag = false;
             try
             {
-                Product? o = Instances[id];
+                Product? o = Instances.Find(x => (x.ProductId == id));
                 if (o != null) flag = true;
             }
             catch (IndexOutOfRangeException ex)
@@ -102,6 +109,19 @@
                 Console.Error.WriteLine(ex.Message);
             }
             return flag;
+        }
+
+        public static void RemoveProduct(Product product)
+        {
+            Instances.Remove(product);
+            foreach (var i in product.Reviews)
+            {
+                Review.RemoveReview(i);
+            }
+            foreach (var i in product.Promotions)
+            {
+                Promotion.RemovePromotion(i);
+            }
         }
 
         public override string ToString()

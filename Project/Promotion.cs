@@ -52,14 +52,14 @@
             }
         }
 
-        public Promotion(string name, string description, double discountPercentage, int productId)
+        public Promotion(string name, string description, double discountPercentage, Product product)
         {
             Name = name;
             Description = description;
             DiscountPercentage = discountPercentage;
-            ProductId = productId;
+            ProductId = product.ProductId;
 
-            Product.AddPromotion(productId, this);
+            Product.AddPromotionToProduct(product, this);
 
             Instances.Add(this);
         }
@@ -72,7 +72,7 @@
             }
         }
 
-        public static void Remove(Promotion p)
+        public static void RemovePromotion(Promotion p)
         {
             Instances.Remove(p);
         }
