@@ -2,55 +2,81 @@
 {
     public class Accessory : Product
     {
-        private static List<Accessory> Instances = [];
+        private static readonly List<Accessory> Instances = new List<Accessory>();
 
+        private string _accessoryType = null!;
+
+        private MaterialType Material { get; set; }
         //public static readonly string _verbose = "Accessory";
         //public static readonly string _verbosePlural = "Accessories";
 
-        //We need to change this name it can be confused with MaterialType or smth
-        private string _type = null!;
-
-        public string Type
+        private string AccessoryType
         {
-            get => _type;
+            get => _accessoryType;
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Type cannot be null or empty.");
-                _type = value;
+                    throw new ArgumentException("Accessory type cannot be null or empty.");
+                _accessoryType = value;
             }
         }
-        public MaterialType Material { get; set; }
+        
 
         public Accessory(
-            string title, double price, 
-            int stockQuantity, string type, 
+            string title, double price,
+            int stockQuantity, string type,
             MaterialType material
-            ) : base(
-                title, price,
-                stockQuantity
-                )
+        ) : base(
+            title, price,
+            stockQuantity
+        )
         {
-            Type = type;
-            Material = material;
-            
-            Inventory.TotalAccessoriesQuantity += StockQuantity;
-            Inventory.UpdateInventory();
+            try
+            {
+                ValidateAccessoryType(type);
 
-            Instances.Add(this);
+                Material = material;
+                AccessoryType = type;
+
+                UpdateInventory();
+                Instances.Add(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to initialize Accessory.", ex);
+            }
+        }
+        
+        
+        // Extra validations to maintain safety of accessory type. In case of "" input etc.
+        private static void ValidateAccessoryType(string type)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+                throw new ArgumentException("Accessory type cannot be null or empty.", nameof(type));
         }
 
-        public static new void PrintInstances()
+        
+        
+        // Added validation of stock quantity, new accessory's quantity can not be lower than 0.
+        private void UpdateInventory()
         {
-            foreach (var i in Instances)
+            if (StockQuantity < 0)
+                throw new InvalidOperationException("Stock quantity cannot be negative.");
+
+            Inventory.TotalAccessoriesQuantity += StockQuantity;
+            Inventory.UpdateInventory();
+        }
+        public new static void PrintInstances()
+        {
+            foreach (var accessory in Instances)
             {
-                Console.WriteLine(i.ToString());
+                Console.WriteLine(accessory.ToString());
             }
         }
 
         public override string ToString()
         {
-            return base.ToString() + " Type: " + Type + " material: " + Material;
+            return base.ToString() + " Type: " + AccessoryType + " material: " + Material;
         }
     }
 

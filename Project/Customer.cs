@@ -129,7 +129,7 @@
         
 
         // Created getting customer with id method to apply reusability in code. -Demirhan
-        public static Customer GetCustomerWithId(int customerId)
+        private static Customer GetCustomerWithId(int customerId)
         {
             Customer? customer = Instances.Find(x => x.CustomerId == customerId);
             if (customer == null)
