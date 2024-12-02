@@ -5,57 +5,69 @@ namespace Project.Models
     public abstract class Product
     {
         private static int _lastId = 0;
-        private static List<Product> Instances = [];
-
+        private static List<Product> Instances = new List<Product>();
+        public List<Promotion> Promotions { get; set; } = new List<Promotion>();
         private string _title = null!;
         private double _price;
         private int _stockQuantity;
+        public int ProductId { get; private set; }
+        
+       
 
-        public int ProductId { get; private set; } = _lastId++;
-        public string Title 
+        public Product(string title, double price, int quantity)
+        {
+            try
+            {
+                ValidateTitle(title);
+                ValidatePrice(price);
+                ValidateStockQuantity(quantity);
+
+                Title = title;
+                Price = price;
+                StockQuantity = quantity;
+
+                ProductId = _lastId++;
+                Instances.Add(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to initialize Product.", ex);
+            }
+        }
+
+        private string Title 
         { 
             get => _title; 
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Title cannot be null or empty.");
+                ValidateTitle(value);
                 _title = value;
             }
         }
-        public double Price 
+
+        protected internal double Price 
         { 
             get => _price; 
             set
             {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Price cannot be negative.");
+                ValidatePrice(value);
                 _price = value;
             }
         }
-        public int StockQuantity
+
+        protected int StockQuantity
         {
             get => _stockQuantity;
             set
             {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Stock quantity cannot be negative.");
+                ValidateStockQuantity(value);
                 _stockQuantity = value;
             }
         }
-        public List<Promotion> Promotions { get; set; } = [];
-
-        public Product(string title, double price, int quantity)
-        {
-            Title = title;
-            Price = price;
-            StockQuantity = quantity;
-
-            Instances.Add(this);
-        }
-
         public void AddPromotion(string name, string description, double discountPercentage)
         {
             Promotion promotion = new(name, description, discountPercentage, ProductId);
+            Promotions.Add(promotion);
         }
 
         public static void AddPromotion(int id, Promotion p)
@@ -69,46 +81,58 @@ namespace Project.Models
 
         public void RemovePromotion(Promotion promotion)
         {
-            if (promotion != null)
-            {
-                Promotions.Remove(promotion);
-                Promotion.Remove(promotion);
-            }
+            if (promotion == null)
+                throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
+            Promotions.Remove(promotion);
+            Promotion.Remove(promotion);
         }
 
         public double ApplyPromotion(Promotion promotion)
         {
-            double finalPrice = Price;
-            if (promotion != null) finalPrice -= finalPrice * (promotion.DiscountPercentage / 100);
-            return finalPrice;
+            if (promotion == null)
+                throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
+            return Price - (Price * (promotion.DiscountPercentage / 100));
         }
 
         public static void PrintInstances()
         {
-            foreach (var i in Instances)
+            foreach (var product in Instances)
             {
-                Console.WriteLine(i.ToString());
+                Console.WriteLine(product.ToString());
             }
         }
+        
+        // Validation methods added seperately to maintain reusability and readability.
+        private static void ValidateTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be null or empty.", nameof(title));
+        }
 
+        private static void ValidatePrice(double price)
+        {
+            if (price < 0)
+                throw new ArgumentOutOfRangeException(nameof(price), "Price cannot be negative.");
+        }
+
+        private static void ValidateStockQuantity(int quantity)
+        {
+            if (quantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(quantity), "Stock quantity cannot be negative.");
+        }
         public static bool Exists(int id)
         {
-            bool flag = false;
-            try
+            foreach (var product in Instances)
             {
-                Product? o = Instances[id];
-                if (o != null) flag = true;
+                if (product.ProductId == id)
+                    return true;
             }
-            catch (IndexOutOfRangeException ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
-            return flag;
+            return false;
         }
 
         public override string ToString()
         {
-            return "Id: " + ProductId + " type: " + this.GetType() + " title: " + Title;
+            return $"Id: {ProductId}, Type: {GetType().Name}, Title: {Title}";
         }
     }
 
