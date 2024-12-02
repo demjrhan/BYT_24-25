@@ -1,4 +1,7 @@
 using Project;
+using Project.Features;
+using Project.Models;
+using Project.Utilities;
 
 namespace Project_Tests
 {

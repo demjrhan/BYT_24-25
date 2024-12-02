@@ -1,4 +1,4 @@
-﻿using Project;
+﻿using Project.Controller;
 
 Controller.Start();
 

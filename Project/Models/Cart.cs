@@ -1,4 +1,9 @@
-﻿namespace Project
+﻿using Project.Entities;
+using Project.Enum;
+using Project.Features;
+using Project.Utilities;
+
+namespace Project.Models
 {
     public class Cart
     {

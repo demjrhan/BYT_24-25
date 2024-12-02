@@ -1,4 +1,4 @@
-﻿namespace Project
+﻿namespace Project.Enum
 {
     public enum RetirementType
     {

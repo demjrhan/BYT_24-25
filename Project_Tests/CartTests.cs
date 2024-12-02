@@ -1,5 +1,8 @@
 ﻿
 using Project;
+using Project.Entities;
+using Project.Features;
+using Project.Models;
 
 namespace Project_Tests
 {

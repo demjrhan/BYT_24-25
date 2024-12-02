@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using Project.Features;
+
+namespace Project.Models
 {
     public abstract class Product
     {

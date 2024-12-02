@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using Project.Enum;
+
+namespace Project.Features
 {
     public class Report
     {

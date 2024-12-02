@@ -1,4 +1,4 @@
-﻿namespace Project
+﻿namespace Project.Interfaces
 {
     public interface IYoung
     {

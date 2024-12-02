@@ -1,8 +1,10 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Project.Entities;
+using Project.Models;
 
-namespace Project
+namespace Project.Utilities
 {
     public static class SerializeDeserialize
     {
@@ -183,7 +185,7 @@ namespace Project
 
             foreach (var cls in classes)
             {
-                if (cls == typeof(Root) || cls == typeof(Program) || cls == typeof(Controller))
+                if (cls == typeof(Root) || cls == typeof(Program) || cls == typeof(Controller.Controller))
                     continue;
 
                 var instancesProperty = cls.GetField("Instances", BindingFlags.Static | BindingFlags.NonPublic);

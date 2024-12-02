@@ -1,4 +1,8 @@
-﻿namespace Project
+﻿using Project.Enum;
+using Project.Features;
+using Project.Models;
+
+namespace Project.Entities
 {
     public class Customer : Person
     {
@@ -14,6 +18,27 @@
         //public static readonly string _verbosePlural = "Customers";
         //Add connection with Membership class
 
+
+        public Customer(
+            string name, string surname,
+            string email, string phone,
+            string address, int age,
+            bool isStudying, bool isWorking,
+            bool isRetired, RetirementType? retirementType = null
+        ) : base(
+            name, surname,
+            email, phone,
+            address, age,
+            isStudying, isWorking,
+            isRetired, retirementType
+        )
+        {
+            
+            RegisterDate = DateTime.Now;
+            CustomerId = _lastId++;
+            Cart = new Cart(CustomerId);
+            Instances.Add(this);
+        }
         
         
         // Taking 1940 as imaginary establishing date of our company. Person can not register before that time. -Demirhan
@@ -52,39 +77,6 @@
                 _cart = value;
             }
         }
-
-
-
-        public Customer(
-            string name, string surname,
-            string email, string phone,
-            string address, int age,
-            bool isStudying, bool isWorking,
-            bool isRetired, RetirementType? retirementType = null
-        ) : base(
-            name, surname,
-            email, phone,
-            address, age,
-            isStudying, isWorking,
-            isRetired, retirementType
-        )
-        {
-            ValidateRetirement(isRetired, retirementType);
-            
-            RegisterDate = DateTime.Now;
-            CustomerId = _lastId++;
-            Cart = new Cart(CustomerId);
-            Instances.Add(this);
-        }
-        
-        
-        // Checking the logic in retirementType to apply retirement. 
-        private static void ValidateRetirement(bool isRetired, RetirementType? retirementType)
-        {
-            if (!isRetired && retirementType != null)
-                throw new ArgumentException("RetirementType should be null if the customer is not retired.", nameof(retirementType));
-        }
-
 
         public Order? CreateOrder()
         {

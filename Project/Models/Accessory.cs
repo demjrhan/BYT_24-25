@@ -1,4 +1,7 @@
-﻿namespace Project
+﻿using Project.Enum;
+using Project.Utilities;
+
+namespace Project.Models
 {
     public class Accessory : Product
     {

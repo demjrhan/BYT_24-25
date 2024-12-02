@@ -1,5 +1,5 @@
-﻿
-using Project;
+﻿using Project.Entities;
+using Project.Enum;
 
 namespace Project_Tests
 {

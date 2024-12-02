@@ -1,16 +1,30 @@
-﻿namespace Project
+﻿using Project.Models;
+
+namespace Project.Features
 {
     public class Promotion
     {
         private static int _lastId = 0;
-        private static List<Promotion> Instances = [];
+        private static List<Promotion> Instances = new List<Promotion>();
 
         private int _productId;
         private string _name = null!;
         private string? _description;
         private double _discountPercentage;
-
         public int PromotionId { get; private set; } = _lastId++;
+
+        public Promotion(string name, string description, double discountPercentage, int productId)
+        {
+            Name = name;
+            Description = description;
+            DiscountPercentage = discountPercentage;
+            ProductId = productId;
+
+            Product.AddPromotion(productId, this);
+
+            Instances.Add(this);
+        }
+
         public int ProductId
         {
             get => _productId;
@@ -51,30 +65,17 @@
                 _discountPercentage = value;
             }
         }
-
-        public Promotion(string name, string description, double discountPercentage, int productId)
-        {
-            Name = name;
-            Description = description;
-            DiscountPercentage = discountPercentage;
-            ProductId = productId;
-
-            Product.AddPromotion(productId, this);
-
-            Instances.Add(this);
-        }
-
         public static void PrintInstances()
         {
-            foreach (var i in Instances)
+            foreach (var promotion in Instances)
             {
-                Console.WriteLine(i.ToString());
+                Console.WriteLine(promotion.ToString());
             }
         }
 
-        public static void Remove(Promotion p)
+        public static void Remove(Promotion promotion)
         {
-            Instances.Remove(p);
+            Instances.Remove(promotion);
         }
 
         public override string ToString()

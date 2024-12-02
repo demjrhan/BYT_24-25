@@ -1,4 +1,8 @@
-﻿namespace Project
+﻿using Project.Entities;
+using Project.Enum;
+using Project.Features;
+
+namespace Project.Models
 {
     public class Order
     {

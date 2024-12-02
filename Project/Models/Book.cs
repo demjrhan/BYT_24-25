@@ -1,4 +1,6 @@
-﻿namespace Project
+﻿using Project.Utilities;
+
+namespace Project.Models
 {
     public class Book : Product
     {

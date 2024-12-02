@@ -1,4 +1,4 @@
-﻿namespace Project
+﻿namespace Project.Utilities
 {
     public static class Inventory
     {

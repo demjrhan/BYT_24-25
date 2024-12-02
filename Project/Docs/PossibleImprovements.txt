@@ -1,0 +1,2 @@
+﻿private static Customer GetCustomerWithId(int customerId); 
+Can be changed for better optimization. #Danila
