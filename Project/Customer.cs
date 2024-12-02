@@ -67,11 +67,6 @@
             return null;
         }
 
-        public static Payment CreatePayment(int orderId, PaymentMethod paymentMethod, double amount)
-        {
-            return new Payment(orderId, paymentMethod, amount);
-        }
-
         public Review CreateReview(int rating, Product product, string? comment)
         {
             return product.AddReview(CustomerId, rating, comment);
