@@ -55,7 +55,7 @@
             RegisterDate = DateTime.Now;
             CustomerId = _lastId++;
 
-            Cart = new Cart(CustomerId);
+            Cart = new Cart(this);
 
             Instances.Add(this);
         }
@@ -72,9 +72,9 @@
             return new Payment(orderId, paymentMethod, amount);
         }
 
-        public Review CreateReview(int rating, string comment)
+        public Review CreateReview(int rating, Product product, string? comment)
         {
-            return new Review(CustomerId, rating, comment);
+            return product.AddReview(CustomerId, rating, comment);
         }
 
         public static void PrintInstances()
@@ -108,6 +108,12 @@
                 return customer.GetDiscountPercentage();
             }
             return 0d;
+        }
+
+        public static void RemoveCustomer(Customer customer)
+        {
+            Instances.Remove(customer);
+            Cart.RemoveCart(customer.Cart);
         }
 
         public override string ToString()
