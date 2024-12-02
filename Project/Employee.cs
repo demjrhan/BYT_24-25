@@ -12,6 +12,8 @@
         private double _salary;
 
         public int EmployeeId { get; private set; } = _lastId++;
+        public int? SubordinateId { get; set; } 
+        public int? MentorId { get; set; }
         public Position EmpPosition { get; private set; }
         public DateTime HireDate
         {
@@ -34,6 +36,7 @@
             }
         }
         public Employee? Subordinate { get; set; }
+        public Employee? Mentor { get; set; }
 
         public Employee(
             string name, string surname,
@@ -58,6 +61,46 @@
             Instances.Add(this);
         }
 
+        public void AddSubordinate(Employee subordinate)
+        {
+            if (subordinate == this) throw new Exception("Employee cannot be assigned as a subordinate to himself");
+            Subordinate = subordinate;
+            subordinate.Mentor = this;
+            SubordinateId = subordinate.EmployeeId;
+            subordinate.MentorId = EmployeeId;
+        }
+
+        public void RemoveSubordinate()
+        {
+            if (Subordinate != null)
+            {
+                Subordinate.MentorId = null;
+                SubordinateId = null;
+                Subordinate.Mentor = null;
+                Subordinate = null;
+            }
+        }
+
+        public void AddMentor(Employee mentor) 
+        {
+            if (mentor == this) throw new Exception("Employee cannot be assigned as a mentor to himself");
+            Mentor = mentor; 
+            mentor.Subordinate = this;
+            MentorId = mentor.EmployeeId;
+            mentor.SubordinateId = EmployeeId;
+        }
+
+        public void RemoveMentor()
+        {
+            if (Mentor != null)
+            {
+                Mentor.SubordinateId = null;
+                MentorId = null;
+                Mentor.Subordinate = null;
+                Mentor = null;
+            }
+        }
+
         public Report CreateReport(ReportType reportType, string content)
         {
             if (EmpPosition == Position.Manager)
@@ -68,6 +111,13 @@
             {
                 throw new InvalidOperationException("Only managers can create reports.");
             }
+        }
+
+        public static void RemoveEmployee(Employee employee)
+        {
+            employee.Mentor?.RemoveMentor();
+            employee.Subordinate?.RemoveSubordinate();
+            Instances.Remove(employee);
         }
 
         public static void PrintInstances()
