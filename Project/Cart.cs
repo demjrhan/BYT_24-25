@@ -2,9 +2,13 @@
 {
     public class Cart
     {
+        private static List<Cart> Instances = [];
+
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = [];
+        private Customer Customer { get; set; }
 
+        public int CartId { get; set; }
         public int CustomerId
         {
             get => _customerId;
@@ -36,9 +40,13 @@
             }
         }
 
-        public Cart(int customerId)
+        public Cart(Customer customer)
         {
-            CustomerId = customerId;
+            CartId = customer.CustomerId;
+            CustomerId = customer.CustomerId;
+            Customer = customer;
+
+            Instances.Add(this);
         }
 
         public void AddProduct(Product product, Promotion? promotion = null)
@@ -109,6 +117,19 @@
             _products.Clear();
 
             return new Order(CustomerId, DateTime.Now, OrderStatus.Proccessing, amount, products);
+        }
+
+        public static void RemoveCart(Cart cart)
+        {
+            Instances.Remove(cart);
+        }
+
+        public static void PrintInstances()
+        {
+            foreach (var i in Instances)
+            {
+                Console.WriteLine(i.ToString());
+            }
         }
 
         public override string ToString()
