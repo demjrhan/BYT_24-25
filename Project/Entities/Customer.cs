@@ -33,11 +33,18 @@ namespace Project.Entities
             isRetired, retirementType
         )
         {
+            try
+            {
+                RegisterDate = DateTime.Now;
+                CustomerId = _lastId++;
+                Cart = new Cart(CustomerId);
+                Instances.Add(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to initialize Customer.", ex);
+            }
             
-            RegisterDate = DateTime.Now;
-            CustomerId = _lastId++;
-            Cart = new Cart(CustomerId);
-            Instances.Add(this);
         }
         
         

@@ -8,15 +8,18 @@ namespace Project.Models
     public class Cart
     {
         private int _customerId;
-        private List<Tuple<Product, Promotion?>> _products = [];
+        private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
 
+
+        
+        // Validation fixed, we need to check if customer exists to set customerId after object creation. If exists we can not initialize with new id.
         public int CustomerId
         {
             get => _customerId;
             set
             {
-                //if (!Customer.GetInstances().Exists(c => c.CustomerId == value))
-                //    throw new ArgumentException("Customer ID does not exist.");
+                if (Customer.Exists(value))
+                    throw new ArgumentException($"Customer with ID {value} does exist.");
                 _customerId = value;
             }
         }

@@ -79,8 +79,9 @@ namespace Project.Models
 
         public override string ToString()
         {
-            return base.ToString() + " Type: " + AccessoryType + " material: " + Material;
+            return $"{base.ToString()}, Type: {AccessoryType}, Material: {Material}";
         }
+
     }
 
 }
