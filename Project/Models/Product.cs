@@ -12,9 +12,7 @@ namespace Project.Models
         private string _title = null!;
         private double _price;
         private int _stockQuantity;
-        public int ProductId { get; private set; }
-        
-       
+        public int ProductId { get; private set; }  
 
         public Product(string title, double price, int quantity)
         {
@@ -66,6 +64,7 @@ namespace Project.Models
                 _stockQuantity = value;
             }
         }
+
         public static void AddReviewToProduct(Product product, Review review)
         {
             product?.Reviews.Add(review);
@@ -91,6 +90,11 @@ namespace Project.Models
                 throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
             Promotions.Remove(promotion);
             Promotion.RemovePromotion(promotion);
+        }
+
+        public void RemoveReview(Review review)
+        {
+            this.Reviews.Remove(review);
         }
 
         public double ApplyPromotion(Promotion promotion)
@@ -134,6 +138,20 @@ namespace Project.Models
                     return true;
             }
             return false;
+        }
+
+        public void RemoveProduct()
+        {
+            foreach(var review in Reviews)
+            {
+                Review.RemoveReview(review);
+            }
+            foreach (var promotion in Promotions)
+            {
+                Promotion.RemovePromotion(promotion);
+            }
+
+            Instances.Remove(this);
         }
 
         public override string ToString()
