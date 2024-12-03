@@ -7,11 +7,10 @@ namespace Project.Models
 {
     public class Cart
     {
-
-        private static List<Cart> Instances = new List<Cart>();
+        public static List<Cart> Instances = new List<Cart>();
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
-        private Customer Customer { get; set; }
+        public Customer Customer { get; set; }
         public int CartId { get; set; }
 
         

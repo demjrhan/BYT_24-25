@@ -7,7 +7,7 @@ namespace Project.Models
         private static int _lastId = 0;
         private static List<Product> Instances = new List<Product>();
         public List<Promotion> Promotions { get; set; } = new List<Promotion>();
-        private List<Review> Reviews { get; set; } = new List<Review>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
         private string _title = null!;
         private double _price;
@@ -16,8 +16,6 @@ namespace Project.Models
 
         public Product(string title, double price, int quantity)
         {
-            try
-            {
                 ValidateTitle(title);
                 ValidatePrice(price);
                 ValidateStockQuantity(quantity);
@@ -28,14 +26,10 @@ namespace Project.Models
 
                 ProductId = _lastId++;
                 Instances.Add(this);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Failed to initialize Product.", ex);
-            }
+            
         }
 
-        private string Title 
+        public string Title 
         { 
             get => _title; 
             set
@@ -45,7 +39,7 @@ namespace Project.Models
             }
         }
 
-        protected internal double Price 
+        public double Price 
         { 
             get => _price; 
             set
@@ -55,7 +49,7 @@ namespace Project.Models
             }
         }
 
-        protected int StockQuantity
+        public int StockQuantity
         {
             get => _stockQuantity;
             set

@@ -8,7 +8,7 @@ namespace Project.Entities
     {
         private static int _lastId = 0;
         public int CustomerId { get; private set; }
-        private static List<Customer> Instances = new List<Customer>();
+        public static List<Customer> Instances = new List<Customer>();
         public Membership? Membership { get; set; }
         private DateTime _registerDate;
         private Cart _cart = null!;
@@ -128,6 +128,11 @@ namespace Project.Entities
         
         public static void RemoveCustomer(Customer customer)
         {
+
+            if (customer.Membership != null)
+            {
+                Membership.Instances.Remove(customer.Membership);
+            }
             Instances.Remove(customer);
             Cart.RemoveCart(customer.Cart);
         }

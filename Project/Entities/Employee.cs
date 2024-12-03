@@ -6,7 +6,7 @@ namespace Project.Entities
     public class Employee : Person
     {
         private static int _lastId = 0;
-        private static List<Employee> Instances = new List<Employee>();
+        public static List<Employee> Instances = new List<Employee>();
         private DateTime _hireDate;
         private double _salary;
         public int EmployeeId { get; private set; }

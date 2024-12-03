@@ -104,7 +104,7 @@ namespace Project.Entities
             set
             {
                 if (value < 0 || value > 110)
-                    throw new ArgumentOutOfRangeException(nameof(value), "Age must be between 0 and 110.");
+                    throw new ArgumentException(nameof(value), "Age must be between 0 and 110.");
                 _age = value;
             }
         }

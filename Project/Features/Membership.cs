@@ -5,7 +5,7 @@ namespace Project.Features
     public class Membership
     {
         private static int _lastId = 0;
-        private static List<Membership> Instances = new List<Membership>();
+        public static List<Membership> Instances = new List<Membership>();
         private int _customerId;
         private double _discountRate;
         public int MembershipId { get; private set; } = _lastId++;
@@ -28,8 +28,8 @@ namespace Project.Features
             get => _customerId;
             set
             {
-                if (Customer.Exists(value))
-                    throw new ArgumentException($"Customer with ID {value} exist.");
+                if (!Customer.Exists(value))
+                    throw new ArgumentException($"Customer with ID {value} does not exist.");
                 _customerId = value;
             }
         }
