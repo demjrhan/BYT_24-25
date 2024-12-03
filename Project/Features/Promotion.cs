@@ -13,17 +13,17 @@ namespace Project.Features
         private double _discountPercentage;
         public int PromotionId { get; private set; } = _lastId++;
 
-        public Promotion(string name, string description, double discountPercentage, int productId)
+        public Promotion(string name, string description, double discountPercentage, Product product)
         {
             
-            ValidateProductExists(productId);
+            ValidateProductExists(product.ProductId);
             ValidateDiscountPercentage(discountPercentage);
             Name = name;
             Description = description;
             DiscountPercentage = discountPercentage;
-            ProductId = productId;
+            ProductId = product.ProductId;
 
-            Product.AddPromotion(productId, this);
+            Product.AddPromotionToProduct(product, this);
 
             Instances.Add(this);
         }
@@ -86,7 +86,7 @@ namespace Project.Features
             }
         }
 
-        public static void Remove(Promotion promotion)
+        public static void RemovePromotion(Promotion promotion)
         {
             Instances.Remove(promotion);
         }

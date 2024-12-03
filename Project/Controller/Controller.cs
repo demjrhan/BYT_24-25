@@ -1,4 +1,5 @@
-﻿using Project.Entities;
+﻿
+using Project.Entities;
 using Project.Enum;
 using Project.Features;
 using Project.Models;
@@ -8,7 +9,7 @@ namespace Project.Controller
 {
     public static class Controller
     {
-        private static bool _clearConsole = false;
+/*        private static bool _clearConsole = false;
         private static int _currentMenuId = 0;
         private static readonly string _header =
             "**************************************************\n" +
@@ -59,16 +60,19 @@ namespace Project.Controller
         //    "***** 2 - Customers ******************************\n" +
         //    "***** 3 - Products *******************************\n" +
         //    "**************************************************";
-
+*/
         public static void Start()
         {
+            
+            Console.WriteLine("On progress.");
+            /*
             Console.WriteLine("Do you want to enable Clear Console method?");
             Console.WriteLine("y for Yes; n for No");
             _clearConsole = Console.ReadLine() == "y";
             Console.Clear();
 
             while (true)
-            { 
+            {
                 Console.WriteLine(_header);
 
                 switch (_currentMenuId)
@@ -165,7 +169,7 @@ namespace Project.Controller
                         phone != null &&
                         address != null)
                         new Employee(
-                        name, surname, email, phone, 
+                        name, surname, email, phone,
                         address, age, isStudying,
                         isWorking, isRetired,
                         position, hireDate, salary);
@@ -234,8 +238,8 @@ namespace Project.Controller
                     }
 
                     if (
-                        name != null && 
-                        surname != null && 
+                        name != null &&
+                        surname != null &&
                         email != null &&
                         phone != null &&
                         address != null)
@@ -354,7 +358,7 @@ namespace Project.Controller
         {
             Console.WriteLine(_header);
             Console.WriteLine(_promotionSubMenu);
-            
+
             string? input = Console.ReadLine();
             int option = Convert.ToInt32(input);
 
@@ -390,7 +394,7 @@ namespace Project.Controller
 
                     if (promTitle != null &&
                         promDescr != null)
-                        new Promotion(promTitle, promDescr, disc, idOptionAcc);
+                        new Promotion(promTitle, promDescr, disc, idOptionA);
                     Console.WriteLine("Promotion was added");
                     break;
             }
@@ -450,7 +454,7 @@ namespace Project.Controller
         //    switch (option)
         //    {
         //        case 1:
-        //            List<Employee> employees = 
+        //            List<Employee> employees =
         //                SerializeDeserialize.DeserializeFromFile<Employee>("employees.json");
         //            foreach (var e in employees)
         //            {
@@ -458,7 +462,7 @@ namespace Project.Controller
         //            }
         //            break;
         //        case 2:
-        //            List<Customer> customers = 
+        //            List<Customer> customers =
         //                SerializeDeserialize.DeserializeFromFile<Customer>("customers.json");
         //            foreach (var c in customers)
         //            {
@@ -475,6 +479,10 @@ namespace Project.Controller
         {
             if (_clearConsole) Console.Clear();
             Console.WriteLine();
+
         }
+        */
+        }
+
     }
 }

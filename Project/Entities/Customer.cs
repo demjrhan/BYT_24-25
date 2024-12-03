@@ -37,7 +37,7 @@ namespace Project.Entities
             {
                 RegisterDate = DateTime.Now;
                 CustomerId = _lastId++;
-                Cart = new Cart(CustomerId);
+                Cart = new Cart(this);
                 Instances.Add(this);
             }
             catch (Exception ex)
@@ -92,9 +92,9 @@ namespace Project.Entities
             return Cart.ConvertToOrder();
         }
 
-        public Review CreateReview(int rating, string comment)
+        public Review CreateReview(int rating, Product product, string? comment)
         {
-            return new Review(CustomerId, rating, comment);
+            return product.AddReview(CustomerId, rating, comment);
         }
 
         public static void PrintInstances()
@@ -126,7 +126,12 @@ namespace Project.Entities
             return customer.GetDiscountPercentage();
         }
         
-
+        public static void RemoveCustomer(Customer customer)
+        {
+            Instances.Remove(customer);
+            Cart.RemoveCart(customer.Cart);
+        }
+        
         // Created getting customer with id method to apply reusability in code. -Demirhan
         private static Customer GetCustomerWithId(int customerId)
         {

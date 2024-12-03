@@ -7,9 +7,12 @@ namespace Project.Models
 {
     public class Cart
     {
+
+        private static List<Cart> Instances = new List<Cart>();
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
-
+        private Customer Customer { get; set; }
+        public int CartId { get; set; }
 
         
         // Validation fixed, we need to check if customer exists to set customerId after object creation. If exists we can not initialize with new id.
@@ -44,9 +47,14 @@ namespace Project.Models
             }
         }
 
-        public Cart(int customerId)
+        //
+        public Cart(Customer customer)
         {
-            CustomerId = customerId;
+            CartId = customer.CustomerId;
+            CustomerId = customer.CustomerId;
+            Customer = customer;
+
+            Instances.Add(this);
         }
 
         public void AddProduct(Product product, Promotion? promotion = null)
@@ -117,6 +125,19 @@ namespace Project.Models
             _products.Clear();
 
             return new Order(CustomerId, DateTime.Now, OrderStatus.Proccessing, amount, products);
+        }
+
+        public static void RemoveCart(Cart cart)
+        {
+            Instances.Remove(cart);
+        }
+        
+        public static void PrintInstances()
+        {
+            foreach (var cart in Instances)
+            {
+                Console.WriteLine(cart.ToString());
+            }
         }
 
         public override string ToString()

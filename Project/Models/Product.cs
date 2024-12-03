@@ -7,6 +7,8 @@ namespace Project.Models
         private static int _lastId = 0;
         private static List<Product> Instances = new List<Product>();
         public List<Promotion> Promotions { get; set; } = new List<Promotion>();
+        private List<Review> Reviews { get; set; } = new List<Review>();
+
         private string _title = null!;
         private double _price;
         private int _stockQuantity;
@@ -64,19 +66,23 @@ namespace Project.Models
                 _stockQuantity = value;
             }
         }
-        public void AddPromotion(string name, string description, double discountPercentage)
+        public static void AddReviewToProduct(Product product, Review review)
         {
-            Promotion promotion = new(name, description, discountPercentage, ProductId);
-            Promotions.Add(promotion);
+            product?.Reviews.Add(review);
         }
 
-        public static void AddPromotion(int id, Promotion p)
+        public static void AddPromotionToProduct(Product product, Promotion promotion)
         {
-            Product? product = Instances.Find(x => (x.ProductId == id));
-            if (product != null)
-            {
-                product.Promotions.Add(p);
-            }
+            product?.Promotions.Add(promotion);
+        }
+        
+        public Review AddReview(int customerId, int rating, string? comment)
+        {
+            return new Review(customerId, this, rating, comment);
+        }
+        public Promotion AddPromotion(string name, string description, double discountPercentage)
+        {
+            return new Promotion(name, description, discountPercentage, this);
         }
 
         public void RemovePromotion(Promotion promotion)
@@ -84,7 +90,7 @@ namespace Project.Models
             if (promotion == null)
                 throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
             Promotions.Remove(promotion);
-            Promotion.Remove(promotion);
+            Promotion.RemovePromotion(promotion);
         }
 
         public double ApplyPromotion(Promotion promotion)

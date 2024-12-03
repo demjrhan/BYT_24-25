@@ -9,7 +9,10 @@ namespace Project.Entities
         private static List<Employee> Instances = new List<Employee>();
         private DateTime _hireDate;
         private double _salary;
-        public int EmployeeId { get; private set; } = _lastId++;
+        public int EmployeeId { get; private set; }
+        public int? SubordinateId { get; set; } 
+        public int? MentorId { get; set; }
+        public Employee? Mentor { get; set; }
         public Position EmpPosition { get; private set; }
         public Employee? Subordinate { get; set; }
         //public static readonly string _verbose = "Employee";
@@ -35,7 +38,7 @@ namespace Project.Entities
             EmpPosition = empPosition;
             HireDate = hireDate;
             Salary = salary;
-
+            EmployeeId = _lastId++;
             Instances.Add(this);
         }
          
@@ -85,7 +88,48 @@ namespace Project.Entities
                 Console.WriteLine(employee.ToString());
             }
         }
-
+        public void AddSubordinate(Employee subordinate)
+        {
+            if (subordinate == this) throw new Exception("Employee cannot be assigned as a subordinate to himself");
+            Subordinate = subordinate;
+            subordinate.Mentor = this;
+            SubordinateId = subordinate.EmployeeId;
+            subordinate.MentorId = EmployeeId;
+        }
+        public void RemoveSubordinate()
+        {
+            if (Subordinate != null)
+            {
+                Subordinate.MentorId = null;
+                SubordinateId = null;
+                Subordinate.Mentor = null;
+                Subordinate = null;
+            }
+        }
+        public void AddMentor(Employee mentor) 
+        {
+            if (mentor == this) throw new Exception("Employee cannot be assigned as a mentor to himself");
+            Mentor = mentor; 
+            mentor.Subordinate = this;
+            MentorId = mentor.EmployeeId;
+            mentor.SubordinateId = EmployeeId;
+        }
+        public void RemoveMentor()
+        {
+            if (Mentor != null)
+            {
+                Mentor.SubordinateId = null;
+                MentorId = null;
+                Mentor.Subordinate = null;
+                Mentor = null;
+            }
+        }
+        public static void RemoveEmployee(Employee employee)
+        {
+            employee.Mentor?.RemoveMentor();
+            employee.Subordinate?.RemoveSubordinate();
+            Instances.Remove(employee);
+        }
         public override string ToString()
         {
             return base.ToString() + " position: " + EmpPosition;
