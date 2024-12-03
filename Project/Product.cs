@@ -81,6 +81,11 @@
             }
         }
 
+        public void RemoveReview(Review review)
+        {
+            Reviews.Remove(review);
+        }
+
         public double ApplyPromotion(Promotion promotion)
         {
             double finalPrice = Price;
