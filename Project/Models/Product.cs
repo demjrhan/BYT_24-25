@@ -65,6 +65,8 @@ namespace Project.Models
             }
         }
 
+        private List<Cart> Carts = new List<Cart>();
+
         public static void AddReviewToProduct(Product product, Review review)
         {
             product?.Reviews.Add(review);
@@ -140,6 +142,16 @@ namespace Project.Models
             return false;
         }
 
+        public void AddCart(Cart cart)
+        {
+            Carts.Add(cart);
+        }
+
+        public void RemoveCart(Cart cart)
+        {
+            Carts.Remove(cart);
+        }
+
         public void RemoveProduct()
         {
             foreach(var review in Reviews)
@@ -149,6 +161,10 @@ namespace Project.Models
             foreach (var promotion in Promotions)
             {
                 Promotion.RemovePromotion(promotion);
+            }
+            foreach (var cart in Carts)
+            {
+                cart.RemoveProduct(this);
             }
 
             Instances.Remove(this);
