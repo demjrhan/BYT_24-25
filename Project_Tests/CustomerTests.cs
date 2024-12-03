@@ -13,7 +13,7 @@ namespace Project_Tests
         public void Setup()
         {
             Customer.ClearInstances();
-            Membership.Instances.Clear();
+            Membership.ClearInstances();
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Project_Tests
             Customer.RemoveCustomer(customer);
 
             Assert.IsFalse(Customer.GetInstances().Contains(customer));
-            Assert.IsFalse(Cart.Instances.Contains(cart));
+            Assert.IsFalse(Cart.GetInstances().Contains(cart));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Project_Tests
             Customer.RemoveCustomer(customer);
 
             Assert.IsFalse(Customer.GetInstances().Contains(customer));
-            Assert.IsFalse(Membership.Instances.Contains(membership)); 
+            Assert.IsFalse(Membership.GetInstances().Contains(membership)); 
         }
 
         [Test]

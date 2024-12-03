@@ -108,6 +108,7 @@ namespace Project.Entities
                 _age = value;
             }
         }
+        
         public double GetDiscountPercentage()
         {
             if (IsStudying) return _discountStudying;

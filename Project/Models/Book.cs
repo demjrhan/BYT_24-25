@@ -69,7 +69,25 @@ namespace Project.Models
                 _publicationYear = value;
             }
         }
+        public static IReadOnlyList<Book> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        public static bool Exists(Book givenbBook)
+        {
+            foreach (var book in Instances)
+            {
+                if (book == givenbBook)
+                    return true;
+            }
+            return false;
+        }
         // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateAuthor(string author)
         {

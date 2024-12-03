@@ -69,6 +69,25 @@ namespace Project.Features
                 _description = value;
             }
         }
+        public static IReadOnlyList<Promotion> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Promotion givenPromotion)
+        {
+            foreach (var promotion in Instances)
+            {
+                if (givenPromotion == promotion)
+                    return true;
+            }
+            return false;
+        }
         public double DiscountPercentage
         {
             get => _discountPercentage;

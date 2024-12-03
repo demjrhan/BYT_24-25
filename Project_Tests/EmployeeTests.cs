@@ -10,7 +10,7 @@ namespace Project_Tests
         [SetUp]
         public void Setup()
         {
-            Employee.Instances.Clear(); 
+            Employee.ClearInstances();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Project_Tests
             Assert.That(employee.EmpPosition, Is.EqualTo(position));
             Assert.That(employee.HireDate, Is.EqualTo(hireDate));
             Assert.That(employee.Salary, Is.EqualTo(50000));
-            Assert.IsTrue(Employee.Instances.Contains(employee));
+            Assert.IsTrue(Employee.GetInstances().Contains(employee));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Project_Tests
             Employee.RemoveEmployee(employee);
 
             
-            Assert.IsFalse(Employee.Instances.Contains(employee));
+            Assert.IsFalse(Employee.GetInstances().Contains(employee));
         }
 
         [Test]

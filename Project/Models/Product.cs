@@ -5,7 +5,7 @@ namespace Project.Models
     public abstract class Product
     {
         private static int _lastId = 0;
-        public static List<Product> Instances = new List<Product>();
+        private static List<Product> Instances = new List<Product>();
         public List<Promotion> Promotions { get; set; } = new List<Promotion>();
         public List<Review> Reviews { get; set; } = new List<Review>();
 
@@ -58,7 +58,25 @@ namespace Project.Models
                 _stockQuantity = value;
             }
         }
+        public static IReadOnlyList<Product> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        public static bool Exists(Product givenProduct)
+        {
+            foreach (var product in Instances)
+            {
+                if (product == givenProduct)
+                    return true;
+            }
+            return false;
+        }
         public static void AddReviewToProduct(Product product, Review review)
         {
             product?.Reviews.Add(review);

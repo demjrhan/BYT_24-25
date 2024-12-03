@@ -75,7 +75,7 @@ namespace Project_Tests
             Customer.RemoveCustomer(customer);
 
             Assert.IsFalse(Customer.GetInstances().Contains(customer));
-            Assert.IsFalse(Cart.Instances.Contains(cart));
+            Assert.IsFalse(Cart.GetInstances().Contains(cart));
         }
 
         [Test]

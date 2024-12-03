@@ -94,7 +94,25 @@ namespace Project.Models
                 _amount = value;
             }
         }
+        public static IReadOnlyList<Order> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        public static bool Exists(Order givenoOrder)
+        {
+            foreach (var order in Instances)
+            {
+                if (order == givenoOrder)
+                    return true;
+            }
+            return false;
+        }
         public Shipping CreateShipping(ShippingMethod method, double cost, string address)
         {
             Shipping shipping = new Shipping(OrderId, method, cost, address);

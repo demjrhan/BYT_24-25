@@ -141,7 +141,7 @@ namespace Project.Entities
 
             if (customer.Membership != null)
             {
-                Membership.Instances.Remove(customer.Membership);
+                Membership.RemoveInstance(customer.Membership);
             }
             Instances.Remove(customer);
             Cart.RemoveCart(customer.Cart);

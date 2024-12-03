@@ -27,7 +27,25 @@
             Product.AddReviewToProduct(product, this);
             Instances.Add(this);
         }
+        public static IReadOnlyList<Review> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        public static bool Exists(Review givenReview)
+        {
+            foreach (var review in Instances)
+            {
+                if (review == givenReview)
+                    return true;
+            }
+            return false;
+        }
         public static void RemoveReview(Review review)
         {
             review.Product.RemoveReview(review);

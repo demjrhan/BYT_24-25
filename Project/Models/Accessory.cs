@@ -50,7 +50,25 @@ namespace Project.Models
             }
         }
         
+        public static IReadOnlyList<Accessory> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
         
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Accessory givenAccessory)
+        {
+            foreach (var accessory in Instances)
+            {
+                if (accessory == givenAccessory)
+                    return true;
+            }
+            return false;
+        }
         // Extra validations to maintain safety of accessory type. In case of "" input etc.
         private static void ValidateAccessoryType(string type)
         {

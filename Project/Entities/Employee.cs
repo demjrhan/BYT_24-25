@@ -6,7 +6,7 @@ namespace Project.Entities
     public class Employee : Person
     {
         private static int _lastId = 0;
-        public static List<Employee> Instances = new List<Employee>();
+        private static List<Employee> Instances = new List<Employee>();
         private DateTime _hireDate;
         private double _salary;
         public int EmployeeId { get; private set; }
@@ -63,7 +63,16 @@ namespace Project.Entities
                 _salary = value;
             }
         }
-        
+        public static IReadOnlyList<Employee> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+
+
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
         // Added extra validation InvalidOperationException in case of something goes wrong. - Demirhan
         public Report CreateReport(ReportType reportType, string content)
         {

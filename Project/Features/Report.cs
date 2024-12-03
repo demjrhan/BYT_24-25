@@ -57,7 +57,25 @@ namespace Project.Features
                 _date = value;
             }
         }
+        public static IReadOnlyList<Report> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
         
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Report givenReport)
+        {
+            foreach (var report in Instances)
+            {
+                if (givenReport == report)
+                    return true;
+            }
+            return false;
+        }
         // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateEmployeeId(int employeeId)
         {

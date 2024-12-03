@@ -7,7 +7,7 @@ namespace Project.Models
 {
     public class Cart
     {
-        public static List<Cart> Instances = new List<Cart>();
+        private static List<Cart> Instances = new List<Cart>();
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
         public Customer Customer { get; set; }
@@ -54,6 +54,26 @@ namespace Project.Models
             Customer = customer;
 
             Instances.Add(this);
+        }
+        
+        public static IReadOnlyList<Cart> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Cart givenCart)
+        {
+            foreach (var cart in Instances)
+            {
+                if (cart == givenCart)
+                    return true;
+            }
+            return false;
         }
 
         public void AddProduct(Product product, Promotion? promotion = null)
