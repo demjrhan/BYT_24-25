@@ -30,7 +30,20 @@ namespace Project_Tests
             Assert.That(order.Products.Count, Is.EqualTo(1));
             Assert.IsTrue(Order.Exists(order.OrderId));
         }
+        
+        [Test]
+        public void RemoveProductFromCart_ShouldRemoveReverseConnection()
+        {
+            
+            var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
+            var product = new TestProduct("Book2", 15.0, 15);
+            customer.Cart.AddProduct(product);
 
+            customer.Cart.RemoveProduct(product); 
+
+            Assert.That(customer.Cart.Products.Count, Is.EqualTo(0));
+            Assert.IsNull(product.AddedCart);            
+        }
         [Test]
         public void OrderCreation_InvalidCustomerId_ShouldThrowException()
         {

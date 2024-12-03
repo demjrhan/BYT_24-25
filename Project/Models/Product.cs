@@ -8,6 +8,7 @@ namespace Project.Models
         private static List<Product> Instances = new List<Product>();
         public List<Promotion> Promotions { get; set; } = new List<Promotion>();
         public List<Review> Reviews { get; set; } = new List<Review>();
+        public Cart? AddedCart { get; set; }
 
         private string _title = null!;
         private double _price;

@@ -84,6 +84,7 @@ namespace Project.Models
             if (promotion != null && !product.Promotions.Contains(promotion))
                 throw new ArgumentException("The specified promotion is not valid for this product.");
 
+            product.AddedCart = this;
             _products.Add(new Tuple<Product, Promotion?>(product, promotion));
         }
 
@@ -95,6 +96,7 @@ namespace Project.Models
             var productToRemove = _products
                 .FirstOrDefault(pair => pair.Item1 == product && pair.Item2 == promotion) 
                 ?? throw new ArgumentException("The specified product and promotion combination does not exist in the cart.");
+            product.AddedCart = null;
             _products.Remove(productToRemove);
         }
 
