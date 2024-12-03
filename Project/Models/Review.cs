@@ -30,6 +30,7 @@
 
         public static void RemoveReview(Review review)
         {
+            review.Product.RemoveReview(review);
             Instances.Remove(review);
         }
 
