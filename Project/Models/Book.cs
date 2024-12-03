@@ -69,15 +69,7 @@ namespace Project.Models
                 _publicationYear = value;
             }
         }
-        public static IReadOnlyList<Book> GetInstances()
-        {
-            return Instances.AsReadOnly();
-        }
-        
-        public static void ClearInstances()
-        {
-            Instances.Clear();
-        }
+       
 
         public static bool Exists(Book givenbBook)
         {

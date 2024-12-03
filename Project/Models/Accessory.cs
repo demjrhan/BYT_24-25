@@ -50,15 +50,7 @@ namespace Project.Models
             }
         }
         
-        public static IReadOnlyList<Accessory> GetInstances()
-        {
-            return Instances.AsReadOnly();
-        }
         
-        public static void ClearInstances()
-        {
-            Instances.Clear();
-        }
 
         public static bool Exists(Accessory givenAccessory)
         {
