@@ -1,0 +1,3 @@
+﻿private static Customer GetCustomerWithId(int customerId); 
+public static bool Exists(int id);
+Can be changed for better optimization. #Danila
