@@ -12,7 +12,7 @@ namespace Project_Tests
         [SetUp]
         public void Setup()
         {
-            Customer.Instances.Clear();
+            Customer.ClearInstances();
             Membership.Instances.Clear();
         }
 
@@ -33,7 +33,7 @@ namespace Project_Tests
 
             Assert.IsNotNull(customer);
             Assert.IsNotNull(customer.Cart);
-            Assert.IsTrue(Customer.Instances.Contains(customer));
+            Assert.IsTrue(Customer.GetInstances().Contains(customer));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Project_Tests
 
             Customer.RemoveCustomer(customer);
 
-            Assert.IsFalse(Customer.Instances.Contains(customer));
+            Assert.IsFalse(Customer.GetInstances().Contains(customer));
             Assert.IsFalse(Cart.Instances.Contains(cart));
         }
 
@@ -68,9 +68,29 @@ namespace Project_Tests
 
             Customer.RemoveCustomer(customer);
 
-            Assert.IsFalse(Customer.Instances.Contains(customer));
+            Assert.IsFalse(Customer.GetInstances().Contains(customer));
             Assert.IsFalse(Membership.Instances.Contains(membership)); 
         }
+
+        [Test]
+        public void CustomerInstances_ShouldBeEncapsulated()
+        {
+            
+            var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
+            var instances = Customer.GetInstances();
+            
+            Assert.IsTrue(instances.Contains(customer));
+            Assert.Throws<InvalidCastException>(() =>
+            {
+                var modifiableList = (List<Customer>)instances; 
+                modifiableList.Clear(); 
+            });
+
+            Assert.IsTrue(Customer.GetInstances().Contains(customer));
+            Customer.ClearInstances();
+            Assert.IsEmpty(Customer.GetInstances());
+        }
+
 
         [Test]
         public void ModifyMembership_ShouldUpdateReverseConnection()

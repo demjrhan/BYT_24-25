@@ -128,6 +128,7 @@ namespace Project.Models
 
         public static void RemoveCart(Cart cart)
         {
+            cart.Products.Clear();
             Instances.Remove(cart);
         }
         

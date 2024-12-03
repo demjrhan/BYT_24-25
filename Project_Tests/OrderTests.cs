@@ -13,7 +13,7 @@ namespace Project_Tests
         [SetUp]
         public void Setup()
         {
-            Customer.Instances.Clear(); 
+            Customer.ClearInstances();
            
         }
 
@@ -21,12 +21,12 @@ namespace Project_Tests
         public void OrderCreation_ShouldInitializeCorrectly()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var products = new List<Product> { new TestProduct("Laptop", 1000.0, 2) };
-            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 2000.0, products);
+            var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
+            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
 
             Assert.That(order.CustomerId, Is.EqualTo(customer.CustomerId));
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Proccessing));
-            Assert.That(order.Amount, Is.EqualTo(2000.0));
+            Assert.That(order.Amount, Is.EqualTo(155.0));
             Assert.That(order.Products.Count, Is.EqualTo(1));
             Assert.IsTrue(Order.Exists(order.OrderId));
         }
@@ -34,11 +34,10 @@ namespace Project_Tests
         [Test]
         public void OrderCreation_InvalidCustomerId_ShouldThrowException()
         {
-            var products = new List<Product> { new TestProduct("Laptop", 1000.0, 2) };
-
+            var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(-1, DateTime.Now, OrderStatus.Proccessing, 2000.0, products);
+                new Order(-1, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentException>());
@@ -50,11 +49,10 @@ namespace Project_Tests
         public void OrderCreation_InvalidOrderDate_ShouldThrowException()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var products = new List<Product> { new TestProduct("Laptop", 1000.0, 2) };
-
+            var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now.AddDays(1), OrderStatus.Proccessing, 2000.0, products);
+                new Order(customer.CustomerId, DateTime.Now.AddDays(1), OrderStatus.Proccessing, 155.0, products);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentException>());
@@ -65,11 +63,10 @@ namespace Project_Tests
         public void OrderCreation_InvalidAmount_ShouldThrowException()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var products = new List<Product> { new TestProduct("Laptop", 1000.0, 2) };
-
+            var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, -100.0, products);
+                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, -155.0, products);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentOutOfRangeException>());
@@ -84,7 +81,7 @@ namespace Project_Tests
 
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 2000.0, null);
+                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, null);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentNullException>());
@@ -96,8 +93,8 @@ namespace Project_Tests
         public void OrderStatusTransition_ShouldChangeStatusCorrectly()
         {
             var customer = new Customer("Jane", "Doe", "jane.doe@example.com", "987654321", "456 Oak St", 25, false, true, false);
-            var products = new List<Product> { new TestProduct("Phone", 500.0, 1) };
-            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 500.0, products);
+            var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
+            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
 
             order.Status = OrderStatus.Departed;
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Departed));

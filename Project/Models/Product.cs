@@ -5,7 +5,7 @@ namespace Project.Models
     public abstract class Product
     {
         private static int _lastId = 0;
-        private static List<Product> Instances = new List<Product>();
+        public static List<Product> Instances = new List<Product>();
         public List<Promotion> Promotions { get; set; } = new List<Promotion>();
         public List<Review> Reviews { get; set; } = new List<Review>();
 

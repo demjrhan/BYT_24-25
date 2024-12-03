@@ -28,7 +28,7 @@ namespace Project_Tests
 
             var discountedPrice = product.ApplyPromotion(promotion);
 
-            Assert.That(discountedPrice, Is.EqualTo(18.0)); // 20 - 10% = 18
+            Assert.That(discountedPrice, Is.EqualTo(18.0)); 
         }
 
         [Test]

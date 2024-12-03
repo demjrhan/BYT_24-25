@@ -1,7 +1,6 @@
-﻿using NUnit.Framework;
+﻿
 using Project.Models;
 using Project.Entities;
-using System;
 using Project.Features;
 
 namespace Project_Tests
@@ -14,7 +13,7 @@ namespace Project_Tests
         [SetUp]
         public void Setup()
         {
-            Customer.Instances.Clear();
+            Customer.ClearInstances();
         }
 
         [Test]
@@ -28,6 +27,18 @@ namespace Project_Tests
             Assert.That(cart.Customer, Is.EqualTo(customer));
 
         }
+        
+        [Test]
+        public void Cart_ShouldNotBeAssignedToMultipleCustomers()
+        {
+            var customer1 = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
+            var customer2 = new Customer("Jane", "Smith", "jane.smith@example.com", "987654321", "456 Maple St", 28, false, true, false);
+
+            var cart = customer1.Cart;
+    
+            Assert.Throws<InvalidOperationException>(() => customer2.Cart = cart);
+        }
+
 
         [Test]
         public void AddProductToCart_ShouldIncreaseProductCount()
@@ -63,10 +74,22 @@ namespace Project_Tests
 
             Customer.RemoveCustomer(customer);
 
-            Assert.IsFalse(Customer.Instances.Contains(customer));
+            Assert.IsFalse(Customer.GetInstances().Contains(customer));
             Assert.IsFalse(Cart.Instances.Contains(cart));
         }
 
+        [Test]
+        public void CartDeletion_ShouldRemoveAssociatedProducts()
+        {
+            var customer = new Customer("Max", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
+            var product = new TestProduct("Book", 10.0, 5);
+            var product2 = new TestProduct("Book2", 15.0, 15);
+            customer.Cart.AddProduct(product);
+            customer.Cart.AddProduct(product2);
+            
+            Cart.RemoveCart(customer.Cart);
+            Assert.IsEmpty(customer.Cart.Products, "Cart products should be empty after deletion.");
+        }
 
         [Test]
         public void AddNullProductToCart_ShouldThrowException()
