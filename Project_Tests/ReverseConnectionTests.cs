@@ -19,7 +19,7 @@ public class ReverseConnectionTests
         var order = new Order(customer, DateTime.Now, OrderStatus.Proccessing, 100.0, new List<Product>());
 
 
-        Assert.Contains(order, customer.GetOrders());
+        Assert.Contains(order, customer.GetOrders().ToList());
         Assert.AreEqual(customer.CustomerId, order.CustomerId);
     }
 

@@ -1,4 +1,5 @@
-﻿using Project.Enum;
+﻿using System.Collections.ObjectModel;
+using Project.Enum;
 using Project.Features;
 using Project.Models;
 
@@ -204,9 +205,9 @@ namespace Project.Entities
             _orders.Remove(order);
         }
         
-        public List<Order> GetOrders()
+        public IReadOnlyList<Order> GetOrders()
         {
-            return _orders;
+            return _orders.AsReadOnly();
         }
         
         public void AddPayment(Payment payment)

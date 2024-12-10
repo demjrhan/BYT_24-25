@@ -135,7 +135,7 @@ namespace Project_Tests
 
             foreach (var order in orders)
             {
-                Assert.Contains(order, customer.GetOrders());
+                Assert.Contains(order, customer.GetOrders().ToList());
             }
             Assert.AreEqual(orders.Count, customer.GetOrders().Count);
         }
