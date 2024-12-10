@@ -6,6 +6,7 @@ namespace Project.Features
     {
         private static int _lastId = 0;
         private static List<Promotion> Instances = new List<Promotion>();
+        private Product _product;
 
         private int _productId;
         private string _name = null!;
@@ -50,6 +51,7 @@ namespace Project.Features
             Name = name;
             Description = description;
             DiscountPercentage = discountPercentage;
+            _product = product;
             ProductId = product.ProductId;
 
             Product.AddPromotionToProduct(product, this);
@@ -106,6 +108,7 @@ namespace Project.Features
 
         public static void RemovePromotion(Promotion promotion)
         {
+            promotion._product.RemovePromotion(promotion);
             Instances.Remove(promotion);
         }
 

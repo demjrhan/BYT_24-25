@@ -1,4 +1,5 @@
 
+using Project.Entities;
 using Project.Features;
 using Project.Models;
 using System.Reflection;
@@ -45,8 +46,9 @@ namespace Project_Tests
         [Test]
         public void AddReviewToProduct_ShouldIncreaseReviewsCount()
         {
+            var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
-            var review = product.AddReview(1, 5, "Amazing book!");
+            var review = new Review(customer, product, 5, "Amazing book!");
 
             var reviewsField = typeof(Product).GetField("_reviews", BindingFlags.Instance | BindingFlags.NonPublic);
             var reviews = reviewsField!.GetValue(product) as List<Review>;
@@ -59,7 +61,7 @@ namespace Project_Tests
         public void AddPromotionToProduct_ShouldIncreasePromotionsCount()
         {
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
-            var promotion = product.AddPromotion("Summer Sale", "20% off", 20.0);
+            var promotion = new Promotion("Summer Sale", "20% off", 20.0, product);
 
             var promotionsField = typeof(Product).GetField("_promotions", BindingFlags.Instance | BindingFlags.NonPublic);
             var promotions = promotionsField!.GetValue(product) as List<Promotion>;
@@ -72,7 +74,7 @@ namespace Project_Tests
         public void RemovePromotionFromProduct_ShouldRemovePromotion()
         {
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
-            var promotion = product.AddPromotion("Summer Sale", "20% off", 20.0);
+            var promotion = new Promotion("Summer Sale", "20% off", 20.0, product);
             product.RemovePromotion(promotion);
 
             Assert.That(product.CountPromotions(), Is.EqualTo(0));
@@ -82,7 +84,7 @@ namespace Project_Tests
         public void ApplyPromotion_ShouldApplyDiscount()
         {
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
-            var promotion = product.AddPromotion("Summer Sale", "20% off", 20.0);
+            var promotion = new Promotion("Summer Sale", "20% off", 20.0, product);
 
             var discountedPrice = product.ApplyPromotion(promotion);
 

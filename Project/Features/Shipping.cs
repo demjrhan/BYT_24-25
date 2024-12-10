@@ -7,17 +7,45 @@ namespace Project.Features
     {
         private static int _lastId = 0;
         private static List<Shipping> Instances = new List<Shipping>();
-
+        private Order _order;
         private int _orderId;
         private double _cost;
         private string _address = null!;
         public ShippingMethod Method { get; set; }
         public int ShippingId { get; private set; } = _lastId++;
-       
-
-        public Shipping(int orderId, ShippingMethod method, double cost, string address)
+        public int OrderId
         {
-            OrderId = orderId;
+            get => _orderId;
+            set
+            {
+                ValidateOrderId(value);
+                _orderId = value;
+            }
+        }
+
+        public double Cost
+        {
+            get => _cost;
+            set
+            {
+                ValidateCost(value);
+                _cost = value;
+            }
+        }
+        public string Address
+        {
+            get => _address;
+            set
+            {
+                ValidateAddress(value);
+                _address = value;
+            }
+        }
+
+        public Shipping(Order order, ShippingMethod method, double cost, string address)
+        {
+            _order = order;
+            OrderId = order.OrderId;
             Method = method;
             Cost = cost;
             Address = address;
@@ -45,36 +73,7 @@ namespace Project.Features
             }
             return false;
         }
-        
        
-        public int OrderId
-        {
-            get => _orderId;
-            set
-            {
-                ValidateOrderId(value);
-                _orderId = value;
-            }
-        }
-       
-        public double Cost
-        {
-            get => _cost;
-            set
-            {
-                ValidateCost(value);
-                _cost = value;
-            }
-        }
-        public string Address
-        {
-            get => _address;
-            set
-            {
-                ValidateAddress(value);
-                _address = value;
-            }
-        }
         private static void ValidateOrderId(int orderId)
         {
             if (!Order.Exists(orderId))
@@ -99,6 +98,12 @@ namespace Project.Features
             {
                 Console.WriteLine(shipping.ToString());
             }
+        }
+
+        public static void RemoveShipping(Shipping shipping)
+        {
+            shipping._order.ResetShipping();
+            Instances.Remove(shipping);
         }
         public override string ToString()
         {

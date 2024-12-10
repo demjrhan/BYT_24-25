@@ -9,9 +9,11 @@ namespace Project.Models
         private static int _lastId = 0;
         private static List<Order> Instances = new List<Order>();
         private List<Product> _products = new List<Product>();
-
+        private Customer _customer;
         private int _customerId;
+        private Shipping? _shipping;
         private int? _shippingId;
+        private Payment? _payment;
         private DateTime _orderDate;
         private double _amount;
         public int OrderId { get; set; }
@@ -67,24 +69,27 @@ namespace Project.Models
             }
         }
         public Order(
-            int customerId, DateTime orderDate,
+            Customer customer, DateTime orderDate,
             OrderStatus status,
             double amount, List<Product> products
         )
         {
             try
             {
-                ValidateCustomerId(customerId);
+                ValidateCustomerId(customer.CustomerId);
                 ValidateOrderDate(orderDate);
                 ValidateAmount(amount);
                 ValidateProducts(products);
 
-                CustomerId = customerId;
+                CustomerId = customer.CustomerId;
+                _customer = customer;
                 OrderDate = orderDate;
                 Amount = amount;
                 Status = status;
                 Products = products;
                 OrderId = _lastId++;
+
+                customer.AddOrder(this);
                 Instances.Add(this);
             }
             catch (Exception ex)
@@ -112,12 +117,22 @@ namespace Project.Models
             }
             return false;
         }
-        public Shipping CreateShipping(ShippingMethod method, double cost, string address)
+
+        public void AddShipping(Shipping shipping)
         {
-            Shipping shipping = new Shipping(OrderId, method, cost, address);
-            Amount += cost;
+            _shipping = shipping;
             ShippingId = shipping.ShippingId;
-            return shipping;
+            Amount += shipping.Cost;
+        }
+
+        public void ResetShipping()
+        {
+            if (_shipping != null)
+            {
+                Amount -= _shipping.Cost;
+                ShippingId = -1;
+                _shipping = null;
+            }
         }
         
         // Validation methods added seperately to maintain reusability and readability.
@@ -169,6 +184,27 @@ namespace Project.Models
             }
 
             return false;
+        }
+
+        public void Pay(Payment payment)
+        {
+            _payment = payment;
+        }
+
+        public void ResetPayment()
+        {
+            _payment = null;
+        }
+
+        public static void RemoveOrder(Order order)
+        {
+            order._customer.RemoveOrder(order);
+            if (order._payment != null)
+            {
+                Payment.RemovePayment(order._payment);
+            }
+            Shipping.RemoveShipping(order._shipping!);
+            Instances.Remove(order);
         }
 
         public override string ToString()

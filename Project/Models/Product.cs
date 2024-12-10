@@ -1,4 +1,5 @@
-﻿using Project.Features;
+﻿using Project.Entities;
+using Project.Features;
 
 namespace Project.Models
 {
@@ -9,6 +10,7 @@ namespace Project.Models
         private List<Promotion> _promotions = new List<Promotion>();
         private List<Review> _reviews = new List<Review>();
         private List<Cart> _carts = new List<Cart>();
+        private List<Customer> _inFavorites = new List<Customer>();
 
         private string _title = null!;
         private double _price;
@@ -86,27 +88,17 @@ namespace Project.Models
         {
             product?._promotions.Add(promotion);
         }
-        
-        public Review AddReview(int customerId, int rating, string? comment)
-        {
-            return new Review(customerId, this, rating, comment);
-        }
-        public Promotion AddPromotion(string name, string description, double discountPercentage)
-        {
-            return new Promotion(name, description, discountPercentage, this);
-        }
 
         public void RemovePromotion(Promotion promotion)
         {
             if (promotion == null)
                 throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
             _promotions.Remove(promotion);
-            Promotion.RemovePromotion(promotion);
         }
 
         public void RemoveReview(Review review)
         {
-            this._reviews.Remove(review);
+            _reviews.Remove(review);
         }
 
         public double ApplyPromotion(Promotion promotion)
@@ -162,22 +154,30 @@ namespace Project.Models
             _carts.Remove(cart);
         }
 
-        public void RemoveProduct()
+        public static void RemoveProduct(Product product)
         {
-            foreach(var review in _reviews)
+            foreach(var review in product._reviews)
             {
                 Review.RemoveReview(review);
             }
-            foreach (var promotion in _promotions)
+            product._reviews.Clear();
+            foreach (var promotion in product._promotions)
             {
                 Promotion.RemovePromotion(promotion);
             }
-            foreach (var cart in _carts)
+            product._promotions.Clear();
+            foreach (var cart in product._carts)
             {
-                cart.RemoveProduct(this);
+                cart.RemoveProduct(product);
             }
+            product._carts.Clear();
+            foreach (var customer in product._inFavorites)
+            {
+                customer.RemoveFromFavorites(product);
+            }
+            product._inFavorites.Clear();
 
-            Instances.Remove(this);
+            Instances.Remove(product);
         }
 
         public bool ContainPromotion(Promotion promotion)
@@ -193,6 +193,16 @@ namespace Project.Models
         public int CountPromotions()
         {
             return _promotions.Count;
+        }
+
+        public void AddCustomerToFavorites(Customer customer)
+        {
+            _inFavorites.Add(customer);
+        }
+
+        public void RemoveCustomerFromFavorites(Customer customer)
+        {
+            _inFavorites.Remove(customer);
         }
 
         public override string ToString()

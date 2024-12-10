@@ -6,6 +6,7 @@ namespace Project.Features
     {
         private static int _lastId = 0;
         private static List<Membership> Instances = new List<Membership>();
+        private Customer _customer;
         private int _customerId;
         private double _discountRate;
         public int MembershipId { get; private set; } = _lastId++;
@@ -32,16 +33,19 @@ namespace Project.Features
             }
         }
 
-        public Membership(int customerId, bool status, double discountRate)
+        public Membership(Customer customer, bool status, double discountRate)
         {
 
-            ValidateCustomerId(customerId);
+            ValidateCustomerId(customer.CustomerId);
             ValidateDiscountRate(discountRate);
 
-
-            CustomerId = customerId;
+            _customer = customer;
+            CustomerId = customer.CustomerId;
             Status = status;
             DiscountRate = discountRate;
+
+            customer.SetMembership(this);
+
             Instances.Add(this);
         }
 
@@ -71,12 +75,13 @@ namespace Project.Features
             }
             return false;
         }
-        public static void RemoveInstance(Membership membership)
+        public static void RemoveMembership(Membership membership)
         {
             if (!Exists(membership))
             {
                 throw new InvalidOperationException($"Membership does not exist in the collection.");
             }
+            membership._customer.ResetMembership();
 
             Instances.Remove(membership);
         }

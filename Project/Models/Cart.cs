@@ -10,7 +10,7 @@ namespace Project.Models
         private static List<Cart> Instances = new List<Cart>();
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
-        public Customer Customer { get; set; }
+        private Customer _customer;
         public int CartId { get; set; }
 
         
@@ -51,7 +51,7 @@ namespace Project.Models
         {
             CartId = customer.CustomerId;
             CustomerId = customer.CustomerId;
-            Customer = customer;
+            _customer = customer;
 
             Instances.Add(this);
         }
@@ -155,7 +155,7 @@ namespace Project.Models
                 RemoveProduct(pair.Item1, pair?.Item2);
             }
 
-            return new Order(CustomerId, DateTime.Now, OrderStatus.Proccessing, amount, products);
+            return new Order(_customer, DateTime.Now, OrderStatus.Proccessing, amount, products);
         }
 
         public static void RemoveCart(Cart cart)

@@ -1,10 +1,12 @@
-﻿using Project.Enum;
+﻿using Project.Entities;
+using Project.Enum;
 
 namespace Project.Features
 {
     public class Report
     {
         private static List<Report> Instances = new List<Report>();
+        private Employee _employee;
         private int _employeeId;
         private string _content = null!;
         private DateTime _date;
@@ -38,19 +40,27 @@ namespace Project.Features
                 _date = value;
             }
         }
-        public Report(int employeeId, ReportType reportType, string content, DateTime date)
+        public Report(Employee employee, ReportType reportType, string content, DateTime date)
         {
+            try
+            {
+                ValidateEmployeeId(employee.EmployeeId);
+                ValidateEmployeePosition(employee);
+                ValidateContent(content);
+                ValidateDate(date);
 
-            ValidateEmployeeId(employeeId);
-            ValidateContent(content);
-            ValidateDate(date);
+                _employee = employee;
+                EmployeeId = employee.EmployeeId;
+                ReportType = reportType;
+                Content = content;
+                Date = date;
 
-            EmployeeId = employeeId;
-            ReportType = reportType;
-            Content = content;
-            Date = date;
-
-            Instances.Add(this);
+                Instances.Add(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to create a report.", ex);
+            }
         }
 
         public static IReadOnlyList<Report> GetInstances()
@@ -79,6 +89,12 @@ namespace Project.Features
                 throw new ArgumentOutOfRangeException(nameof(employeeId), "Employee ID must be a positive integer.");
         }
 
+        private static void ValidateEmployeePosition(Employee employee)
+        {
+            if (employee.EmpPosition != Position.Manager)
+                throw new InvalidOperationException("Only managers can create reports.");
+        }
+
         private static void ValidateContent(string content)
         {
             if (string.IsNullOrWhiteSpace(content))
@@ -97,6 +113,12 @@ namespace Project.Features
             {
                 Console.WriteLine(report.ToString());
             }
+        }
+
+        public static void RemoveReport(Report report)
+        {
+            report._employee.RemoveReport(report);
+            Instances.Remove(report);
         }
 
         public override string ToString()
