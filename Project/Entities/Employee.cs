@@ -7,6 +7,7 @@ namespace Project.Entities
     {
         private static int _lastId = 0;
         private static List<Employee> Instances = new List<Employee>();
+        private List<Report> _reports = new List<Report>();
         private DateTime _hireDate;
         private double _salary;
         private Employee? _mentor;
@@ -56,6 +57,7 @@ namespace Project.Entities
             HireDate = hireDate;
             Salary = salary;
             EmployeeId = _lastId++;
+
             Instances.Add(this);
         }
 
@@ -69,20 +71,15 @@ namespace Project.Entities
         {
             Instances.Clear();
         }
-        // Added extra validation InvalidOperationException in case of something goes wrong. - Demirhan
-        public Report CreateReport(ReportType reportType, string content)
-        {
-            try
-            {
-                if (EmpPosition != Position.Manager)
-                    throw new InvalidOperationException("Only managers can create reports.");
 
-                return new Report(EmployeeId, reportType, content, DateTime.Now);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Failed to create a report.", ex);
-            }
+        public void AddReport(Report report)
+        {
+            _reports.Add(report);
+        }
+
+        public void RemoveReport(Report report)
+        {
+            _reports.Remove(report);
         }
 
         public static void PrintInstances()
@@ -130,6 +127,10 @@ namespace Project.Entities
         }
         public static void RemoveEmployee(Employee employee)
         {
+            foreach(var report in employee._reports)
+            {
+                employee._reports.Remove(report);
+            }
             employee._mentor?.RemoveMentor();
             employee._subordinate?.RemoveSubordinate();
             Instances.Remove(employee);
