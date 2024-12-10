@@ -2,11 +2,11 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4aec794d_002Dc8cd_002D430d_002D8ce0_002De17d23de656e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CartTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\demir\Documents\codes\BookShop\Project_Tests" Presentation="&amp;lt;Project_Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b42ca558_002D2a87_002D4cf5_002D93c2_002Dad6c0d89fd0c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PromotionTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::8E8354C5-5944-429B-A99B-D9A1B7CE9951::net8.0::Project_Tests.PromotionTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b42ca558_002D2a87_002D4cf5_002D93c2_002Dad6c0d89fd0c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PromotionTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\demir\Documents\codes\BYT_24-25\Project_Tests" Presentation="&amp;lt;Project_Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fcde59b7_002D5dd1_002D4581_002Da413_002D165ec7d58766/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CartTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\demir\Documents\codes\BookShop\Project_Tests" Presentation="&amp;lt;Project_Tests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fcde59b7_002D5dd1_002D4581_002Da413_002D165ec7d58766/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CartTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::8E8354C5-5944-429B-A99B-D9A1B7CE9951::net8.0::Project_Tests.OrderTests.OrderCreation_ShouldInitializeCorrectly&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

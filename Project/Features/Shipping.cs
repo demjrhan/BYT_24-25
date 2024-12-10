@@ -25,7 +25,17 @@ namespace Project.Features
             Instances.Add(this);
         }
         
+        public static IReadOnlyList<Shipping> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        
         public static bool Exists(int id)
         {
             foreach (var shipping in Instances)

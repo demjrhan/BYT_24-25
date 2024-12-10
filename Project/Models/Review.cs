@@ -16,7 +16,7 @@
 
         public Review(int customerId, Product product, int rating, string? comment = "")
         {
-            if (Rating < 1 || Rating > 5)
+            if (rating < 1 || rating > 5)
             {
                 throw new ArgumentException("Rating must be between 1 and 5.");
             }
@@ -29,7 +29,25 @@
             Product.AddReviewToProduct(product, this);
             Instances.Add(this);
         }
+        public static IReadOnlyList<Review> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
 
+        public static bool Exists(Review givenReview)
+        {
+            foreach (var review in Instances)
+            {
+                if (review == givenReview)
+                    return true;
+            }
+            return false;
+        }
         public static void RemoveReview(Review review)
         {
             review.Product.RemoveReview(review);

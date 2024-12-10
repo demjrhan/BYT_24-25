@@ -69,7 +69,17 @@ namespace Project.Models
                 _publicationYear = value;
             }
         }
+       
 
+        public static bool Exists(Book givenbBook)
+        {
+            foreach (var book in Instances)
+            {
+                if (book == givenbBook)
+                    return true;
+            }
+            return false;
+        }
         // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateAuthor(string author)
         {

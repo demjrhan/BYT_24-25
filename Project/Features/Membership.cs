@@ -28,8 +28,8 @@ namespace Project.Features
             get => _customerId;
             set
             {
-                if (Customer.Exists(value))
-                    throw new ArgumentException($"Customer with ID {value} exist.");
+                if (!Customer.Exists(value))
+                    throw new ArgumentException($"Customer with ID {value} does not exist.");
                 _customerId = value;
             }
         }
@@ -50,7 +50,35 @@ namespace Project.Features
                 Console.WriteLine(membership.ToString());
             }
         }
+        public static IReadOnlyList<Membership> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
         
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Membership givenMembership)
+        {
+            foreach (var membership in Instances)
+            {
+                if (membership == givenMembership)
+                    return true;
+            }
+            return false;
+        }
+        public static void RemoveInstance(Membership membership)
+        {
+            if (!Exists(membership))
+            {
+                throw new InvalidOperationException($"Membership does not exist in the collection.");
+            }
+
+            Instances.Remove(membership);
+        }
+
         // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateCustomerId(int customerId)
         {

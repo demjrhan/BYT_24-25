@@ -63,7 +63,25 @@ namespace Project.Features
             }
         }
 
+        public static IReadOnlyList<Payment> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
         
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Payment givenPayment)
+        {
+            foreach (var payment in Instances)
+            {
+                if (givenPayment == payment)
+                    return true;
+            }
+            return false;
+        }
         // Validation methods added seperately to maintain reusability and readability.
         private static void ValidateOrderExists(int orderId)
         {

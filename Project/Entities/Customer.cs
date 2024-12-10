@@ -84,7 +84,16 @@ namespace Project.Entities
                 _cart = value;
             }
         }
+        public static IReadOnlyList<Customer> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
 
+
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
         public Order? CreateOrder()
         {
             /*Removed if Cart is null before converting the order.
@@ -94,6 +103,7 @@ namespace Project.Entities
 
         public Review CreateReview(int rating, Product product, string? comment)
         {
+           
             return product.AddReview(CustomerId, rating, comment);
         }
 
@@ -116,7 +126,7 @@ namespace Project.Entities
             }
             return false;
         }
-
+    
         
         // Since we are checking already if customer exists in GetCustomerWithId method, there is no reason to second check. -Demirhan
         // If customer does not exist we will face with error rather than 0. -Demirhan
@@ -128,6 +138,11 @@ namespace Project.Entities
         
         public static void RemoveCustomer(Customer customer)
         {
+
+            if (customer.Membership != null)
+            {
+                Membership.RemoveInstance(customer.Membership);
+            }
             Instances.Remove(customer);
             Cart.RemoveCart(customer.Cart);
         }

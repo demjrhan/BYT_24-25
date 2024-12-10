@@ -7,11 +7,10 @@ namespace Project.Models
 {
     public class Cart
     {
-
         private static List<Cart> Instances = new List<Cart>();
         private int _customerId;
         private List<Tuple<Product, Promotion?>> _products = new List<Tuple<Product, Promotion?>>();
-        private Customer Customer { get; set; }
+        public Customer Customer { get; set; }
         public int CartId { get; set; }
 
         
@@ -56,6 +55,26 @@ namespace Project.Models
 
             Instances.Add(this);
         }
+        
+        public static IReadOnlyList<Cart> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+        
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
+
+        public static bool Exists(Cart givenCart)
+        {
+            foreach (var cart in Instances)
+            {
+                if (cart == givenCart)
+                    return true;
+            }
+            return false;
+        }
 
         public void AddProduct(Product product, Promotion? promotion = null)
         {
@@ -65,6 +84,7 @@ namespace Project.Models
             if (promotion != null && !product.Promotions.Contains(promotion))
                 throw new ArgumentException("The specified promotion is not valid for this product.");
 
+            product.AddedCart = this;
             _products.Add(new Tuple<Product, Promotion?>(product, promotion));
 
             product.AddCart(this);
@@ -78,6 +98,7 @@ namespace Project.Models
             var productToRemove = _products
                 .FirstOrDefault(pair => pair.Item1 == product && pair.Item2 == promotion) 
                 ?? throw new ArgumentException("The specified product and promotion combination does not exist in the cart.");
+            product.AddedCart = null;
             _products.Remove(productToRemove);
         }
 

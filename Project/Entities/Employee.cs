@@ -63,7 +63,16 @@ namespace Project.Entities
                 _salary = value;
             }
         }
-        
+        public static IReadOnlyList<Employee> GetInstances()
+        {
+            return Instances.AsReadOnly();
+        }
+
+
+        public static void ClearInstances()
+        {
+            Instances.Clear();
+        }
         // Added extra validation InvalidOperationException in case of something goes wrong. - Demirhan
         public Report CreateReport(ReportType reportType, string content)
         {
