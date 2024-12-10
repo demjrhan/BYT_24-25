@@ -10,6 +10,7 @@
         public int Rating { get; set; }
         public string? Comment { get; set; }
         public int IssuedBy { get; set; }
+        public int ProductId {  get; set; }
         private Product Product { get; set; }
 
 
@@ -24,6 +25,7 @@
             Rating = rating;
             Comment = comment;
             Product = product;
+            ProductId = product.ProductId;
             Product.AddReviewToProduct(product, this);
             Instances.Add(this);
         }

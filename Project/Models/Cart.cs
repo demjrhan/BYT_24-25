@@ -86,6 +86,8 @@ namespace Project.Models
 
             product.AddedCart = this;
             _products.Add(new Tuple<Product, Promotion?>(product, promotion));
+
+            product.AddCart(this);
         }
 
         public void RemoveProduct(Product product, Promotion? promotion = null)
@@ -143,14 +145,22 @@ namespace Project.Models
 
             Inventory.UpdateInventory();
 
-            _products.Clear();
+            foreach(var pair in Products)
+            {
+                pair.Item1.RemoveCart(this);
+                RemoveProduct(pair.Item1, pair?.Item2);
+            }
 
             return new Order(CustomerId, DateTime.Now, OrderStatus.Proccessing, amount, products);
         }
 
         public static void RemoveCart(Cart cart)
         {
-            cart.Products.Clear();
+            foreach (var pair in cart.Products)
+            {
+                pair.Item1.RemoveCart(cart);
+            }
+
             Instances.Remove(cart);
         }
         
