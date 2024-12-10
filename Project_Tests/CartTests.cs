@@ -23,9 +23,12 @@ namespace Project_Tests
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
             var cart = customer.Cart;
 
+            var customerField = typeof(Cart).GetField("_customer", BindingFlags.Instance | BindingFlags.NonPublic);
+            var customerInCart = customerField!.GetValue(cart);
+
             Assert.IsNotNull(cart);
             Assert.That(cart.CustomerId, Is.EqualTo(customer.CustomerId));
-            Assert.That(cart.Customer, Is.EqualTo(customer));
+            Assert.That(customerInCart, Is.EqualTo(customer));
 
         }
         

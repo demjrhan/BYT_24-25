@@ -3,6 +3,7 @@ using Project.Entities;
 using Project.Models;
 using Project.Features;
 using System;
+using System.Reflection;
 
 namespace Project_Tests
 {
@@ -52,10 +53,9 @@ namespace Project_Tests
         public void MembershipCreation_ShouldLinkToCustomer()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var membership = new Membership(customer.CustomerId, true, 15.0);
-            customer.Membership = membership;
+            var membership = new Membership(customer, true, 15.0);
 
-            Assert.IsNotNull(customer.Membership);
+            Assert.IsTrue(customer.IsMember());
             Assert.That(membership.CustomerId, Is.EqualTo(customer.CustomerId));
         }
 
@@ -63,8 +63,7 @@ namespace Project_Tests
         public void MembershipDeletion_WhenCustomerDeleted_ShouldRemoveAssociatedMembership()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var membership = new Membership(customer.CustomerId, true, 15.0);
-            customer.Membership = membership;
+            var membership = new Membership(customer, true, 15.0);
 
             Customer.RemoveCustomer(customer);
 
@@ -96,13 +95,16 @@ namespace Project_Tests
         public void ModifyMembership_ShouldUpdateReverseConnection()
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
-            var oldMembership = new Membership(customer.CustomerId, true, 10.0);
-            var newMembership = new Membership(customer.CustomerId, true, 20.0);
+            var oldMembership = new Membership(customer, true, 10.0);
+            var newMembership = new Membership(customer, true, 20.0);
 
-            customer.Membership = newMembership;
+            customer.SetMembership(newMembership);
 
-            Assert.That(customer.Membership, Is.EqualTo(newMembership));
-            Assert.That(customer.Membership, Is.Not.EqualTo(oldMembership));
+            var membershipField = typeof(Customer).GetField("_membership", BindingFlags.Instance | BindingFlags.NonPublic);
+            var membership = membershipField!.GetValue(customer);
+
+            Assert.That(membership, Is.EqualTo(newMembership));
+            Assert.That(membership, Is.Not.EqualTo(oldMembership));
         }
 
         [Test]
@@ -115,11 +117,11 @@ namespace Project_Tests
         }
 
         [Test]
-        public void MembershipAssignment_InvalidCustomerId_ShouldThrowException()
+        public void MembershipAssignment_InvalidCustomer_ShouldThrowException()
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<NullReferenceException>(() =>
             {
-                new Membership(-1, true, 10.0);
+                new Membership(null!, true, 10.0);
             });
         }
     }

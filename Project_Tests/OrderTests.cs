@@ -23,7 +23,7 @@ namespace Project_Tests
         {
             var customer = new Customer("John", "Doe", "john.doe@example.com", "123456789", "123 Elm St", 30, false, true, false);
             var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
-            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
+            var order = new Order(customer, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
 
             Assert.That(order.CustomerId, Is.EqualTo(customer.CustomerId));
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Proccessing));
@@ -48,17 +48,19 @@ namespace Project_Tests
             Assert.That(customer.Cart.Count, Is.EqualTo(0));
             Assert.IsEmpty(carts!);            
         }
+
+        //maybe change that as we dont use indices here now
         [Test]
-        public void OrderCreation_InvalidCustomerId_ShouldThrowException()
+        public void OrderCreation_InvalidCustomer_ShouldThrowException()
         {
             var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(-1, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
+                new Order(null!, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
             });
 
-            Assert.That(ex.InnerException, Is.TypeOf<ArgumentException>());
-            Assert.That(ex.InnerException.Message, Does.Contain("Customer ID does not exist."));
+            Assert.That(ex.InnerException, Is.TypeOf<NullReferenceException>());
+            Assert.That(ex.InnerException.Message, Does.Contain("Object reference not set to an instance of an object."));
         }
 
 
@@ -69,7 +71,7 @@ namespace Project_Tests
             var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now.AddDays(1), OrderStatus.Proccessing, 155.0, products);
+                new Order(customer, DateTime.Now.AddDays(1), OrderStatus.Proccessing, 155.0, products);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentException>());
@@ -83,7 +85,7 @@ namespace Project_Tests
             var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, -155.0, products);
+                new Order(customer, DateTime.Now, OrderStatus.Proccessing, -155.0, products);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentOutOfRangeException>());
@@ -98,7 +100,7 @@ namespace Project_Tests
 
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, null!);
+                new Order(customer, DateTime.Now, OrderStatus.Proccessing, 155.0, null!);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentNullException>());
@@ -111,7 +113,7 @@ namespace Project_Tests
         {
             var customer = new Customer("Jane", "Doe", "jane.doe@example.com", "987654321", "456 Oak St", 25, false, true, false);
             var products = new List<Product> { new TestProduct("Fancy Book", 55.0, 2) };
-            var order = new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
+            var order = new Order(customer, DateTime.Now, OrderStatus.Proccessing, 155.0, products);
 
             order.Status = OrderStatus.Departed;
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Departed));
