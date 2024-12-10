@@ -9,9 +9,13 @@ namespace Project.Entities
         private static int _lastId = 0;
         private static List<Customer> Instances = new List<Customer>();
         private Cart _cart = null!;
+        private List<Review> _reviews = new List<Review>();
+        private List<Product> _favorites = new List<Product>();
+        private List<Order> _orders = new List<Order>();
+        private List<Payment> _payments = new List<Payment>();
+        private Membership? _membership;
         private DateTime _registerDate;
         public int CustomerId { get; private set; }
-        public Membership? Membership { get; set; }
         //Add connection with Membership class
         
         // Taking 1940 as imaginary establishing date of our company. Person can not register before that time. -Demirhan
@@ -94,10 +98,14 @@ namespace Project.Entities
             return Cart.ConvertToOrder();
         }
 
-        public Review CreateReview(int rating, Product product, string? comment)
+        //public Review CreateReview(int rating, Product product, string? comment)
+        //{
+        //    return product.AddReview(this, rating, comment);
+        //}
+
+        public void AddReview(Review review)
         {
-           
-            return product.AddReview(CustomerId, rating, comment);
+            _reviews.Add(review);
         }
 
         public static void PrintInstances()
@@ -128,16 +136,35 @@ namespace Project.Entities
             Customer customer = GetCustomerWithId(customerId);
             return customer.GetDiscountPercentage();
         }
+
+        public void SetMembership(Membership membership)
+        {
+            _membership = membership;
+        }
+
+        public void ResetMembership()
+        {
+            _membership = null;
+        }
         
         public static void RemoveCustomer(Customer customer)
         {
-
-            if (customer.Membership != null)
+            foreach (var product in customer._favorites)
             {
-                Membership.RemoveInstance(customer.Membership);
+                product.RemoveCustomerFromFavorites(customer);
             }
-            Instances.Remove(customer);
+            customer._favorites.Clear();
+            foreach (var order in customer._orders)
+            {
+                Order.RemoveOrder(order);
+            }
+            customer._orders.Clear();
+            if (customer._membership != null)
+            {
+                Membership.RemoveMembership(customer._membership);
+            }
             Cart.RemoveCart(customer.Cart);
+            Instances.Remove(customer);
         }
         
         // Created getting customer with id method to apply reusability in code. -Demirhan
@@ -149,6 +176,48 @@ namespace Project.Entities
             return customer;
         }
 
+        public void RemoveReview(Review review)
+        {
+            _reviews.Remove(review);
+        }
+
+        public void AddToFavorites(Product product)
+        {
+            // probably need to add check if product already there
+            product.AddCustomerToFavorites(this);
+            _favorites.Add(product);
+        }
+
+        public void RemoveFromFavorites(Product product)
+        {
+            product.RemoveCustomerFromFavorites(this);
+            _favorites.Remove(product);
+        }
+
+        public void AddOrder(Order order)
+        {
+            _orders.Add(order);
+        }
+
+        public void RemoveOrder(Order order)
+        {
+            _orders.Remove(order);
+        }
+
+        public void AddPayment(Payment payment)
+        {
+            _payments.Add(payment);
+        }
+
+        public void RemovePayment(Payment payment)
+        {
+            _payments.Remove(payment);
+        }
+
+        public bool IsMember()
+        {
+            return _membership != null;
+        }
 
         public override string ToString()
         {
