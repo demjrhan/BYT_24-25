@@ -203,7 +203,12 @@ namespace Project.Entities
         {
             _orders.Remove(order);
         }
-
+        
+        public List<Order> GetOrders()
+        {
+            return _orders;
+        }
+        
         public void AddPayment(Payment payment)
         {
             _payments.Add(payment);
@@ -219,6 +224,7 @@ namespace Project.Entities
             return _membership != null;
         }
 
+        
         public override string ToString()
         {
             return base.ToString() + " - Customer";

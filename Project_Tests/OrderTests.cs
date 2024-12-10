@@ -121,5 +121,42 @@ namespace Project_Tests
             order.Status = OrderStatus.Arrived;
             Assert.That(order.Status, Is.EqualTo(OrderStatus.Arrived));
         }
+        
+        [Test]
+        public void TestBulkAddOrdersToCustomer()
+        {
+            var customer = new Customer("Emma", "Watson", "emma.watson@example.com", "5556667", "789 Park", 28, false, true, false);
+            var orders = new List<Order>
+            {
+                new Order(customer, DateTime.Now, OrderStatus.Proccessing, 50.0, new List<Product>()),
+                new Order(customer, DateTime.Now, OrderStatus.Departed, 75.0, new List<Product>()),
+                new Order(customer, DateTime.Now, OrderStatus.Arrived, 100.0, new List<Product>())
+            };
+
+            foreach (var order in orders)
+            {
+                Assert.Contains(order, customer.GetOrders());
+            }
+            Assert.AreEqual(orders.Count, customer.GetOrders().Count);
+        }
+        
+        [Test]
+        public void TestBulkRemoveOrdersFromCustomer()
+        {
+            var customer = new Customer("Chris", "Evans", "chris.evans@example.com", "7778889", "123 Elm Street", 34, false, true, false);
+            var orders = new List<Order>
+            {
+                new Order(customer, DateTime.Now, OrderStatus.Proccessing, 50.0, new List<Product>()),
+                new Order(customer, DateTime.Now, OrderStatus.Departed, 75.0, new List<Product>()),
+                new Order(customer, DateTime.Now, OrderStatus.Arrived, 100.0, new List<Product>())
+            };
+            
+            foreach (var order in orders)
+            {
+                customer.RemoveOrder(order);
+            }
+
+            Assert.IsEmpty(customer.GetOrders());
+        }
     }
 }
