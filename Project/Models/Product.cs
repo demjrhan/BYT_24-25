@@ -6,29 +6,14 @@ namespace Project.Models
     {
         private static int _lastId = 0;
         private static List<Product> Instances = new List<Product>();
-        public List<Promotion> Promotions { get; set; } = new List<Promotion>();
-        public List<Review> Reviews { get; set; } = new List<Review>();
-        public Cart? AddedCart { get; set; }
+        private List<Promotion> _promotions = new List<Promotion>();
+        private List<Review> _reviews = new List<Review>();
+        private List<Cart> _carts = new List<Cart>();
 
         private string _title = null!;
         private double _price;
         private int _stockQuantity;
         public int ProductId { get; private set; }  
-
-        public Product(string title, double price, int quantity)
-        {
-                ValidateTitle(title);
-                ValidatePrice(price);
-                ValidateStockQuantity(quantity);
-
-                Title = title;
-                Price = price;
-                StockQuantity = quantity;
-
-                ProductId = _lastId++;
-                Instances.Add(this);
-            
-        }
 
         public string Title 
         { 
@@ -59,6 +44,20 @@ namespace Project.Models
                 _stockQuantity = value;
             }
         }
+        public Product(string title, double price, int quantity)
+        {
+            ValidateTitle(title);
+            ValidatePrice(price);
+            ValidateStockQuantity(quantity);
+
+            Title = title;
+            Price = price;
+            StockQuantity = quantity;
+
+            ProductId = _lastId++;
+            Instances.Add(this);
+
+        }
         public static IReadOnlyList<Product> GetInstances()
         {
             return Instances.AsReadOnly();
@@ -80,12 +79,12 @@ namespace Project.Models
         }
         public static void AddReviewToProduct(Product product, Review review)
         {
-            product?.Reviews.Add(review);
+            product?._reviews.Add(review);
         }
 
         public static void AddPromotionToProduct(Product product, Promotion promotion)
         {
-            product?.Promotions.Add(promotion);
+            product?._promotions.Add(promotion);
         }
         
         public Review AddReview(int customerId, int rating, string? comment)
@@ -101,13 +100,13 @@ namespace Project.Models
         {
             if (promotion == null)
                 throw new ArgumentNullException(nameof(promotion), "Promotion cannot be null.");
-            Promotions.Remove(promotion);
+            _promotions.Remove(promotion);
             Promotion.RemovePromotion(promotion);
         }
 
         public void RemoveReview(Review review)
         {
-            this.Reviews.Remove(review);
+            this._reviews.Remove(review);
         }
 
         public double ApplyPromotion(Promotion promotion)
@@ -155,30 +154,45 @@ namespace Project.Models
 
         public void AddCart(Cart cart)
         {
-            Carts.Add(cart);
+            _carts.Add(cart);
         }
 
         public void RemoveCart(Cart cart)
         {
-            Carts.Remove(cart);
+            _carts.Remove(cart);
         }
 
         public void RemoveProduct()
         {
-            foreach(var review in Reviews)
+            foreach(var review in _reviews)
             {
                 Review.RemoveReview(review);
             }
-            foreach (var promotion in Promotions)
+            foreach (var promotion in _promotions)
             {
                 Promotion.RemovePromotion(promotion);
             }
-            foreach (var cart in Carts)
+            foreach (var cart in _carts)
             {
                 cart.RemoveProduct(this);
             }
 
             Instances.Remove(this);
+        }
+
+        public bool ContainPromotion(Promotion promotion)
+        {
+            return this._promotions.Contains(promotion);
+        }
+
+        public int CountReviews()
+        {
+            return _reviews.Count;
+        }
+
+        public int CountPromotions()
+        {
+            return _promotions.Count;
         }
 
         public override string ToString()

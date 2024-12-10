@@ -13,33 +13,6 @@ namespace Project.Features
         private double _discountPercentage;
         public int PromotionId { get; private set; } = _lastId++;
 
-        public Promotion(string name, string description, double discountPercentage, Product product)
-        {
-            
-            ValidateProductExists(product.ProductId);
-            ValidateDiscountPercentage(discountPercentage);
-            Name = name;
-            Description = description;
-            DiscountPercentage = discountPercentage;
-            ProductId = product.ProductId;
-
-            Product.AddPromotionToProduct(product, this);
-
-            Instances.Add(this);
-        }
-        // Validation methods added seperately to maintain reusability and readability.
-        private static void ValidateProductExists(int productId)
-        {
-            if (!Product.Exists(productId))
-                throw new ArgumentException($"Product with ID {productId} does not exist.");
-        }
-
-        private static void ValidateDiscountPercentage(double discountPercentage)
-        {
-            if (discountPercentage < 0)
-                throw new ArgumentOutOfRangeException(nameof(discountPercentage), "Discount Percentage cannot be negative.");
-        }
-
         public int ProductId
         {
             get => _productId;
@@ -68,6 +41,32 @@ namespace Project.Features
                     throw new ArgumentException("Description cannot be empty.");
                 _description = value;
             }
+        }
+        public Promotion(string name, string description, double discountPercentage, Product product)
+        {
+
+            ValidateProductExists(product.ProductId);
+            ValidateDiscountPercentage(discountPercentage);
+            Name = name;
+            Description = description;
+            DiscountPercentage = discountPercentage;
+            ProductId = product.ProductId;
+
+            Product.AddPromotionToProduct(product, this);
+
+            Instances.Add(this);
+        }
+        // Validation methods added seperately to maintain reusability and readability.
+        private static void ValidateProductExists(int productId)
+        {
+            if (!Product.Exists(productId))
+                throw new ArgumentException($"Product with ID {productId} does not exist.");
+        }
+
+        private static void ValidateDiscountPercentage(double discountPercentage)
+        {
+            if (discountPercentage < 0)
+                throw new ArgumentOutOfRangeException(nameof(discountPercentage), "Discount Percentage cannot be negative.");
         }
         public static IReadOnlyList<Promotion> GetInstances()
         {

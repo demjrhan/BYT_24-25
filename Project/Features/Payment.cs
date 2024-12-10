@@ -11,7 +11,6 @@ namespace Project.Features
         private double _amount;
         public int PaymentId { get; private set; } = _lastId++;
         public PaymentMethod PaymentMethod { get; set; }
-   
 
         public Payment(int orderId, PaymentMethod paymentMethod, double amount)
         {
@@ -32,8 +31,6 @@ namespace Project.Features
 
             return new Payment(orderId, paymentMethod, amount);
         }
-
-
         
         public int OrderId
         {
