@@ -4,6 +4,7 @@ using Project.Entities;
 using Project.Enum;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Project_Tests
 {
@@ -39,10 +40,13 @@ namespace Project_Tests
             var product = new TestProduct("Book2", 15.0, 15);
             customer.Cart.AddProduct(product);
 
-            customer.Cart.RemoveProduct(product); 
+            customer.Cart.RemoveProduct(product);
 
-            Assert.That(customer.Cart.Products.Count, Is.EqualTo(0));
-            Assert.IsNull(product.AddedCart);            
+            var cartsField = typeof(Product).GetField("_carts", BindingFlags.Instance | BindingFlags.NonPublic);
+            var carts = cartsField!.GetValue(product) as List<Cart>;
+
+            Assert.That(customer.Cart.Count, Is.EqualTo(0));
+            Assert.IsEmpty(carts!);            
         }
         [Test]
         public void OrderCreation_InvalidCustomerId_ShouldThrowException()
@@ -94,7 +98,7 @@ namespace Project_Tests
 
             var ex = Assert.Throws<InvalidOperationException>(() =>
             {
-                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, null);
+                new Order(customer.CustomerId, DateTime.Now, OrderStatus.Proccessing, 155.0, null!);
             });
 
             Assert.That(ex.InnerException, Is.TypeOf<ArgumentNullException>());

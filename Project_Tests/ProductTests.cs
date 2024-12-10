@@ -1,5 +1,7 @@
 
+using Project.Features;
 using Project.Models;
+using System.Reflection;
 
 namespace Project_Tests
 {
@@ -46,8 +48,11 @@ namespace Project_Tests
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
             var review = product.AddReview(1, 5, "Amazing book!");
 
-            Assert.That(product.Reviews.Count, Is.EqualTo(1));
-            Assert.That(product.Reviews[0], Is.EqualTo(review));
+            var reviewsField = typeof(Product).GetField("_reviews", BindingFlags.Instance | BindingFlags.NonPublic);
+            var reviews = reviewsField!.GetValue(product) as List<Review>;
+
+            Assert.That(product.CountReviews(), Is.EqualTo(1));
+            Assert.That(reviews![0], Is.EqualTo(review));
         }
 
         [Test]
@@ -56,8 +61,11 @@ namespace Project_Tests
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
             var promotion = product.AddPromotion("Summer Sale", "20% off", 20.0);
 
-            Assert.That(product.Promotions.Count, Is.EqualTo(1));
-            Assert.That(product.Promotions[0], Is.EqualTo(promotion));
+            var promotionsField = typeof(Product).GetField("_promotions", BindingFlags.Instance | BindingFlags.NonPublic);
+            var promotions = promotionsField!.GetValue(product) as List<Promotion>;
+
+            Assert.That(product.CountPromotions(), Is.EqualTo(1));
+            Assert.That(promotions![0], Is.EqualTo(promotion));
         }
         
         [Test]
@@ -67,7 +75,7 @@ namespace Project_Tests
             var promotion = product.AddPromotion("Summer Sale", "20% off", 20.0);
             product.RemovePromotion(promotion);
 
-            Assert.That(product.Promotions.Count, Is.EqualTo(0));
+            Assert.That(product.CountPromotions(), Is.EqualTo(0));
         }
 
         [Test]
