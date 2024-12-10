@@ -8,10 +8,7 @@ namespace Project.Models
         private static readonly List<Accessory> Instances = new List<Accessory>();
 
         private string _accessoryType = null!;
-
         private MaterialType Material { get; set; }
-        //public static readonly string _verbose = "Accessory";
-        //public static readonly string _verbosePlural = "Accessories";
 
         private string AccessoryType
         {
@@ -50,8 +47,6 @@ namespace Project.Models
             }
         }
         
-        
-
         public static bool Exists(Accessory givenAccessory)
         {
             foreach (var accessory in Instances)
@@ -68,7 +63,6 @@ namespace Project.Models
                 throw new ArgumentException("Accessory type cannot be null or empty.", nameof(type));
         }
 
-        
         
         // Added validation of stock quantity, new accessory's quantity can not be lower than 0.
         private void UpdateInventory()

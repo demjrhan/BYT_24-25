@@ -17,34 +17,6 @@ namespace Project.Models
         public int OrderId { get; set; }
         public OrderStatus Status { get; set; }
 
-
-        public Order(
-            int customerId, DateTime orderDate,
-            OrderStatus status,
-            double amount, List<Product> products
-        )
-        {
-            try
-            {
-                ValidateCustomerId(customerId);
-                ValidateOrderDate(orderDate);
-                ValidateAmount(amount);
-                ValidateProducts(products);
-                
-                CustomerId = customerId;
-                OrderDate = orderDate;
-                Amount = amount;
-                Status = status;
-                Products = products;
-                OrderId = _lastId++;
-                Instances.Add(this);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Failed to initialize Order.", ex);
-            }
-        }
-
         public int CustomerId
         {
             get => _customerId;
@@ -94,6 +66,33 @@ namespace Project.Models
                 _amount = value;
             }
         }
+        public Order(
+            int customerId, DateTime orderDate,
+            OrderStatus status,
+            double amount, List<Product> products
+        )
+        {
+            try
+            {
+                ValidateCustomerId(customerId);
+                ValidateOrderDate(orderDate);
+                ValidateAmount(amount);
+                ValidateProducts(products);
+
+                CustomerId = customerId;
+                OrderDate = orderDate;
+                Amount = amount;
+                Status = status;
+                Products = products;
+                OrderId = _lastId++;
+                Instances.Add(this);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to initialize Order.", ex);
+            }
+        }
+
         public static IReadOnlyList<Order> GetInstances()
         {
             return Instances.AsReadOnly();

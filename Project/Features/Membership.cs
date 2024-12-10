@@ -11,18 +11,6 @@ namespace Project.Features
         public int MembershipId { get; private set; } = _lastId++;
         public bool Status { get; set; }
         
-        public Membership(int customerId, bool status, double discountRate)
-        {
-            
-            ValidateCustomerId(customerId);
-            ValidateDiscountRate(discountRate);
-            
-            
-            CustomerId = customerId;
-            Status = status;
-            DiscountRate = discountRate;
-            Instances.Add(this);
-        }
         public int CustomerId
         {
             get => _customerId;
@@ -43,6 +31,20 @@ namespace Project.Features
                 _discountRate = value;
             }
         }
+
+        public Membership(int customerId, bool status, double discountRate)
+        {
+
+            ValidateCustomerId(customerId);
+            ValidateDiscountRate(discountRate);
+
+
+            CustomerId = customerId;
+            Status = status;
+            DiscountRate = discountRate;
+            Instances.Add(this);
+        }
+
         public static void PrintInstances()
         {
             foreach (var membership in Instances)

@@ -9,10 +9,6 @@ namespace Project.Models
         private string _genre = null!;
         private int _publicationYear;
         
-        //public static readonly string _verbose = "Book";
-        //public static readonly string _verbosePlural = "Books";
-        
-        
         public Book(
             string title, double price, 
             int stockQuantity, string author, 

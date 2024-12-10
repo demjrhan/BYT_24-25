@@ -5,30 +5,11 @@ namespace Project.Features
     public class Report
     {
         private static List<Report> Instances = new List<Report>();
-
         private int _employeeId;
         private string _content = null!;
         private DateTime _date;
         public ReportType ReportType { get; set; }
 
-        
-
-        public Report(int employeeId, ReportType reportType, string content, DateTime date)
-        {
-            
-            ValidateEmployeeId(employeeId);
-            ValidateContent(content);
-            ValidateDate(date);
-            
-            EmployeeId = employeeId;
-            ReportType = reportType;
-            Content = content;
-            Date = date;
-
-            Instances.Add(this);
-        }
-
-        
         public int EmployeeId
         {
             get => _employeeId;
@@ -57,6 +38,21 @@ namespace Project.Features
                 _date = value;
             }
         }
+        public Report(int employeeId, ReportType reportType, string content, DateTime date)
+        {
+
+            ValidateEmployeeId(employeeId);
+            ValidateContent(content);
+            ValidateDate(date);
+
+            EmployeeId = employeeId;
+            ReportType = reportType;
+            Content = content;
+            Date = date;
+
+            Instances.Add(this);
+        }
+
         public static IReadOnlyList<Report> GetInstances()
         {
             return Instances.AsReadOnly();

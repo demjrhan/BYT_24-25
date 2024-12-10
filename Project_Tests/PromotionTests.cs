@@ -2,6 +2,7 @@
 using Project.Models;
 using Project.Features;
 using System;
+using System.Reflection;
 
 namespace Project_Tests
 {
@@ -39,7 +40,7 @@ namespace Project_Tests
 
             product.RemovePromotion(promotion);
 
-            Assert.That(product.Promotions.Count, Is.EqualTo(0));
+            Assert.That(product.CountPromotions(), Is.EqualTo(0));
         }
 
         [Test]
@@ -48,8 +49,11 @@ namespace Project_Tests
             var product = new TestProduct("The Great Gatsby", 20.0, 50);
             var promotion = new Promotion("Holiday Sale", "10% off", 10.0, product);
 
-            Assert.That(product.Promotions.Count, Is.EqualTo(1));
-            Assert.That(product.Promotions[0], Is.EqualTo(promotion));
+            var promotionsField = typeof(Product).GetField("_promotions", BindingFlags.Instance | BindingFlags.NonPublic);
+            var promotions = promotionsField!.GetValue(product) as List<Promotion>;
+
+            Assert.That(product.CountPromotions(), Is.EqualTo(1));
+            Assert.That(promotions![0], Is.EqualTo(promotion));
         }
 
         [Test]

@@ -25,26 +25,26 @@ namespace Project.Models
                 _customerId = value;
             }
         }
-        public List<Tuple<Product, Promotion?>> Products
-        {
-            get => _products;
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(value), "Products list cannot be null.");
+        //public List<Tuple<Product, Promotion?>> Products
+        //{
+        //    get => _products;
+        //    set
+        //    {
+        //        if (value == null)
+        //            throw new ArgumentNullException(nameof(value), "Products list cannot be null.");
 
-                foreach (var pair in value)
-                {
-                    if (pair.Item1 == null)
-                        throw new ArgumentException("Product cannot be null.");
+        //        foreach (var pair in value)
+        //        {
+        //            if (pair.Item1 == null)
+        //                throw new ArgumentException("Product cannot be null.");
 
-                    if (pair.Item2 != null && !pair.Item1.Promotions.Contains(pair.Item2))
-                        throw new ArgumentException("The specified promotion is not valid for this product.");
-                }
+        //            if (pair.Item2 != null && !pair.Item1.Promotions.Contains(pair.Item2))
+        //                throw new ArgumentException("The specified promotion is not valid for this product.");
+        //        }
 
-                _products = value;
-            }
-        }
+        //        _products = value;
+        //    }
+        //}
 
         //
         public Cart(Customer customer)
@@ -81,10 +81,9 @@ namespace Project.Models
             if (product == null)
                 throw new ArgumentNullException(nameof(product), "Product cannot be null.");
 
-            if (promotion != null && !product.Promotions.Contains(promotion))
+            if (promotion != null && !product.ContainPromotion(promotion))
                 throw new ArgumentException("The specified promotion is not valid for this product.");
 
-            product.AddedCart = this;
             _products.Add(new Tuple<Product, Promotion?>(product, promotion));
 
             product.AddCart(this);
@@ -98,7 +97,12 @@ namespace Project.Models
             var productToRemove = _products
                 .FirstOrDefault(pair => pair.Item1 == product && pair.Item2 == promotion) 
                 ?? throw new ArgumentException("The specified product and promotion combination does not exist in the cart.");
-            product.AddedCart = null;
+            //foreach (var pair in _products)
+            //{
+            //    pair.Item1.RemoveCart(this);
+            //    RemoveProduct(pair.Item1, pair?.Item2);
+            //}
+            productToRemove.Item1.RemoveCart(this);
             _products.Remove(productToRemove);
         }
 
@@ -107,7 +111,7 @@ namespace Project.Models
             double discount = Customer.GetDiscountPercentage(CustomerId);
             double totalSum = 0;
 
-            foreach (var pair in Products)
+            foreach (var pair in _products)
             {
                 totalSum += pair.Item2 != null ? pair.Item1.ApplyPromotion(pair.Item2) : pair.Item1.Price;
             }
@@ -125,7 +129,7 @@ namespace Project.Models
             double amount = CalculateTotalSum();
             List<Product> products = [];
 
-            foreach (var pair in Products)
+            foreach (var pair in _products)
             {
                 products.Add(pair.Item1);
 
@@ -145,7 +149,7 @@ namespace Project.Models
 
             Inventory.UpdateInventory();
 
-            foreach(var pair in Products)
+            foreach(var pair in _products)
             {
                 pair.Item1.RemoveCart(this);
                 RemoveProduct(pair.Item1, pair?.Item2);
@@ -156,10 +160,12 @@ namespace Project.Models
 
         public static void RemoveCart(Cart cart)
         {
-            foreach (var pair in cart.Products)
+            foreach (var pair in cart._products)
             {
                 pair.Item1.RemoveCart(cart);
             }
+
+            cart._products.Clear();
 
             Instances.Remove(cart);
         }
@@ -172,10 +178,15 @@ namespace Project.Models
             }
         }
 
+        public int Count()
+        {
+            return _products.Count;
+        }
+
         public override string ToString()
         {
             string result = "";
-            foreach (var pair in Products)
+            foreach (var pair in _products)
             {
                 result += pair.Item1.ToString();
                 result += "\n";

@@ -9,39 +9,12 @@ namespace Project.Entities
         private static List<Employee> Instances = new List<Employee>();
         private DateTime _hireDate;
         private double _salary;
+        private Employee? _mentor;
+        private Employee? _subordinate;
         public int EmployeeId { get; private set; }
         public int? SubordinateId { get; set; } 
         public int? MentorId { get; set; }
-        public Employee? Mentor { get; set; }
-        public Position EmpPosition { get; private set; }
-        public Employee? Subordinate { get; set; }
-        //public static readonly string _verbose = "Employee";
-        //public static readonly string _verbosePlural = "Employees";
-        
-
-        public Employee(
-            string name, string surname,
-            string email, string phone,
-            string address, int age,
-            bool isStudying, bool isWorking,
-            bool isRetired, Position empPosition, 
-            DateTime hireDate, double salary, 
-            RetirementType? retirementType = null
-            ) : base(
-                name, surname,
-                email, phone,
-                address, age,
-                isStudying, isWorking,
-                isRetired, retirementType
-            )
-        {
-            EmpPosition = empPosition;
-            HireDate = hireDate;
-            Salary = salary;
-            EmployeeId = _lastId++;
-            Instances.Add(this);
-        }
-         
+        public Position EmpPosition { get; private set; }        
         
         public DateTime HireDate
         {
@@ -63,6 +36,29 @@ namespace Project.Entities
                 _salary = value;
             }
         }
+        public Employee(
+            string name, string surname,
+            string email, string phone,
+            string address, int age,
+            bool isStudying, bool isWorking,
+            bool isRetired, Position empPosition,
+            DateTime hireDate, double salary,
+            RetirementType? retirementType = null
+            ) : base(
+                name, surname,
+                email, phone,
+                address, age,
+                isStudying, isWorking,
+                isRetired, retirementType
+            )
+        {
+            EmpPosition = empPosition;
+            HireDate = hireDate;
+            Salary = salary;
+            EmployeeId = _lastId++;
+            Instances.Add(this);
+        }
+
         public static IReadOnlyList<Employee> GetInstances()
         {
             return Instances.AsReadOnly();
@@ -89,7 +85,6 @@ namespace Project.Entities
             }
         }
 
-
         public static void PrintInstances()
         {
             foreach (var employee in Instances)
@@ -100,43 +95,43 @@ namespace Project.Entities
         public void AddSubordinate(Employee subordinate)
         {
             if (subordinate == this) throw new Exception("Employee cannot be assigned as a subordinate to himself");
-            Subordinate = subordinate;
-            subordinate.Mentor = this;
+            _subordinate = subordinate;
+            subordinate._mentor = this;
             SubordinateId = subordinate.EmployeeId;
             subordinate.MentorId = EmployeeId;
         }
         public void RemoveSubordinate()
         {
-            if (Subordinate != null)
+            if (_subordinate != null)
             {
-                Subordinate.MentorId = null;
+                _subordinate.MentorId = null;
                 SubordinateId = null;
-                Subordinate.Mentor = null;
-                Subordinate = null;
+                _subordinate._mentor = null;
+                _subordinate = null;
             }
         }
         public void AddMentor(Employee mentor) 
         {
             if (mentor == this) throw new Exception("Employee cannot be assigned as a mentor to himself");
-            Mentor = mentor; 
-            mentor.Subordinate = this;
+            _mentor = mentor; 
+            mentor._subordinate = this;
             MentorId = mentor.EmployeeId;
             mentor.SubordinateId = EmployeeId;
         }
         public void RemoveMentor()
         {
-            if (Mentor != null)
+            if (_mentor != null)
             {
-                Mentor.SubordinateId = null;
+                _mentor.SubordinateId = null;
                 MentorId = null;
-                Mentor.Subordinate = null;
-                Mentor = null;
+                _mentor._subordinate = null;
+                _mentor = null;
             }
         }
         public static void RemoveEmployee(Employee employee)
         {
-            employee.Mentor?.RemoveMentor();
-            employee.Subordinate?.RemoveSubordinate();
+            employee._mentor?.RemoveMentor();
+            employee._subordinate?.RemoveSubordinate();
             Instances.Remove(employee);
         }
         public override string ToString()

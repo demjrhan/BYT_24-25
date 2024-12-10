@@ -2,6 +2,7 @@
 using Project.Models;
 using Project.Entities;
 using Project.Features;
+using System.Reflection;
 
 namespace Project_Tests
 {
@@ -46,10 +47,13 @@ namespace Project_Tests
             var customer = new Customer("Jane", "Doe", "jane.doe@example.com", "987654321", "456 Oak St", 25, false, true, false);
             var product = new TestProduct("Book", 10.0, 5);
 
-            customer.Cart.Products.Add(new Tuple<Product, Promotion?>(product, null));
+            customer.Cart.AddProduct(product, null);
 
-            Assert.That(customer.Cart.Products.Count, Is.EqualTo(1));
-            Assert.That(customer.Cart.Products[0].Item1, Is.EqualTo(product));
+            var productsField = typeof(Cart).GetField("_products", BindingFlags.Instance | BindingFlags.NonPublic);
+            var products = productsField!.GetValue(customer.Cart) as List<Tuple<Product, Promotion?>>;
+
+            Assert.That(customer.Cart.Count, Is.EqualTo(1));
+            Assert.That(products![0].Item1, Is.EqualTo(product));
         }
       
 
@@ -59,11 +63,11 @@ namespace Project_Tests
         {
             var customer = new Customer("Jane", "Doe", "jane.doe@example.com", "987654321", "456 Oak St", 25, false, true, false);
             var product = new TestProduct("Book", 10.0, 5);
-            customer.Cart.Products.Add(new Tuple<Product, Promotion?>(product, null));
+            customer.Cart.AddProduct(product, null);
 
-            customer.Cart.Products.RemoveAt(0);
+            customer.Cart.RemoveProduct(product);
 
-            Assert.That(customer.Cart.Products.Count, Is.EqualTo(0));
+            Assert.That(customer.Cart.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -88,7 +92,7 @@ namespace Project_Tests
             customer.Cart.AddProduct(product2);
             
             Cart.RemoveCart(customer.Cart);
-            Assert.IsEmpty(customer.Cart.Products, "Cart products should be empty after deletion.");
+            Assert.That(customer!.Cart.Count(), Is.EqualTo(0), "Cart products should be empty after deletion.");
         }
 
         [Test]
@@ -98,7 +102,7 @@ namespace Project_Tests
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                customer.Cart.AddProduct(null);
+                customer.Cart.AddProduct(null!);
             });
         }
     }
